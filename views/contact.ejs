@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/profile.css">
+  <title>StoaExchange</title>
+  <script src = "/js/script.js"></script>
+
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div class="largerContainer">
+      <div class = "smallerContainer">
+        <%if(type == "offering"){%>
+
+        <h2 id = "date"><%=date%></h2>
+        
+        <h1>Brief Offer: <%=briefName%></h1>
+        
+    <h2>By <%=name%></h2>
+<h2>Debate format: <%=debate%></h2>
+<%if(rating){%>
+    <h2>Rating: <%=rating%>/10</h2>
+<%}else{%>
+    <h2>This brief currently has no ratings. Click <a href="/">here</a> to add a rating.</h2>
+<%}%>
+<h2>Pages: <%=pages%></h2>
+<h2>Arguments: <%=arguments%></h2>
+<hr>    
+
+<h1 style = "text-align: center; margin-top: 37.35px;">What you're offering</h1>
+<form action="/contact?id=<%=id%>" method = "POST">
+    <input name = 'briefName' required class="feedback-input" type="text" placeholder = "Brief name">
+    <input name = "description"required class="feedback-input" type="text" placeholder = "Description">
+    <input required  name="pages" type="number" class="feedback-input" placeholder="Number of pages" min = 1 max = 300/>
+    <input required  name="arguments" type="number" class="feedback-input" placeholder="Number of arguments" min = 1 max = 100/>
+    <select name = "debate" required class="feedback-input" id="select">
+        <option value="" selected disabled >Select the debate format</option>
+
+<option name = "tp" value="tp" >Team Policy Brief</option>
+<option name = "ld" value="ld">Lincoln Douglas Brief</option>
+<input type="text" class="feedback-input" placeholder = "Additional information (optional)">
+<input type="submit" value = "Contact <%=name%>"></form>
+<%}else{%>
+
+
+
+    <h2 id = "date"><%=date%></h2>
+        
+    <h1>Brief Request: <%=briefName%></h1>
+    
+<h2>By <%=name%></h2>
+<h2>Debate format: <%=debate%></h2>
+<%if(pages){%>
+    <h2>Minimum number of pages: <%=pages%></h2>
+<%}%>
+<%if(arguments){%>
+
+<h2>Minimum number of arguments: <%=arguments%></h2>
+<%}%>
+<hr>    
+<form action="/contact?id=<%=id%>" method = "POST">
+<h1 style = "text-align: center; margin-top: 37.35px;">Details on your brief</h1>
+
+<input name = "description" required class="feedback-input" type="text" placeholder = "Description">
+<input required  name="pages" type="number" class="feedback-input" placeholder="Number of pages" min = 1 max = 300/>
+<input required  name="arguments" type="number" class="feedback-input" placeholder="Number of arguments" min = 1 max = 100/>
+   
+<input name = "additional" type="text" class="feedback-input" placeholder = "Additional information (optional)">
+
+
+
+<input type="text" name = "inReturn" class="feedback-input" placeholder = "What you'd like in return">
+<input type="submit" value = "Contact <%=name%>"></form>
+<%}%>
+
+      </div>
+    </div>
+  </section>
+  <%- include('partials/footer.ejs') %>
+
+
+</body>
+
+</html>
+
+</html>
+<style>
+    section form { max-width:420px; margin:50px auto; margin-top: 20px; }
+    
+    #select{
+      color:black;
+    }
+    select:invalid {
+      color: #717172 !important;
+}
+    .feedback-input {
+      color:black;
+      font-weight:500;
+      font-size: 18px;
+      border-radius: 15px;
+      line-height: 22px;
+      background-color: transparent;
+      border:3px solid black;
+      transition: all 0.3s;
+      padding: 13px;
+      margin-bottom: 15px;
+      width:100%;
+      box-sizing: border-box;
+      outline:0;
+    }
+    #body h1 {
+        margin-bottom: 20px;
+    }
+    section textarea {
+      height: 150px;
+      line-height: 150%;
+      resize:vertical;
+    }
+    
+    section [type="submit"] {
+      width: 100%;
+      background:var(--specialGray);
+      border-radius:15px;
+      border:0;
+      color:white;
+      font-size:24px;
+      padding-top:10px;
+      padding-bottom:10px;
+      transition: all 0.3s;
+      margin-top:-4px;
+      font-weight:700;
+    }
+    [type="submit"]:hover { background:var(--lighterGray); }
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+  #date{
+    margin-top: 12.45px;
+  }
+  section form{
+    margin-bottom: 10px;
+  }
+  </style>

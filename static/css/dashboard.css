@@ -1,0 +1,133 @@
+:root {
+    --specialGray: #606970;
+    --lighterGray: rgba(0,0,0,.5);
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+     margin:0;
+      padding:0;
+    scroll-behavior: smooth;
+  }
+  #body h1{
+    font-size: 45px;
+    text-align: center;
+  }
+  #buttonFour{
+    margin: 0;
+    border-radius: 0px 5px 0px 0px;
+    border-left: none;
+  }
+  #body{
+    background: #f8f9fa;
+  }
+  
+  .largerContainer{
+      padding: 100px 200px;  
+  }
+  #body .smallerContainer{
+    border: 2px solid var(--lighterGray);
+    border-radius: 0 8px 8px 8px;
+    padding: 30px;
+    box-shadow: rgba(0, 0, 0, 30%) 0px 3px 8px;
+  }
+  
+  .smallerContainer h1, h2, h3{
+    margin-top:0px;
+  }
+  
+  .feedback-input {
+    color:black;
+    font-weight:500;
+    font-size: 18px;
+    border-radius: 15px;
+    line-height: 22px;
+    background-color: transparent;
+    border:3px solid black;
+    transition: all 0.3s;
+    padding: 13px;
+    margin-bottom: 0;
+    width:100%;
+    box-sizing: border-box;
+    outline:0;
+    margin-top: 10px;
+  }
+  #body p{
+    font-size: 20px;
+    padding-top: 10px;
+    margin-top: 10px;
+    margin-bottom:0;  }
+  
+  section textarea {
+    height: 150px;
+    line-height: 150%;
+    resize:vertical;
+  }
+  
+  #date{
+    font-weight: normal;
+    font-size: 15px;
+    margin-top: 30px;
+  }
+  hr{
+    margin: 30px 0px;
+    border-top: 4px solid #8c8b8b;
+  }
+
+#body-getStarted{
+  border: 0px;
+  border-radius: 20px;
+  padding: 10px 19px 10px 19px;
+  background:var(--lighterGray);
+  color: white !important;
+  text-decoration: none;
+  transition: color 0.3s;
+
+}
+
+.button-container{
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+#body-getStarted:hover{
+    color: #D3D3D3 !important;
+
+}
+  #body a{
+     color: black;
+  }
+
+  #extraBottomPadding{
+margin-bottom: 0;
+
+  }
+  .briefSectionheader{
+    font-size: 40px;
+  }
+  
+  .requestSectionheader{
+
+    font-size: 40px;
+  }
+  
+#thirtypx{
+    font-size: 30px;
+    padding-top: 0;
+  }
+  #responseButton{
+
+    border: 0px;
+    border-radius: 20px;
+    padding: 10px 19px 10px 19px;
+    background:var(--lighterGray);
+    color: white !important;
+    text-decoration: none;
+    transition: color, 0.3s;
+  margin-top: 20px;
+       }
+       #responseButton:hover{
+        background-color: #949292;
+
+       }

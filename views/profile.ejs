@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/profile.css">
+  <title>StoaExchange</title>
+  <script src = "/js/script.js"></script>
+
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div class="largerContainer">
+      <div class = "smallerContainer">
+
+        
+        <h1><%=name%></h1>
+        
+<hr>    
+    
+      
+        <a href=<%=speechranks%> target = "_blank"><h2><%=name%>'s Speechranks</h2></a>
+        <%if (ld && parli && tp){%>
+            <h2>Debate Events: Team Policy, Lincoln Douglas, and Parliamentary Debate</h2>
+            <%}else if(ld && parli){%>
+                <h2>Debate Events: Lincoln Douglas and Parliamentary Debate</h2>
+                <%}else if(tp && parli){%>
+                    <h2>Debate Events: Team Policy and Parliamentary Debate</h2>
+                    <%}else if(tp && ld){%>
+                        <h2>Debate Events: Team Policy and Lincoln Douglas</h2>
+                        <%}else if(tp){%>
+                            <h2>Debate Event: Team Policy</h2>   
+                            <%}else if(ld){%>
+                                <h2>Debate Event: Lincoln Douglas</h2>   
+                                    <%}else if(parli){%>
+                                        <h2>Debate Event: Parliamentary Debate</h2>   
+                                        <%}else{%>
+                                            <h2>Debate Events: None</h2>
+                                            <%}%>
+            
+        
+        <hr>
+<span class="briefSection">
+   
+    <%if (numberOfBriefOfferings == 0){%>
+        <h2 class = "briefSectionheader">Not offering any briefs</h2>
+    <%}else{%>
+        <h2 class = "briefSectionheader" id = "extraBottomPadding">Available to trade:</h2>
+        <%}%>
+
+
+    <%for(let i = 0; i<numberOfBriefOfferings; i++){%>
+        <h2 id = "date"><%=date[i]%></h2>
+
+        <h2 id = "thirtypx"><%=debate[i]%> Brief: <%=briefName[i]%></h2>
+        <%if (briefRating[i] == 0 || briefRating[i] == null){%>
+            
+        <%if(name != authName){%>
+            <h3>This brief currently has no ratings.</h3>
+            <%}%>
+        <%}else{%>
+            <%if(numberOfRatings[i] == 1){%>
+                <h3>Rating: <%=briefRating[i]%>/10 based on reviews from <%=numberOfRatings[i]%> user</h3>
+
+                <%}else{%>
+                    <h3>Rating: <%=briefRating[i]%>/10 based on reviews from <%=numberOfRatings[i]%> users</h3>
+
+                    <%}%>
+        <%}%>
+        
+        <h3>Pages: <%=pageLength[i]%></h3>
+        <h3 id ="noBottomMargin">Arguments: <%=arguments[i]%></h3>
+
+        <%if(name != authName){%>
+            <div class ="button-container"><a id = "body-getStarted" href="/contact?id=<%=id[i]%>">Contact <%=name%> about this brief</a></div>
+            <%}%>
+        
+
+    <%}%>
+</span>
+     
+        <hr style = "margin-top: 40px;">
+        <span class="requestSection">
+   
+            <%if (numberOfBriefRequests == 0){%>
+                <h2 class = "requestSectionheader">Not looking for any briefs</h2>
+                <style>.requestSectionheader{margin-bottom: 10px;}</style>
+            <%}else {%>
+                <h2 class = "requestSectionheader" id = "extraBottomPadding">Looking for:</h2>
+                <%}%>
+        
+        
+            <%for(let i = 0; i<numberOfBriefRequests; i++){%>
+                <h2 id = "date"><%=dateR[i]%></h2>
+
+                <h2 id = "thirtypx"><%=debateR[i]%> Brief: <%=briefNameR[i]%></h2>
+                <%if(pageLengthR[i]){%>
+                    <h3>Minimum number of pages: <%=pageLengthR[i]%></h3>
+
+                    <%}%>
+                    <%if(argumentsR[i]){%>
+                        <h3 id ="noBottomMargin">Arguments: <%=argumentsR[i]%></h3>
+                        <%}%>
+                        <%if(name != authName){%>
+                            <div class ="button-container finalButton"><a id = "body-getStarted" href="/contact?id=<%=idR[i]%>">Contact <%=name%> about this brief</a></div>
+                            <%}%>
+                        
+<%if(numberOfBriefRequests-1 ==i){%>
+<style>.finalButton{margin-bottom: 20px !important;}</style>
+    <%}%>
+            <%}%>
+        </span>
+
+
+      </div>
+    </div>
+  </section>
+  <%- include('partials/footer.ejs') %>
+
+
+</body>
+
+</html>
+
+</html>
+
+<style>
+.button-container{
+    margin-bottom: 30px;
+}
+    .finalButton{
+margin-bottom: 0px;
+    }
+</style>

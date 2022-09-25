@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/register.css" rel="stylesheet" type="text/css" />
+    <script src = "/js/script.js"></script>
+
+  <title>StoaExchange</title>
+</head>
+<body>  <%- include('partials/nav.ejs') %>
+
+  <section id = "register">
+  <div class="largerContainer">
+      <div class = "smallerContainer">
+
+
+  <h1>Rate <%=name%>'s brief on <%=briefName%></h1>
+   
+  <%if(!checked){%>
+
+    <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+
+    
+   
+      <input required  name="rating" type="number" min=1 max = 10 class="feedback-input" placeholder="Rating from 1-10" value = "<%=rating%>"/>
+      <%if(checkboxChecked){%>
+
+      <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+        <input  name = "checkmark" type="checkbox"checked>
+        <span class="checkmark"></span>
+      
+      </label>
+      <h3 style="margin-top: 0px; padding-bottom: 5px;">The checkbox is a required field</h3>
+      <style>h3{text-align: center; color:rgb(255, 89, 89);
+  padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-bottom: 0px !important;}</style>
+  <%}else{%>
+    <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+      <input  name = "checkmark" type="checkbox" >
+      <span class="checkmark"></span>
+    
+    </label>
+    <h3 style="margin-top: 0px; padding-bottom: 5px;">The checkbox is a required field</h3>
+    <style>h3{text-align: center; color:rgb(255, 89, 89);
+padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-bottom: 0px !important;}</style>
+    <%}%>
+<input type="submit" value="Submit"/>
+</form>
+<%}else if(!briefReceived){%>
+
+  <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+
+    
+   
+    <input required  name="rating" type="number" min=1 max = 10 class="feedback-input" placeholder="Rating from 1-10"value = "<%=rating%>"/>
+    <%if(checkboxChecked){%>
+
+    <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+      <input  name = "checkmark" type="checkbox"checked>
+      <span class="checkmark"></span>
+    
+    </label>
+    <h3 style="margin-top: 0px; padding-bottom: 5px;">You may only rate briefs that you've received</h3>
+    <style>h3{text-align: center; color:rgb(255, 89, 89);
+padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-bottom: 0px !important;}</style>
+<%}else{%>
+  <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+    <input  name = "checkmark" type="checkbox" >
+    <span class="checkmark"></span>
+  
+  </label>
+  <h3 style="margin-top: 0px; padding-bottom: 5px;">You may only rate briefs that you've received</h3>
+  <style>h3{text-align: center; color:rgb(255, 89, 89);
+padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-bottom: 0px !important;}</style>
+  
+  <%}%>
+<input type="submit" value="Submit"/>
+</form>
+
+<%}else if(alreadyReviewed){%>
+
+  <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+
+    
+   
+    <input required  name="rating" type="number" min=1 max = 10 class="feedback-input" placeholder="Rating from 1-10"value = "<%=rating%>"/>
+    <%if(checkboxChecked){%>
+
+    <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+      <input  name = "checkmark" type="checkbox" checked>
+      <span class="checkmark"></span>
+    
+    </label>
+    <h3 style="margin-top: 0px; padding-bottom: 5px;">You've already rated this brief before</h3>
+    <style>h3{text-align: center; color:rgb(255, 89, 89);
+padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-bottom: 0px !important;}</style>
+
+<%}else{%>
+  <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+    <input  name = "checkmark" type="checkbox">
+    <span class="checkmark"></span>
+  
+  </label>
+  <h3 style="margin-top: 0px; padding-bottom: 5px;">You've already rated this brief before</h3>
+  <style>h3{text-align: center; color:rgb(255, 89, 89);
+padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-bottom: 0px !important;}</style>
+<%}%>
+<input type="submit" value="Submit"/>
+</form>
+<%}else if(successful){%>
+
+ <h2>Your rating has been received. Thanks for your feedback on the brief!</h2>
+    <%}else{%>
+      <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+
+    
+   
+        <input required  name="rating" type="number" min=1 max = 10 class="feedback-input" placeholder="Rating from 1-10"value = "<%=rating%>"/>
+        <%if(checkboxChecked){%>
+          <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+            <input  name = "checkmark" type="checkbox" checked>
+            <span class="checkmark"></span>
+           
+          </label>
+          <%}else{%>
+          
+        <label class="container"style = "padding-bottom: 20px">I have read through the brief and this is an honest review of it
+          <input  name = "checkmark" type="checkbox" >
+          <span class="checkmark"></span>
+         
+        </label>
+            <%}%>
+  <input type="submit" value="Submit"/>
+  </form>
+      <%}%>
+      </div></div>
+
+</section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+
+<style>.container{margin-top: 15px;}</style>

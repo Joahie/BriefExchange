@@ -1,0 +1,114 @@
+/*Homepage CSS goes here*/:root {
+  --specialGray: #606970;
+  --lighterGray: rgba(0,0,0,.5);
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+   margin:0;
+    padding:0;
+  scroll-behavior: smooth;
+}
+#body{
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+}
+#body h1{
+  margin: 0;
+  font-size: 50px;
+}
+#body div{
+  flex-basis: 50%;
+    padding: 110px;
+
+}
+#body p{
+  font-size: 20px;
+  padding-top: 15px;
+  line-height: 35px;
+  margin-bottom: 45px;
+}
+#body-getStarted{
+  border: 0px;
+  border-radius: 20px;
+  padding: 10px 19px 10px 19px;
+  background:var(--lighterGray);
+  color: white !important;
+  text-decoration: none;
+  transition: color, 0.3s;
+
+}
+#body-getStarted:hover{
+  background-color: #949292;
+}
+#body div span{
+  color: white;
+  border: 0px;
+  border-radius: 30px;
+  padding: 5px 15px 5px 15px;
+  background:var(--lighterGray);
+  margin-right: 10px;
+}
+#body #divtwo h1{
+  padding-bottom: 35px;
+}
+#body #divone p{
+  padding-top: 40px;
+  padding-bottom: 50px;
+  margin: 0;
+}
+
+@media screen and (max-width: 1300px) {
+  #body{
+    flex-direction: column;
+  }
+  #divtwo{
+    padding-top: 0 !important;
+  }
+}
+
+footer{
+  background: white;
+  color: black;
+  box-shadow: 0 -3px 4px rgb(0 0 0 / 6%);
+ position: relative;
+  z-index: 10;
+  text-align: center;
+  line-height: 30px;
+}
+footer a{
+  color: black;
+  text-decoration: none;
+    font-size: 20px;
+  line-height: 40px;
+
+}
+footer h3{
+  margin-top: 0;
+  padding-top: 50px;
+  font-size: 25px;
+}
+footer p{
+  font-size: 20px;
+}
+footer .container{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-main{
+  display: flex;
+ margin-bottom: 5px; 
+}
+.footer-bottom{
+  padding-bottom: 50px;
+  padding-top: 50px;
+    font-size: 20px;
+
+}
+.footer-column{
+  flex-basis: 50%;
+}

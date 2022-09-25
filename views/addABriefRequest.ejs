@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/addABrief.css" rel="stylesheet" type="text/css" />
+    <script src = "/js/script.js"></script>
+
+  <title>StoaExchange</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "register">
+  <div class="largerContainer">
+      <div class = "smallerContainer">
+        <%if(verificationNumber == "emailSent"){%>
+          <h1>The email has been sent. If you can't find it, please check your spam folder.</h1>
+        
+         
+          <%}else if(verificationNumber){%>  <form action="/emailVerification" method = "POST">
+            <h1>You cannot add a brief request before verifying your email.</h1>
+            <input type="submit" value="Send verification email"/>
+          </form>
+           <%} else if(completed){%>
+            <h1>Your brief request has been created. Click <a href="/profiles?user=<%=authName%>">here</a> to see it on your profile.</h1>
+
+            <%}else if (maxRequestsMet){%>
+        <h1>Add a Brief Request</h1>
+    
+    <form method = "POST" action = "/addABriefRequest">     
+
+      
+      
+  <input required  name="briefName" type="text" class="feedback-input" placeholder="Brief name" maxlength = "100" value = "<%=briefName%>" />
+  <input   name="pages" type="number" class="feedback-input" placeholder="Minimum number of pages (optional)" min = 1 max = 300 value = "<%=pages%>"/>
+      <input  name="arguments" type="number" class="feedback-input" placeholder="Minimum number of arguments (optional)" min = 1 max = 100 value = "<%=arguments%>"/>
+      <div class = 'styleSelect'>
+        <%if(debate == "tp"){%>
+
+        <select name = "debate" required class="feedback-input" id="select">
+            <option value="" disabled >Select the debate format</option>
+
+  <option value="tp" selected>Team Policy Brief</option>
+  <option value="ld">Lincoln Douglas Brief</option>
+</select>
+<%}else{%>
+
+    <select name = "debate" required class="feedback-input" id="select">
+        <option value="" disabled >Select the debate format</option>
+
+<option value="tp">Team Policy Brief</option>
+<option value="ld" selected>Lincoln Douglas Brief</option>
+</select><%}%>
+        
+      </div>
+      
+      <h3>Sorry, you've already reached the maximum number of brief requests allowed on our website (15 brief requests). To post this request please delete a previous one before proceeding.</h3>
+      <style>h3{text-align: center; color:rgb(255, 89, 89);
+padding-top: 0px; margin-top: 0px;}</style>
+  <input type="submit" value="Submit"/>
+</form>
+<%}else {%>
+    <h1>Add a Brief Request</h1>
+    
+    <form method = "POST" action = "/addABriefRequest">     
+
+      
+      
+  <input required  name="briefName" type="text" class="feedback-input" placeholder="Brief name" maxlength = "100"/>
+  <input   name="pages" type="number" class="feedback-input" placeholder="Minimum number of pages (optional)" min = 1 max = 300 value = "<%=pages%>"/>
+      <input  name="arguments" type="number" class="feedback-input" placeholder="Minimum number of arguments (optional)" min = 1 max = 100 value = "<%=arguments%>"/>
+      <div class = 'styleSelect'>
+<select name = "debate" required class="feedback-input" id="select">
+            <option value="" disabled selected>Select the debate format</option>
+
+  <option value="tp">Team Policy Brief</option>
+  <option value="ld">Lincoln Douglas Brief</option>
+</select>
+        
+      </div>
+      
+
+  <input type="submit" value="Submit"/>
+</form>
+<%}%>
+      </div></div>
+
+</section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+<style>    #select{
+  color:black;
+}
+select:invalid {
+color: #717172 !important;
+}</style>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <title>StoaExchange</title>
+  <script src="https://kit.fontawesome.com/d61eecf5e3.js" crossorigin="anonymous"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/scroll.js"></script>
+
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div class="buttonContainer topButtons">
+      
+    <button onclick="replace(1)" id="buttonOne">Your briefs</button>
+    <button onclick="replace(4)" id="buttonTwo">Briefs you've received</button>
+
+
+    <button onclick="replace(2)" id="buttonThree">Outgoing Requests</button>
+    <button onclick="replace(3)" id="buttonFour">Ratings</button>
+    </div>
+
+    <div class="largerContainer">
+      <div class = "smallerContainer">
+        <div id ="replaceThisDiv">
+          <script  src="ejs.min.js"></script>
+      
+              <h1>Your briefs</h1>
+              
+              <hr>    
+                  
+              <span class='briefSection'>
+                 
+                  <%if (numberOfBriefOfferings == 0){%>
+                      <h2 class = 'briefSectionheader'>Not offering any briefs</h2>
+                  <%}else{%>
+                      <h2 class = 'briefSectionheader' id = 'extraBottomPadding'>Available to trade:</h2>
+                      <%}%>
+              
+              
+                  <%for(let i = 0; i<numberOfBriefOfferings; i++){%>
+                      <h2 id = 'date'><%=date[i]%></h2><form action='/deleteBrief?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
+                          <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'><%=debate[i]%> Brief: <%=briefName[i]%></h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
+                      </form>
+              
+              
+                      <%if(!briefRating[i]){%>
+                          <h3>This brief currently has no ratings.</h3>
+                      
+                      <%}else{%>
+                        <%if(numberOfRatings[i] == 1){%>  
+                          
+                        <h3>Rating: <%=briefRating[i]%>/10 based on reviews from <%=numberOfRatings[i]%> user</h3>
+                          <%}else{%>
+
+                            <h3>Rating: <%=briefRating[i]%>/10 based on reviews from <%=numberOfRatings[i]%> users</h3>
+                          <%}%>
+                      <%}%>
+                      
+                      <h3>Pages: <%=pageLength[i]%></h3>
+                      <h3>Arguments: <%=arguments[i]%></h3>
+              
+              
+                      <% var myVariable = false; %>
+              <%for(let f = 0; f<requestAmount; f++){%>
+                  <%if(requestId[f]==id[i] && requestStatus[f] != 'rejected'&& requestStatus[f] != 'deleted'){%>
+                      <% var myVariable = true; %>
+              
+                  <%}%>
+              <%}%>
+              <%if (myVariable){%>
+              
+                  <h3  id ='noBottomMargin'>Incoming Requests:</h3>
+              
+              <%}%>
+                     <%for(let v = 0; v<requestAmount; v++){%>
+                         <%if(requestId[v]==id[i]&& requestStatus[v] != 'rejected' && requestStatus[v] != 'deleted'){%>
+              
+              
+              <details>
+                  <summary>
+                <h4 id = 'requestFrom'>Request from <a href='/profiles?user=<%=from[i]%>'><%=from[v]%></a></h4>    <span class='icon'>▼</span><span class='otherIcon'>▲</span>
+                  </summary>
+                  <div id = 'dropdownContainer'>
+                    <h2 id = 'date' style = 'margin-top: 0px;'><%=requestDate[v]%></h2>
+                      <h4>Offering: <%=requestBriefName[v]%></h4>
+                      <h4>Description: <%=requestDescription[v]%></h4>
+                      <h4>Pages: <%=requestPages[v]%></h4>
+                      <h4>Arguments: <%=requestArguments[v]%></h4>
+                      <h4>Debate Format: <%=requestDebate[v]%></h4>
+                      <%if(requestAdditional[v]){%>
+                          <h4>Additional Information: <%=requestAdditional[v]%></h4>
+                        <%}%>
+                        <%if(requestStatus[v] == "bothSidesSent"){%>
+                          <h4 style = 'font-size: 20px; padding-top: 10px'><%=from[v]%> has uploaded their brief. Click <a target = "_blank" href="<%=requestSecondLink[v]%>">here</a> to access it</h3>
+                          </h4>
+
+              <%}else if(requestStatus[v] == 'agree'){%>
+                <h4 style = 'font-size: 20px; padding-top: 10px'>Your brief has been uploaded. You'll be notified when <%=from[v]%> uploads theirs.</h4>
+                <%}else{%>
+                        <div id = 'buttonContent<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='accept(<%=v%>, "<%=requestActualId[v]%>")'>Accept</button><form id = 'inline-block' action='/reject?id=<%=requestActualId[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformation(<%=v%>)">Get more information</button></div>
+                      </div>
+                          <%}%>
+                </details>
+                <script>
+            
+            
+                  function getMoreInformation(i){
+                      const div = document.getElementById('buttonContent' +i)
+                      div.innerHTML=`<h4 style = 'font-size: 20px'><%=from[i]%>'s email: <%=requestFromEmail[i]%></h4>`
+                    }
+                      function accept(i, id){
+                          const div = document.getElementById('buttonContent' + i)
+                          div.innerHTML=`<form action = '/agree?id=`+id+`' method = 'POST'><input name = 'link' class = 'feedback-input' type = 'url' placeholder='Link to your brief'><p>Your brief won't be sent to <%=from[i]%> until they also upload theirs.</p><button type='button' style = 'margin-bottom: 10px;' onclick='cancel(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
+                          
+                      }
+                      function cancel(i, id){
+                          const div = document.getElementById('buttonContent' + i)
+                          div.innerHTML=`<button style = 'margin-top: 10px;' id = 'inline-block' onclick='accept(`+i+`,"`+id+`")'>Accept</button><form id = 'inline-block' action='/reject?id=`+id+`' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = 'getMoreInformation(<%=v%>)'>Get more information</button>`
+                  
+                      }</script>
+              
+                            <%}%>
+                            <%}%>
+                      <hr>
+                      <span class='requestSection'>
+                 
+                    
+                      
+                      <%}%>
+                      <%if (numberOfBriefRequests == 0){%>
+
+                        <h2 class = 'requestSectionheader'>Not looking for any briefs</h2>
+                        <style>.requestSectionheader{margin-bottom: 10px;}</style>
+                    <%}else {%>
+
+                        <h2 class = 'requestSectionheader' id = 'extraBottomPadding'>Looking for:</h2>
+                        <%}%>
+                          <%for(let i = 0; i<numberOfBriefRequests; i++){%>
+
+                              <%if(!pageLengthR[i] && !argumentsR[i]){%>
+              
+                                  <h2 id = 'date'><%=dateR[i]%></h2><form action='/deleteBrief?id=<%=idR[i]%>' method = 'POST' id = 'deleteFormR<%=i%>'>
+                                      <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 style = 'margin-bottom: 0px;' id = 'thirtypx'><%=debateR[i]%> Brief: <%=briefNameR[i]%></h2><div id ='trashCanR<%=i%>' ><i onclick = 'trashClickedR(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
+                                  </form>
+                                                      <%}else{%>
+                                                          <h2 id = 'date'><%=dateR[i]%></h2><form action='/deleteBrief?id=<%=idR[i]%>' method = 'POST' id = 'deleteFormR<%=i%>'>
+                                                              <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'><%=debateR[i]%> Brief: <%=briefNameR[i]%></h2><div id ='trashCanR<%=i%>' ><i onclick = 'trashClickedR(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
+                                                          </form>
+                                      <%}%>
+              
+            
+                              <%if(pageLengthR[i]){%>
+                                  <h3>Minimum number of pages: <%=pageLengthR[i]%></h3>
+              
+                                  <%}%>
+                                  <%if(argumentsR[i]){%>
+                                      <h3 id ='noBottomMargin'>Arguments: <%=argumentsR[i]%></h3>
+                                      <%}%>
+                                                             
+              
+                                      <% var myVariable = false; %>
+                                      <%for(let f = 0; f<requestAmount; f++){%>
+                                          <%if(requestId[f]==idR[i] && requestStatus[f] != 'rejected'){%>
+                                              <% var myVariable = true; %>
+                                      
+                                          <%}%>
+                                      <%}%>
+                                      <%if (myVariable){%>
+                                      
+                                          <h3 style = 'margin-top: 18px' id ='noBottomMargin'>Incoming Requests:</h3>
+                                      
+                                      <%}%>
+                                             <%for(let v = 0; v<requestAmount; v++){%>
+                                                 <%if(requestId[v]==idR[i]&& requestStatus[v] != 'rejected'){%>
+                                      
+
+                                      <details>
+                                          <summary>
+                                        <h4 id = 'requestFrom'>Request from <a href='/profiles?user=<%=from[i]%>'><%=from[v]%></a></h4>    <span class='icon'>▼</span><span class='otherIcon'>▲</span>
+                                          </summary>
+                                          <div id = 'dropdownContainer'>
+                                            <h2 id = 'date' style = 'margin-top: 0px;'><%=requestDate[v]%></h2>
+                                              <h4>Offering: <%=requestBriefName[v]%></h4>
+                                              <h4>Description: <%=requestDescription[v]%></h4>
+                                              <h4>Pages: <%=requestPages[v]%></h4>
+                                              <h4>Arguments: <%=requestArguments[v]%></h4>
+                                              <h4>Debate Format: <%=requestDebate[v]%></h4>
+                                              <%if(requestAdditional[v]){%>
+                                                  <h4>Additional Information: <%=requestAdditional[v]%></h4>
+                                                <%}%>
+                                                <%if(requestStatus[v] == "bothSidesSent"){%>
+                                                  <h4 style = 'font-size: 20px; padding-top: 10px'><%=from[v]%> has uploaded their brief. Click <a target = "_blank" href="<%=requestSecondLink[v]%>">here</a> to access it</h3>
+                                                  </h4>
+
+                                      <%}else if(requestStatus[v] == 'agree'){%>                                        <h4 style = 'font-size: 20px; padding-top: 10px'>Your brief has been uploaded. You'll be notified when <%=from[v]%> uploads theirs.</h4>
+                                        <%}else{%>
+                                                <div id = 'buttonContentR<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='acceptR(<%=v%>, "<%=requestActualId[v]%>")'>Accept</button><form id = 'inline-block' action='/reject?id=<%=requestActualId[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformationR(<%=v%>)">Get more information</button></div>
+                                              </div>
+
+                                                  <%}%>
+                                        </details>
+
+      
+          <script>
+      
+      function getMoreInformationR(i){
+                      const div = document.getElementById('buttonContentR' +i)
+                      div.innerHTML="<h4 style = 'font-size: 20px'><%=from[i]%>'s email: <%=requestFromEmail[i]%></h4>"
+                    }
+                      function acceptR(i, id){
+                          const div = document.getElementById('buttonContentR' + i)
+                          div.innerHTML=`<form action = '/agree?id=`+id+`' method = 'POST'><input name = 'link' class = 'feedback-input' type = 'url' placeholder='Link to your brief'><p>Your brief won't be sent to <%=from[i]%> until they also upload theirs.</p><button type='button' style = 'margin-bottom: 10px;' onclick='cancelR(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
+                          
+                      }
+                      function cancelR(i, id){
+                          const div = document.getElementById('buttonContentR' + i)
+                          div.innerHTML=`<button style = 'margin-top: 10px;' id = 'inline-block' onclick='acceptR(`+i+`,"`+id+`")'>Accept</button><form id = 'inline-block' action='/reject?id=`+id+`' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = 'getMoreInformationR(<%=v%>)'>Get more information</button>`
+                  
+                      }
+      </script>
+                                       <%}%>
+                                        <%}%>
+                                    <%if(i != numberOfBriefRequests-1){%>    <hr><%}%>
+                                      </span>
+                          <%}%>
+              
+        
+              
+              
+              
+              <style>i{color: rgba(0,0,0, 0.5)} #date{margin-bottom: 19px;}
+              #replaceThisDiv button{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px;  font-weight: bold;
+              }
+              #cancel{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px; margin: 0;     margin-left: 10px;
+              }
+              
+              i{    transition: color, 0.3s;
+              }
+              #confirmDelete{
+                  background: #ed5e68;
+                  margin-left: 10px;
+                  transition: color, 0.3s;
+              
+              }
+              #confirmDelete:hover{
+                  background:#e8727a; 
+              
+              }
+              #cancel{
+                  background: #7f7f7f;
+                  transition: color, 0.3s;
+              
+              }
+               #cancel:hover{
+                  background: #949292;
+              }
+              i:hover{
+                  color: #949292;
+              }
+              details {
+                              user-select: none;
+                              word-break:break-all;
+      
+                            }
+                            
+                            details>summary span.icon {
+                              width: 24px;
+                              height: 24px;
+                              transition: all 0.3s;
+                              margin-left: auto;
+                            }
+                            #body #dropdownContainer{
+                              max-width: 700px;
+                            }
+                            details>summary span.otherIcon {
+                              width: 24px;
+                              height: 24px;
+                              transition: all 0.3s;
+                              margin-left: auto;
+                            }
+                                   
+                            
+                            details[open] summary span.icon {
+                            display: none }
+                              
+                            details[open] summary span.otherIcon {
+                             display:flex; 
+                            }
+                            span.otherIcon {
+                            display: none;}
+                            
+                            summary {
+                              display: flex;
+                              cursor: pointer;
+                              font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+                              max-width: 700px;
+                              margin-top: 18.72px;
+                              background: #D8D8D8;	padding: 20px 20px 15px 20px;
+                            }
+                            #body #requestFrom{
+                              color: #000000;
+                              font-size: 20px;
+                              padding: 0;
+                              margin: 0;
+                            }
+                            #noBottomMargin{
+                              margin-bottom: 0;
+                            }
+              
+                            summary::-webkit-details-marker {
+                              display: none;
+                            }
+                            summary{
+                              border-radius: 15px;}
+                            details[open] summary{
+                              border-radius: 15px 15px 0 0;
+                            border-bottom: 2px solid black;
+                            }
+                            
+                              #dropdownContainer{background: #D8D8D8	;	padding: 20px 20px 10px; border-radius: 0 0 15px 15px; margin: 0;}
+                              #dropdownContainer h4{color: black; margin: 0; padding: 0 0 10px; font-size: 17px;}
+                              #dropdownContainer button{margin-top: 15px; margin-right: 8px; color: black; background: #EAEAEA;}
+                              #dropdownContainer button:hover{background: #C0C0C0}
+                              #inline-block{display: inline-block; margin-bottom: 10px;}
+              </style></div>
+        
+
+  
+      </div>
+    </div>
+  </section>
+  <%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+
+<script>
+
+    function replace(number){
+
+        if(number == 1){
+          window.location.href = "/dashboard?section=yourBriefs";
+        }
+        if(number == 2){
+          window.location.href = "/dashboard?section=outgoingRequests";
+        }
+        if(number == 3){
+          window.location.href = "/dashboard?section=ratings";
+
+        }
+       
+        if(number == 4){
+          window.location.href = "/dashboard?section=briefsYouveReceived";
+
+        }
+    }
+    </script>
+               <style>#buttonTwo, #buttonFour, #buttonThree{background-color: transparent; transition: color, 0.3s;}#buttonOne{background-color: #D3D3D3 !important;}</style>            
+
+    <style>#body a{
+        color: black}
+        .topButtons button{
+      margin: 100px 0px 0 200px;
+    border: 1px solid var(--lighterGray);
+    background: transparent;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        border-bottom: none;
+    font-size: 15px;
+    border-radius:  5px 0px  0px 0px;
+  padding: 5px 10px;
+    
+  }
+  
+  #buttonTwo{
+   margin: 0;
+    border: none;
+    border-top: 1px solid var(--lighterGray);
+
+    border-radius:  0px;
+  }
+
+  #buttonThree{
+    margin: 0;
+    border: 1px solid var(--lighterGray); 
+    border-bottom: none;
+     border-radius:  0px;
+       
+   }
+  
+  .buttonContainer{
+    font-size:0;
+  }.largerContainer{padding-top: 0;}</style>
+

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <title>StoaExchange</title>
+  <script src="https://kit.fontawesome.com/d61eecf5e3.js" crossorigin="anonymous"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/scroll.js"></script>
+
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div class="buttonContainer topButtons">
+      
+      <button onclick="replace(1)" id="buttonOne">Your briefs</button>
+      <button onclick="replace(4)" id="buttonTwo">Briefs you've received</button>
+  
+  
+      <button onclick="replace(2)" id="buttonThree">Outgoing Requests</button>
+      <button onclick="replace(3)" id="buttonFour">Ratings</button>
+    </div>
+
+    <div class="largerContainer">
+      <div class = "smallerContainer">
+        <div id ="replaceThisDiv">        <h1>Outgoing Requests</h1>
+        
+          <hr>    
+  <%if(senderRequestAmount<1){%>
+      <h2 id="thirtypx">You currently have no outgoing brief requests. To create one, go to the <a href="/briefExchange">brief exchange</a> and contact someone regarding a brief you'd like to trade for.</h2>
+      <%}else{%>
+          <%var total = senderRequestAmount%>
+  
+  <%for(let i = 0; i<senderRequestAmount;i++){%>
+  
+  
+      <%if(senderRequestStatus[i] =="deleted"){%>
+      
+          <% total = total-1%>
+          <%}else{%>
+      <h2 id = 'date' style = "padding-bottom: 10px;"><%=senderRequestDate[i]%></h2><form action='/deleteContact?id=<%=senderRequestActualId[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
+          <%if(!senderRequestDebate[i]){%>
+              <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'>What <a href="/profiles?user=<%=senderRequestToName[i]%>"><%=senderRequestToName[i]%></a> is looking for: </h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
+  
+              <%}else{%>
+          <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'>What <a href="/profiles?user=<%=senderRequestToName[i]%>"><%=senderRequestToName[i]%></a> is offering: </h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
+  
+              <%}%>
+  
+  
+          <h3>Debate Form: <%=senderRequestOfferDebate[i]%></h3>
+          <h3>Brief: <%=senderRequestOfferBriefName[i]%></h3>
+         <h2 id = 'thirtypx' style="padding-top: 10px;">Your offer:</h2>
+  
+      </form>
+  <%if(!senderRequestDebate[i]){%>
+  
+      <h3>Description: <%=senderRequestDescription[i]%></h3>
+      <h3>Pages: <%=senderRequestPages[i]%></h3>
+      <h3>Arguments: <%=senderRequestArguments[i]%></h3>
+      <%if(senderRequestAdditional[i]){%>
+      <h3>Additional Information: <%=senderRequestAdditional[i]%></h3>
+  <%}%>
+      <h3>What you'd like in return: <%=senderRequestInReturn[i]%></h3>
+      <%if(senderRequestStatus[i] == "rejected"){%>
+      <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Rejected</h2>
+      <h3>Unfortunately your request has been rejected by <%=senderRequestToName[i]%>.</h3>
+      <%}else if(senderRequestStatus[i] == "agree"){%>
+          <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
+          <h3><%=senderRequestToName[i]%> has accepted your offer and uploaded the brief you requested. To access it you must first upload the brief that they requested.</h3>
+          <form action = '/response?id=<%=senderRequestActualId[i]%>' method = 'POST'><input required name = 'link' class = 'feedback-input' type = 'url' style = "margin-top: 0px;" placeholder='Link to your brief'><button type = 'submit' id = "responseButton">Send</button></form>
+          
+      <%}else if(senderRequestStatus[i] == "bothSidesSent"){%>
+          <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
+          <h3><%=senderRequestToName[i]%> has accepted your offer and uploaded the brief you requested. Click <a target = "_blank" href="<%=senderRequestFirstLink[i]%>">here</a> to access it</h3>
+          <%}else{%>
+      <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Pending</h2>
+      <h3>We're still awaiting a response from <%=senderRequestToName[i]%>.</h3>
+      <%}%>
+  
+  
+      <%}else{%>
+          <h3>Brief Name: <%=senderRequestBriefName[i]%></h3>
+  
+          <h3>Description: <%=senderRequestDescription[i]%></h3>
+          <h3>Pages: <%=senderRequestPages[i]%></h3>
+          <h3>Arguments: <%=senderRequestArguments[i]%></h3>
+              <h3>Debate Format: <%=senderRequestDebate[i]%></h3>
+          <%if(senderRequestAdditional[i]){%>
+          <h3>Additional Information: <%=senderRequestAdditional[i]%></h3>
+      <%}%>
+  
+      <%if(senderRequestStatus[i] == "rejected"){%>
+          <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Rejected</h2>
+          <h3>Unfortunately your request has been rejected by <%=senderRequestToName[i]%>.</h3>
+          <%}else if(senderRequestStatus[i] == "agree"){%>
+              <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
+              <h3><%=senderRequestToName[i]%> has accepted your offer and uploaded the brief you requested. To access it you must first upload the brief that you offered in return.</h3>
+              <form action = '/response?id=<%=senderRequestActualId[i]%>' method = 'POST'><input required name = 'link' class = 'feedback-input' type = 'url' style = "margin-top: 0px;" placeholder='Link to your brief'><button type = 'submit' id = "responseButton">Send</button></form>
+              
+          <%}else if(senderRequestStatus[i] == "bothSidesSent"){%>
+              <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
+              <h3><%=senderRequestToName[i]%> has accepted your offer and uploaded the brief you requested. Click <a target = "_blank" href="<%=senderRequestFirstLink[i]%>">here</a> to access it</h3>
+              <%}else{%>
+          <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Pending</h2>
+          <h3>We're still awaiting a response from <%=senderRequestToName[i]%>.</h3>
+          <%}%>
+  
+  
+          <%}%>
+  
+  <%if(i<senderRequestAmount-1){%>
+      <hr>
+  <%}%>
+  <%}%>
+  
+  <%}%>
+  <%}%>
+  <style>
+      #confirmDelete{
+          background: #ed5e68;
+          margin-left: 10px;
+          transition: color, 0.3s;
+      
+      }
+      #confirmDelete:hover{
+          background:#e8727a; 
+      
+      }
+      #cancel{
+          background: #7f7f7f;
+          transition: color, 0.3s;
+      
+      }
+       #cancel:hover{
+          background: #949292;
+      }
+      i:hover{
+          color: #949292;
+      }i{color: rgba(0,0,0, 0.5)} #date{margin-bottom: 19px;}  #replaceThisDiv button{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px;  font-weight: bold;
+          }        #cancel{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px; margin: 0;     margin-left: 10px;
+          }
+          
+          i{    transition: color, 0.3s;
+          }
+  
+  </style></div>
+        
+
+  
+      </div>
+    </div>
+  </section>
+  <%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+
+<script>
+
+    function replace(number){
+
+        if(number == 1){
+          window.location.href = "/dashboard?section=yourBriefs";
+        }
+        if(number == 2){
+          window.location.href = "/dashboard?section=outgoingRequests";
+        }
+        if(number == 3){
+          window.location.href = "/dashboard?section=ratings";
+
+        }
+       
+        if(number == 4){
+          window.location.href = "/dashboard?section=briefsYouveReceived";
+
+        }
+    }
+    </script>
+               <style>      #buttonTwo, #buttonFour, #buttonOne{background-color: transparent; transition: color, 0.3s;}#buttonThree{background-color: #D3D3D3 !important;}
+              </style>            
+
+    <style>#body a{
+        color: black}
+        .topButtons button{
+      margin: 100px 0px 0 200px;
+    border: 1px solid var(--lighterGray);
+    background: transparent;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        border-bottom: none;
+    font-size: 15px;
+    border-radius:  5px 0px  0px 0px;
+  padding: 5px 10px;
+    
+  }
+  
+  #buttonTwo{
+   margin: 0;
+    border: none;
+    border-top: 1px solid var(--lighterGray);
+
+    border-radius:  0px;
+  }
+
+  #buttonThree{
+    margin: 0;
+    border: 1px solid var(--lighterGray); 
+    border-bottom: none;
+     border-radius:  0px;
+       
+   }
+  
+  .buttonContainer{
+    font-size:0;
+  }.largerContainer{padding-top: 0;}</style> 

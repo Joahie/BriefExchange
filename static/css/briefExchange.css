@@ -1,0 +1,100 @@
+:root {
+    --specialGray: #606970;
+    --lighterGray: rgba(0,0,0,.5);
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+     margin:0;
+      padding:0;
+    scroll-behavior: smooth;
+  }
+  #body{
+    background: #f8f9fa;
+  }
+  
+  .largerContainer{
+      padding: 0 200px 100px 200px;  
+  }
+  #body .smallerContainer{
+    border: 2px solid var(--lighterGray);
+    border-radius: 0px 8px 8px 8px;
+    padding: 30px;
+  box-shadow: rgba(0, 0, 0, 30%) 0px 3px 8px;
+  }
+  
+  .smallerContainer h1, h2, h3{
+    margin-top:0px;
+  }
+  #extraBottomMargin{
+    margin-bottom: 0;
+    padding-bottom: 0px;
+   }
+  hr{
+    margin: 30px 0px;
+    border-top: 4px solid #8c8b8b;
+  }
+  #date{margin-bottom: 19px;}
+  section button{
+      margin: 100px 0px 0 200px;
+    border: 1px solid var(--lighterGray);
+    background: transparent;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        border-bottom: none;
+    font-size: 15px;
+    border-radius:  5px 0px  0px 0px;
+  padding: 5px 10px;
+    
+  }
+  
+  #buttonTwo{
+   margin: 0;
+    border: none;
+    border-top: 1px solid var(--lighterGray);
+
+    border-radius:  0px;
+  }
+
+  #buttonThree{
+    margin: 0;
+    border: 1px solid var(--lighterGray); 
+    border-bottom: none;
+     border-radius:  0px;
+       
+   }
+   #buttonOne{background-color: #D3D3D3;}
+  #buttonFour{
+    margin: 0;
+     border-left: none;
+     border-radius:  0px 5px 0px 0px;
+   }
+  .buttonContainer{
+    font-size:0;
+  }
+  h2 a{
+    color: black;
+  }
+  #date{
+    font-weight: normal;
+    font-size: 15px;
+  }
+
+#body-getStarted{
+    border: 0px;
+    border-radius: 20px;
+    padding: 10px 19px 10px 19px;
+    background:var(--lighterGray);
+    color: white !important;
+    text-decoration: none;
+    transition: color 0.3s;
+  
+  }
+  #body-getStarted:hover{
+      color: #D3D3D3 !important;
+  
+  }
+  #contact-container{
+    margin-top: 30px;
+  }

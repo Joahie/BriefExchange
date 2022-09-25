@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/editAccountInformation.css">
+  <script src="https://kit.fontawesome.com/d61eecf5e3.js" crossorigin="anonymous"></script>
+  <script src = "/js/script.js"></script>
+
+  <title>StoaExchange</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div class="largerContainer">
+      <div class = "smallerContainer">
+<%if(verificationNumber == "emailSent"){%>
+  <h1>The email has been sent. If you can't find it, please check your spam folder.</h1>
+
+ 
+  <%}else if(verificationNumber){%>  <form action="/emailVerification" method = "POST">
+    <h1>You cannot edit your account information before verifying your email.</h1>
+    <input type="submit" value="Send verification email"/>
+  </form>         
+<%}else if(!emailAvailable){%>
+  <h1>Edit Account Information</h1>
+
+    <form action="/editAccountInformation" method = "POST">
+        <label for="email">Email</label>        <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+
+        <h3>This email is already being used by a different account</h3>
+        <style>h3{text-align: center; color:rgb(255, 89, 89);
+  padding-top: 0px; margin-top: 0;}</style>
+        <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
+        <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>"  />
+        <label for="newPassword">New password</label>
+                      <input   name="newPassword" type="password" class="feedback-input" placeholder="New password" value = "<%=newPassword%>"/>
+        
+                      <label for="confirmNewPassword">Confirm new password</label>
+                      <input   name="confirmNewPassword" type="password" class="feedback-input" placeholder="Confirm new password" value = "<%=confirmNewPassword%>" />
+              
+                      <h2 id="noBottomPadding">Debate events</h2>
+                      <div id = "checkRequired">
+                        <%if(tpChecked){%>
+                <label class="container">Team Policy
+                  <input name = "tp" type="checkbox" checked>
+                  <span class="checkmark"></span>
+                </label>
+                <%}else{%>
+                  <label class="container">Team Policy
+                    <input name = "tp" type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                  <%}%>
+                  <%if(ldChecked){%>
+                    <label class="container">Lincoln Douglas
+                      <input name = "ld" type="checkbox" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                    <%}else{%>
+                      <label class="container">Lincoln Douglas
+                        <input name = "ld" type="checkbox">
+                        <span class="checkmark"></span>
+                      </label>
+                      <%}%>
+                      <%if(parliChecked){%>
+                        <label class="lastContainer container">Parliamentary Debate
+                          <input name = "parli" type="checkbox" checked>
+                          <span class="checkmark"></span>
+                        </label>
+                        <%}else{%>
+                          <label class="lastContainer container">Parliamentary Debate
+                            <input name = "parli" type="checkbox">
+                            <span class="checkmark"></span>
+                          </label>
+                          <%}%>               
+                      </div>      
+                     
+
+                      <input type="submit" value="Save Changes"/></form>
+                      <form action="">
+                        <div id = "deleteContainer">
+                          <h4  id = "deleteButton" onclick="deleteClicked()"><i class="fa fa-trash"></i> Delete Account</h4>
+                            
+                          </div>
+                      </form>
+    <%}else if(!speechranksValid){%>
+      <h1>Edit Account Information</h1>
+
+        <form action="/editAccountInformation" method = "POST">
+            <label for="email">Email</label>        <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+    
+      
+            <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
+            <h3>Please enter a valid Speechranks link</h3>
+            <style>h3{text-align: center; color:rgb(255, 89, 89);
+      padding-top: 0px; margin-top: 0px;}</style>
+            <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>"  />
+            <label for="newPassword">New password</label>
+                          <input   name="newPassword" type="password" class="feedback-input" placeholder="New password" value = "<%=newPassword%>" />
+            
+                          <label for="confirmNewPassword">Confirm new password</label>
+                          <input   name="confirmNewPassword" type="password" class="feedback-input" placeholder="Confirm new password" value = "<%=confirmNewPassword%>"/>
+                  
+                          <h2 id="noBottomPadding">Debate events</h2>
+                          <div id = "checkRequired">
+                            <%if(tpChecked){%>
+                    <label class="container">Team Policy
+                      <input name = "tp" type="checkbox" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                    <%}else{%>
+                      <label class="container">Team Policy
+                        <input name = "tp" type="checkbox">
+                        <span class="checkmark"></span>
+                      </label>
+                      <%}%>
+                      <%if(ldChecked){%>
+                        <label class="container">Lincoln Douglas
+                          <input name = "ld" type="checkbox" checked>
+                          <span class="checkmark"></span>
+                        </label>
+                        <%}else{%>
+                          <label class="container">Lincoln Douglas
+                            <input name = "ld" type="checkbox">
+                            <span class="checkmark"></span>
+                          </label>
+                          <%}%>
+                          <%if(parliChecked){%>
+                            <label class="lastContainer container">Parliamentary Debate
+                              <input name = "parli" type="checkbox" checked>
+                              <span class="checkmark"></span>
+                            </label>
+                            <%}else{%>
+                              <label class="lastContainer container">Parliamentary Debate
+                                <input name = "parli" type="checkbox">
+                                <span class="checkmark"></span>
+                              </label>
+                              <%}%>               
+                          </div>      
+                          <input type="submit" value="Save Changes"/></form>
+                          <form action="">
+                            <div id = "deleteContainer">
+                              <h4  id = "deleteButton" onclick="deleteClicked()"><i class="fa fa-trash"></i> Delete Account</h4>
+                                
+                              </div>
+                          </form>
+                          <%}else if(!passwordRight){%>
+                            <h1>Edit Account Information</h1>
+
+                            <form action="/editAccountInformation" method = "POST">
+                                <label for="email">Email</label>        <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+                        
+                          
+                                <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
+                              
+                                <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>"  />
+                                <h3>The password your entered is incorrect</h3>
+                                <style>h3{text-align: center; color:rgb(255, 89, 89);
+                          padding-top: 0px; margin-top: 0px;}</style>
+                                <label for="newPassword">New password</label>
+                                              <input   name="newPassword" type="password" class="feedback-input" placeholder="New password" value = "<%=newPassword%>" />
+                                
+                                              <label for="confirmNewPassword">Confirm new password</label>
+                                              <input   name="confirmNewPassword" type="password" class="feedback-input" placeholder="Confirm new password" value = "<%=confirmNewPassword%>" />
+                                      
+                                              <h2 id="noBottomPadding">Debate events</h2>
+                                              <div id = "checkRequired">
+                                                <%if(tpChecked){%>
+                                        <label class="container">Team Policy
+                                          <input name = "tp" type="checkbox" checked>
+                                          <span class="checkmark"></span>
+                                        </label>
+                                        <%}else{%>
+                                          <label class="container">Team Policy
+                                            <input name = "tp" type="checkbox">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <%}%>
+                                          <%if(ldChecked){%>
+                                            <label class="container">Lincoln Douglas
+                                              <input name = "ld" type="checkbox" checked>
+                                              <span class="checkmark"></span>
+                                            </label>
+                                            <%}else{%>
+                                              <label class="container">Lincoln Douglas
+                                                <input name = "ld" type="checkbox">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                              <%}%>
+                                              <%if(parliChecked){%>
+                                                <label class="lastContainer container">Parliamentary Debate
+                                                  <input name = "parli" type="checkbox" checked>
+                                                  <span class="checkmark"></span>
+                                                </label>
+                                                <%}else{%>
+                                                  <label class="lastContainer container">Parliamentary Debate
+                                                    <input name = "parli" type="checkbox">
+                                                    <span class="checkmark"></span>
+                                                  </label>
+                                                  <%}%>               
+                                              </div>      
+                                              <input type="submit" value="Save Changes"/></form>
+                                              <form action="">
+                                                <div id = "deleteContainer">
+                                                  <h4  id = "deleteButton" onclick="deleteClicked()"><i class="fa fa-trash"></i> Delete Account</h4>
+                                                    
+                                                  </div>
+                                              </form>
+                                          
+                    <%}else if(!oldPasswordExisting){%>
+                      <h1>Edit Account Information</h1>
+
+                        <form action="/editAccountInformation" method = "POST">
+                            <label for="email">Email</label>        <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+                    
+                      
+                            <label for="speechranks">Speechranks</label>  <input required  maxlength = "55" name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
+                          
+                            <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>"  />
+                            <h3>You must enter your old password to change your password</h3>
+                            <style>h3{text-align: center; color:rgb(255, 89, 89);
+        padding-top: 0px; margin-top: 0px;}</style>
+                            <label for="newPassword">New password</label>
+                                          <input   name="newPassword" type="password" class="feedback-input" placeholder="New password" value = "<%=newPassword%>" />
+                            
+                                          <label for="confirmNewPassword">Confirm new password</label>
+                                          <input   name="confirmNewPassword" type="password" class="feedback-input" placeholder="Confirm new password" value = "<%=confirmNewPassword%>" />
+                                       
+                                          <h2 id="noBottomPadding">Debate events</h2>
+                                          <div id = "checkRequired">
+                                            <%if(tpChecked){%>
+                                    <label class="container">Team Policy
+                                      <input name = "tp" type="checkbox" checked>
+                                      <span class="checkmark"></span>
+                                    </label>
+                                    <%}else{%>
+                                      <label class="container">Team Policy
+                                        <input name = "tp" type="checkbox">
+                                        <span class="checkmark"></span>
+                                      </label>
+                                      <%}%>
+                                      <%if(ldChecked){%>
+                                        <label class="container">Lincoln Douglas
+                                          <input name = "ld" type="checkbox" checked>
+                                          <span class="checkmark"></span>
+                                        </label>
+                                        <%}else{%>
+                                          <label class="container">Lincoln Douglas
+                                            <input name = "ld" type="checkbox">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <%}%>
+                                          <%if(parliChecked){%>
+                                            <label class="lastContainer container">Parliamentary Debate
+                                              <input name = "parli" type="checkbox" checked>
+                                              <span class="checkmark"></span>
+                                            </label>
+                                            <%}else{%>
+                                              <label class="lastContainer container">Parliamentary Debate
+                                                <input name = "parli" type="checkbox">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                              <%}%>               
+                                          </div>      
+                                          <input type="submit" value="Save Changes"/></form>
+                                          <form action="">
+                                            <div id = "deleteContainer">
+                                              <h4  id = "deleteButton" onclick="deleteClicked()"><i class="fa fa-trash"></i> Delete Account</h4>
+                                                
+                                              </div>
+                                          </form>
+                                          <%}else if(!speechranksValid){%>
+                                            <h1>Edit Account Information</h1>
+
+                                            <form action="/editAccountInformation" method = "POST">
+                                                <label for="email">Email</label>        <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+                                        
+                                          
+                                                <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
+                                                <h3>Please enter a valid Speechranks link</h3>
+                                                <style>h3{text-align: center; color:rgb(255, 89, 89);
+                                          padding-top: 0px; margin-top: 0px;}</style>
+                                                <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>"  />
+                                                <label for="newPassword">New password</label>
+                                                              <input   name="newPassword" type="password" class="feedback-input" placeholder="New password" value = "<%=newPassword%>" />
+                                                
+                                                              <label for="confirmNewPassword">Confirm new password</label>
+                                                              <input   name="confirmNewPassword" type="password" class="feedback-input" placeholder="Confirm new password" value = "<%=confirmNewPassword%>"/>
+                                                      
+                                                              <h2 id="noBottomPadding">Debate events</h2>
+                                                              <div id = "checkRequired">
+                                                                <%if(tpChecked){%>
+                                                        <label class="container">Team Policy
+                                                          <input name = "tp" type="checkbox" checked>
+                                                          <span class="checkmark"></span>
+                                                        </label>
+                                                        <%}else{%>
+                                                          <label class="container">Team Policy
+                                                            <input name = "tp" type="checkbox">
+                                                            <span class="checkmark"></span>
+                                                          </label>
+                                                          <%}%>
+                                                          <%if(ldChecked){%>
+                                                            <label class="container">Lincoln Douglas
+                                                              <input name = "ld" type="checkbox" checked>
+                                                              <span class="checkmark"></span>
+                                                            </label>
+                                                            <%}else{%>
+                                                              <label class="container">Lincoln Douglas
+                                                                <input name = "ld" type="checkbox">
+                                                                <span class="checkmark"></span>
+                                                              </label>
+                                                              <%}%>
+                                                              <%if(parliChecked){%>
+                                                                <label class="lastContainer container">Parliamentary Debate
+                                                                  <input name = "parli" type="checkbox" checked>
+                                                                  <span class="checkmark"></span>
+                                                                </label>
+                                                                <%}else{%>
+                                                                  <label class="lastContainer container">Parliamentary Debate
+                                                                    <input name = "parli" type="checkbox">
+                                                                    <span class="checkmark"></span>
+                                                                  </label>
+                                                                  <%}%>               
+                                                              </div>      
+                                                              <input type="submit" value="Save Changes"/></form>  
+                                                                       <form action="">
+                            <div id = "deleteContainer">
+                              <h4  id = "deleteButton" onclick="deleteClicked()"><i class="fa fa-trash"></i> Delete Account</h4>
+                                
+                              </div>
+                          </form> <%}else{%>
+                                                                <h1>Edit Account Information</h1>
+
+                                                                <form action="/editAccountInformation" method = "POST">
+            <label for="email">Email</label>        <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+            <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
+            <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>" />
+            <label for="newPassword">New password</label>
+                          <input   name="newPassword" type="password" class="feedback-input" placeholder="New password" value = "<%=newPassword%>" />
+            
+                          <label for="confirmNewPassword">Confirm new password</label>
+                          <input   name="confirmNewPassword" type="password" class="feedback-input" placeholder="Confirm new password" value = "<%=confirmNewPassword%>" />
+                  
+                          <h2 id="noBottomPadding">Debate events</h2>
+                          <div id = "checkRequired">
+                            <%if(tpChecked){%>
+                    <label class="container">Team Policy
+                      <input name = "tp" type="checkbox" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                    <%}else{%>
+                      <label class="container">Team Policy
+                        <input name = "tp" type="checkbox">
+                        <span class="checkmark"></span>
+                      </label>
+                      <%}%>
+                      <%if(ldChecked){%>
+                        <label class="container">Lincoln Douglas
+                          <input name = "ld" type="checkbox" checked>
+                          <span class="checkmark"></span>
+                        </label>
+                        <%}else{%>
+                          <label class="container">Lincoln Douglas
+                            <input name = "ld" type="checkbox">
+                            <span class="checkmark"></span>
+                          </label>
+                          <%}%>
+                          <%if(parliChecked){%>
+                            <label class="lastContainer container">Parliamentary Debate
+                              <input name = "parli" type="checkbox" checked>
+                              <span class="checkmark"></span>
+                            </label>
+                            <%}else{%>
+                              <label class="lastContainer container">Parliamentary Debate
+                                <input name = "parli" type="checkbox">
+                                <span class="checkmark"></span>
+                              </label>
+                              <%}%>
+                    
+                   
+                          </div>
+            
+                        
+                          <input type="submit" value="Save Changes"/>
+                          </form>
+                          <form action="">
+                            <div id = "deleteContainer">
+                              <h4  id = "deleteButton" onclick="deleteClicked()"><i class="fa fa-trash"></i> Delete Account</h4>
+                                
+                              </div>
+                          </form>
+        <%}%>
+      </div>
+    </div>
+    
+  </section>
+  <%- include('partials/footer.ejs') %>
+  
+
+</body>
+
+</html>
+
+</html>
+
+<script>
+  function deleteClicked (){
+    window.location.href = "/deleteAccount";
+
+  }</script>

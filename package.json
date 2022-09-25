@@ -1,0 +1,23 @@
+{
+  "name": "StoaExchange",
+  "version": "1.0.0",
+  "description": "StoaExchange",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "connect-mongodb-session": "^3.1.1",
+    "cookie-session": "1.4.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.3",
+    "moment": "^2.29.4",
+    "mongodb": "^4.6.0",
+    "nodemailer": "^6.7.8"
+  },
+  "author": "Joshua Ren",
+  "license": "MIT"
+}

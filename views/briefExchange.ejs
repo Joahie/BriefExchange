@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>StoaExchange</title>
+  <link href="/css/briefExchange.css" rel="stylesheet" type="text/css" />
+  <script src = "/js/script.js"></script>
+
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+  <section id = "body">
+    <h1 style ="text-align: center; margin: 0; padding: 100px 50px 0px ; font-size: 50px;">Brief Exchange</h1>
+
+    <div class="buttonContainer">
+      
+    <button onclick="replace(1)" id="buttonOne">TP Brief Offers</button>
+
+
+    <button onclick="replace(2)" id="buttonTwo">TP Brief Requests</button>
+    <button onclick="replace(3)" id="buttonThree">LD Brief Offers</button>
+
+    <button onclick="replace(4)" id="buttonFour">LD Brief Requests</button>
+    </div>
+
+    <div class="largerContainer">
+      <div class = "smallerContainer" id = "replaceThisDiv">
+      
+      
+        
+
+    <%for(let i = 0; i<numberOfBriefsTPO; i++){%>
+        
+    
+        <h2 id = "date"><%=dateTPO[i]%></h2>
+        <h1><%=briefNameTPO[i]%></h1>
+        <h2>By <a href="/profiles/?user=<%=nameToLowerCaseTPO[i]%>"><%=nameTPO[i]%></a></h2>
+        <%if(briefRatingTPO[i]){%>
+            <%if(numberOfRatingsTPO[i] ==1){%>
+                <h3>Rating: <%=briefRatingTPO[i]%>/10 based on reviews from <%=numberOfRatingsTPO[i]%> user</h3>
+                <%}else{%>
+                    <h3>Rating: <%=briefRatingTPO[i]%>/10 based on reviews from <%=numberOfRatingsTPO[i]%> users</h3>
+                    <%}%>
+            
+            <%}else{%><h3>This brief currently has no ratings.</h3><%} %>  
+        <h3>Pages: <%=pageLengthTPO[i]%></h3>
+        <h3 id ="extraBottomMargin">Arguments: <%=argumentsTPO[i]%></h3>
+        <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about the brief</a></div>
+    
+    <%if (i+1<numberOfBriefsTPO){%>
+    <hr>    
+    <%}%>
+    <%}%>
+      </div>
+    </div>
+  </section>
+  <%- include('partials/footer.ejs') %>
+
+</body>
+
+</html>
+<script  src="ejs.min.js"></script>
+<script>
+
+    function replace(number){
+
+        if(number == 1){
+            
+            document.getElementById("replaceThisDiv").innerHTML = (`
+<style>#buttonOne{background-color: #D3D3D3; transition: color, 0.3s;}</style>            
+
+            
+    <%for(let i = 0; i<numberOfBriefsTPO; i++){%>
+        
+    
+        <h2 id = "date"><%=dateTPO[i]%></h2>
+        <h1><%=briefNameTPO[i]%></h1>
+        <h2>By <a href="/profiles/?user=<%=nameToLowerCaseTPO[i]%>"><%=nameTPO[i]%></a></h2>
+        
+        
+
+        <%if(briefRatingTPO[i]){%>
+            <%if(numberOfRatingsTPO[i] ==1){%>
+                <h3>Rating: <%=briefRatingTPO[i]%>/10 based on reviews from <%=numberOfRatingsTPO[i]%> user</h3>
+                <%}else{%>
+                    <h3>Rating: <%=briefRatingTPO[i]%>/10 based on reviews from <%=numberOfRatingsTPO[i]%> users</h3>
+                    <%}%>
+<%}%>
+            
+            
+            <h3>Pages: <%=pageLengthTPO[i]%></h3>
+        <h3 id ="extraBottomMargin">Arguments: <%=argumentsTPO[i]%></h3>
+        <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about this brief</a></div>
+    
+    <%if (i+1<numberOfBriefsTPO){%>
+    <hr>    
+    <%}%>
+    <%}%>
+    
+            `);
+        }
+        if(number == 2){
+            var div = document.getElementById('replaceThisDiv');
+            div.innerHTML = `  
+            <style>#buttonTwo{background-color: #D3D3D3; transition: color, 0.3s;}#buttonOne{background-color: transparent;}</style>            
+
+            <%for(let i = 0; i<numberOfBriefsTPR; i++){%>
+                
+
+                <h2 id = "date"><%=dateTPR[i]%></h2>
+                <h1><%=briefNameTPR[i]%></h1>
+                <h2>By <a href="/profiles/?user=<%=nameToLowerCaseTPR[i]%>"><%=nameTPR[i]%></a></h2>
+                
+                <%if(pageLengthTPR[i]){%>
+                <h3 id = "expandIfNecessary">Minimum number of pages: <%=pageLengthTPR[i]%></h3>
+                <%}%>
+                <%if(argumentsTPR[i]){%>
+                    <h3 id ="extraBottomMargin">Minimum number of arguments: <%=argumentsTPR[i]%></h3>
+                    <%}else{%>
+
+                        <%}%>
+                    
+                        <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPR[i]%>">Contact <%=nameTPR[i]%> about this brief</a></div>
+    
+    <%if (i+1<numberOfBriefsTPR){%>
+    
+        <hr>    
+    <%}%>
+        <%}%>`;
+        }
+        if(number == 3){
+            var div = document.getElementById('replaceThisDiv');
+            div.innerHTML = `  
+            <style>#buttonThree{background-color: #D3D3D3 !important;transition: color, 0.3s;}#buttonOne{background-color: transparent !important;}</style>            
+
+            <%for(let i = 0; i<numberOfBriefsLDO; i++){%>
+
+            
+                            <h2 id = "date"><%=dateLDO[i]%></h2>
+                            <h1><%=briefNameLDO[i]%></h1>
+                            <h2>By <a href="/profiles/?user=<%=nameToLowerCaseLDO[i]%>"><%=nameLDO[i]%></a></h2>
+                           
+
+                            <%if(briefRatingLDO[i]){%>
+                                <%if(numberOfRatingsLDO[i] ==1){%>
+                <h3>Rating: <%=numberOfRatingsLDO[i]%>/10 based on reviews from <%=numberOfRatingsLDO[i]%> user</h3>
+                <%}else{%>
+                    <h3>Rating: <%=numberOfRatingsLDO[i]%>/10 based on reviews from <%=numberOfRatingsLDO[i]%> users</h3>
+                    <%}%>                                    
+                                    <%} %>  
+                            <h3>Pages: <%=pageLengthLDO[i]%></h3>
+                            <h3 id ="extraBottomMargin">Arguments: <%=argumentsLDO[i]%></h3>
+                            <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDO[i]%>">Contact <%=nameLDO[i]%> about this brief</a></div> 
+            
+            <%if (i+1<numberOfBriefsLDO){%>
+                    <hr>    
+            <%}%>
+                    <%}%>`;
+        }
+        if(number == 4){
+            var div = document.getElementById('replaceThisDiv');
+            div.innerHTML = `
+            <style>#buttonFour{background-color: #D3D3D3;transition: color, 0.3s;} #buttonOne{background-color: transparent;}</style>            
+
+            <%for(let i = 0; i<numberOfBriefsLDR; i++){%>
+                
+
+                <h2 id = "date"><%=dateLDR[i]%></h2>
+                <h1><%=briefNameLDR[i]%></h1>
+                <h2>By <a href="/profiles/?user=<%=nameToLowerCaseLDR[i]%>"><%=nameLDR[i]%></a></h2>
+                
+                <%if(pageLengthLDR[i]){%>
+                <h3 id = "expandIfNecessary">Minimum number of pages: <%=pageLengthLDR[i]%></h3>
+                <%}%>
+                <%if(argumentsLDR[i]){%>
+                    <h3 id ="extraBottomMargin">Minimum number of arguments: <%=argumentsLDR[i]%></h3>
+                    
+                    <%}%>
+                    
+                    <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDR[i]%>">Contact <%=nameLDR[i]%> about this brief</a></div>
+    
+    <%if (i+1<numberOfBriefsLDR){%>
+    
+        <hr>    
+    <%}%>
+        <%}%>`;
+        }
+    }
+    </script>
+    <style>#body a{
+        color: black}</style>

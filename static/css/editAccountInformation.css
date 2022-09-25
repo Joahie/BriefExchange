@@ -1,0 +1,187 @@
+:root {
+    --specialGray: #606970;
+    --lighterGray: rgba(0,0,0,.5);
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+     margin:0;
+      padding:0;
+    scroll-behavior: smooth;
+  }
+  #checkRequired{
+    padding-bottom: 20px;
+  }
+  #noBottomPadding{
+    padding-bottom: 0;
+  }
+  
+    section{    background: #f8f9fa;
+   }
+    h2{
+      text-align: center;
+      color: black;
+    }
+  
+    
+  h2 a{
+      color: black;
+    }
+        h2{
+            padding-bottom: 25px;
+    
+        }
+    h1{
+      font-size: 50px;
+      text-align: center;
+      color: black;
+    }
+    section form { max-width:420px; margin:50px auto; margin-top: 20px; margin-bottom: 20px;}
+    
+    .feedback-input {
+      color:black;
+      font-weight:500;
+      font-size: 18px;
+      border-radius: 15px;
+      line-height: 22px;
+      background-color: transparent;
+      border:3px solid black;
+      transition: all 0.3s;
+      padding: 13px;
+      margin-bottom: 15px;
+      width:100%;
+      box-sizing: border-box;
+      outline:0;
+      margin-top: 10px;
+      margin-bottom: 25px;
+    }
+    
+    section textarea {
+      height: 150px;
+      line-height: 150%;
+      resize:vertical;
+    }
+    
+    section [type="submit"] {
+      width: 100%;
+      background:var(--specialGray);
+      border-radius:15px;
+      border:0;
+      color:white;
+      font-size:24px;
+      padding-top:10px;
+      padding-bottom:10px;
+      transition: all 0.3s;
+      margin-top:-4px;
+      font-weight:700;
+    }
+    [type="submit"]:hover { background:var(--lighterGray); }
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+  
+  
+    
+  
+  .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #d6d6d6;
+  }
+  
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  .container input:checked ~ .checkmark {
+    background-color: black;
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
+  .lastContainer{
+    padding-bottom: 15px;
+  }
+  
+    .largerContainer{
+        margin: auto;  
+        max-width: 700px;
+        padding-top: 100px;
+        padding-bottom: 100px;
+
+    }
+  .smallerContainer{
+      border: 2px solid var(--lighterGray);
+      border-radius: 8px;
+      padding: 30px;
+    box-shadow: rgba(0, 0, 0, 30%) 0px 3px 8px;
+    }
+    
+
+
+    section #deleteButton {
+      width: 100%;
+      background:#ed5e68;
+      border-radius:15px;
+      border:0;
+      color:white;
+      font-size:24px;
+      padding-top:10px;
+      padding-bottom:10px;
+      transition: all 0.3s;
+      font-weight:700;
+      width: 420px;
+      text-align: center;
+    }
+
+    #deleteButton:hover { background:#e8727a; }
+  
+  

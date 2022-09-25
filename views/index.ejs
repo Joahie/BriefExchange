@@ -1,0 +1,80 @@
+<!--Main page HTML goes here-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>StoaExchange</title>
+  <link href="/css/index.css" rel="stylesheet" type="text/css" />
+    <script src="/js/script.js"></script>
+
+</head>
+<body>
+  <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div id ="divone">
+      <h1>Exchange briefs and find practice rounds</h1> 
+      <p>StoaExchange makes it simple for debaters to exchange quality briefs and find constructive practice rounds.  <br><br>It's optimized for trading briefs, with a system requiring users to specify the number of pages and arguments in a brief they're trying to trade. <br><br> It also has a high quality practice rounds scheduling system, creating oppurtunities for debaters to utilize the briefs and receive real time feedback from judges and spectators.</p>
+      <a id = "body-getStarted" href="/register">Get Started</a>
+
+    </div>
+    <div id ="divtwo">
+       <h1>Why use StoaExchange?</h1>
+      <h2><span>01</span>Access a marketplace for briefs</h2>
+      <p>Offer briefs for other users to trade for, or ask for specific briefs that you're in need of.</p>
+        <h2><span>02</span>Rate briefs and users</h2>
+      <p>To ensure that you get the most bang for your buck, users can anonymously review briefs that they've traded for or the users who created the brief.</p>
+        <h2><span>03</span>Find practice rounds</h2>
+      <p>Simply list your debate format, your availabilities, and whether or not you'd like a judge.</p>
+          
+    </div>
+  </section>
+
+  <footer>
+     <div class = "container">
+       <div class="footer-main">
+        <div class="footer-column">
+          <h3 class="footer-heading">Legal</h3>
+          <p><a href="/termsAndConditions" style = "text-decoration: underline">Terms and Conditions</a></p>
+        </div>
+         <div class="footer-column">
+           <h3 class="footer-heading">Contact Us</h3>
+           <p>Reach out to us at <a  style = "text-decoration: underline" href="mailto:StoaExchange@gmail.com" target = "_blank" class="footer-link">StoaExchange@gmail.com</a></p>
+         </div>
+           <div class="footer-column">
+           <h3 class="footer-heading">Pages</h3>
+           <a href="#home" class="footer-link">Home</a><br>
+             <a href="/briefExchange" class="footer-link">Brief Exchange</a><br>
+             <a href="/practiceRounds" class="footer-link">Practice Rounds</a><br>
+         </div>
+       </div>
+       <div class="footer-bottom">
+         <span class="copyright">&copy; StoaExchange 2022</span>
+       </div>
+     </div>
+    
+  </footer>
+</body>
+
+</html>
+
+<script>
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  </script>

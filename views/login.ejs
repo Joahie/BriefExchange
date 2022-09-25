@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/register.css" rel="stylesheet" type="text/css" />
+    <script src = "/js/script.js"></script>
+
+  <title>StoaExchange</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "register">
+
+    <%if(auth){%>
+      <div class="largerContainer">
+        <div class = "smallerContainer">
+          <h1>Login</h1>
+
+          <h2>You're already logged in. Click <a href="/">here</a> to return to the home page.</h2>
+          </div></div>
+    <%}else{%>
+
+      <div class="largerContainer">
+        <div class = "smallerContainer">
+      <h1>Login</h1>
+     
+      <form method = "POST" action = "/login">     
+  
+        
+        
+    <%if(!accountExisting){%>
+      <input required  name="email" type="email" class="feedback-input" placeholder="Email"  value = <%=email%> />
+  
+      <h3>There is no existing account under this email</h3>
+      <style>h3{text-align: center; color:rgb(255, 89, 89);
+  padding-top: 0px; margin-top: 5px;}</style>
+    <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = <%=password%> />
+  
+  
+    <input type="submit" value="Log In"/>
+  </form>
+      <h2>Don't have an account? <a href="/register">Click here to register</a></h2>
+         <%}else{%>
+          <%if(passwordCorrect){%>
+          <input required  name="email" type="email" class="feedback-input" placeholder="Email"/>
+          <input required  name="password" type="password" class="feedback-input" placeholder="Password"/>
+
+  
+    <input type="submit" value="Log In"/>
+  </form>
+      <h2>Don't have an account? <a href="/register">Click here to register</a></h2>
+            <%}else{%>
+              <input required  name="email" type="email" class="feedback-input" placeholder="Email" value = <%=email%> />
+          <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = <%=password%> />
+  
+      <h3>The password is incorrect</h3>
+      <style>h3{text-align: center; color:rgb(255, 89, 89);
+  padding-top: 0px; margin-top: 5px;}</style>
+
+  
+<input type="submit" value="Log In"/>
+</form>
+<h3 id = "forgotPassword"><a href = "/forgotPassword">Forget your password?</a></h3>
+<style>#forgotPassword a{text-align: center; color:black;
+padding-top: 0px; margin-top: 0; font-size: 24px; } section form{margin-bottom: 30px;}</style>
+    <h2>Don't have an account? <a href="/register">Click here to register</a></h2>
+
+              <%}%>
+         <%}%>
+  
+  
+  
+        </div></div>
+  
+      <%}%>
+</section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>

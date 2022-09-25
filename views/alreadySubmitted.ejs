@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/404.css" rel="stylesheet" type="text/css" />
+
+  <title>StoaExchange</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <%if(reviewingOwn){%>
+
+      <h2>Sorry, you can't contact yourself about your own briefs. If you'd like to see their other briefs, visit the brief marketplace here <a href="/briefExchange">here</a>.</h2>
+      <%}else{%>
+
+        <h2>Sorry, you've already contacted <%=name%> regarding this brief. If you'd like to see their other briefs, visit their profile <a href="/profiles?user=<%=name%>">here</a>.</h2>
+        <%}%>
+</section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+<style>#body h2{padding-bottom: 100px;}</style>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/404.css" rel="stylesheet" type="text/css" />
+    <script src = "/js/script.js"></script>
+
+  <title>StoaExchange</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body" >
+ 
+
+
+    <h2>A verification email has been sent to <%=email%>.</h2>
+    <h3> If you can't find it, please check your spam folder. Click <a href="/login">here</a> to log in to your account.</h3>
+    </section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+<style>h2{font-size: 30px; padding-bottom: 30px !important;} h3{padding-bottom: 0px; text-align: center; font-size: 30px;} #body h3 a{color: black;}
+#body{padding-bottom: 100px;}</style>
