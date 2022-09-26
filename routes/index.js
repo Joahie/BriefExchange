@@ -1851,20 +1851,21 @@ if(valid>0){
                     authName: req.session.name,
             })
         }
-
-    
-
-
-
 })
-//give people ability to rate briefs
 
-//404 code, make sure not to put anything under this (aside from module.exports = router)
+
+
+router.post("/markAsRead", async (req,res)=>{
+    var results = await mongoAccounts.findOne({email: req.session.email})
+    await mongoAccounts.updateOne({email: req.session.email},{ $pullAll: { notifications: results.notifications}})
+
+return res.redirect("/")
+})
+
 router.all('*', (req, res) => {
     res.status(404).render('404', {
         auth: req.session.email,
         authName: req.session.name,
-
     });
 });
 

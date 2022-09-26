@@ -16,145 +16,97 @@
            <a id = "dissapear" href="/practiceRounds">Practice Rounds</a>
         
   </div>
-        <div class="notifications dissapearNext">
-          <div class="icon_wrap"><span class="icon-button">
-                  <span class="material-icons" style = "font-size: 30px;">notifications</span>
-                  <span class="icon-button__badge">2</span>
-                </span></div>
-          
-          <div class="notification_dd">
-              <ul class="notification_ul">
-                  <li class="success">
-                     Hi
-                  </li>  
-                <li class="success">
-                     Hi
-                  </li>  
-                <li class="success">
-                     Hi
-                  </li>  
-                <li class="success">
-                     Hi
-                  </li>  
-              </ul>
-          </div>
-          
-        </div>
-        <div class="profile">
-          <div class="icon_wrap">
-            <%var firstLetterOfName = authName[0]%>
-  <span class="circle"><%=firstLetterOfname%></span>
-          </div>
-                     
-          <div class="profile_dd">
-            <ul class="profile_ul">
-              <li class="address"><a class="profile" href="/profiles?user=<%=authName%>"><span class="picon"><i class="fas fa-user-alt"></i>
-                  </span>Profile</a>
-              </li>
-              <li><a class="address" href="/dashboard?section=yourBriefs"><span class="picon"><i class="fa fa-desktop" aria-hidden="true"></i></span>Dashboard</a></li>
-              <li><a class="settings" href="/editAccountinformation"><span class="picon"><i class="fas fa-cog"></i></span>Edit account</a></li>
-              <li id = "logoutli"><form action="/logOut" method = "POST"><button id = "logOut" class = 'dissapearNext'><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Log Out</button></form> 
+  <%if(auth){%>
+
   
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="notifications dissapearNext">
     
-    <div class="popup">
-      <div class="shadow"></div>
-      <div class="inner_popup">
-          <div class="notification_dd">
-              <ul class="notification_ul">
-                  <li class="title">
-                      <p>All Notifications</p>
-                      <p class="close"><i class="fas fa-times" aria-hidden="true"></i></p>
-                  </li> 
-                  <li class="starbucks success">
-                      <div class="notify_icon">
-                          <span class="icon"></span>  
-                      </div>
-                      <div class="notify_data">
-                          <div class="title">
-                              Lorem, ipsum dolor.  
-                          </div>
-                          <div class="sub_title">
-                            Lorem ipsum dolor sit amet consectetur.
-                        </div>
-                      </div>
-                      <div class="notify_status">
-                          <p>Success</p>  
-                      </div>
-                  </li>  
-                  <li class="baskin_robbins failed">
-                      <div class="notify_icon">
-                          <span class="icon"></span>  
-                      </div>
-                      <div class="notify_data">
-                          <div class="title">
-                              Lorem, ipsum dolor.  
-                          </div>
-                          <div class="sub_title">
-                            Lorem ipsum dolor sit amet consectetur.
-                        </div>
-                      </div>
-                      <div class="notify_status">
-                          <p>Failed</p>  
-                      </div>
-                  </li> 
-                  <li class="mcd success">
-                      <div class="notify_icon">
-                          <span class="icon"></span>  
-                      </div>
-                      <div class="notify_data">
-                          <div class="title">
-                              Lorem, ipsum dolor.  
-                          </div>
-                          <div class="sub_title">
-                            Lorem ipsum dolor sit amet consectetur.
-                        </div>
-                      </div>
-                      <div class="notify_status">
-                          <p>Success</p>  
-                      </div>
-                  </li>  
-                  <li class="pizzahut failed">
-                      <div class="notify_icon">
-                          <span class="icon"></span>  
-                      </div>
-                      <div class="notify_data">
-                          <div class="title">
-                              Lorem, ipsum dolor.  
-                          </div>
-                          <div class="sub_title">
-                            Lorem ipsum dolor sit amet consectetur.
-                        </div>
-                      </div>
-                      <div class="notify_status">
-                          <p>Failed</p>  
-                      </div>
-                  </li> 
-                  <li class="kfc success">
-                      <div class="notify_icon">
-                          <span class="icon"></span>  
-                      </div>
-                      <div class="notify_data">
-                          <div class="title">
-                              Lorem, ipsum dolor.  
-                          </div>
-                          <div class="sub_title">
-                            Lorem ipsum dolor sit amet consectetur.
-                        </div>
-                      </div>
-                      <div class="notify_status">
-                          <p>Success</p>  
-                      </div>
-                  </li>
-              </ul>
-          </div>
+      <%if(numberOfNotifications ==0){%>
+        <div class="icon_wrap"><span class="icon-button">
+          <span class="material-icons" style = "font-size: 30px;">notifications</span>
+        </span></div>   <div class="notification_dd">          <ul class="notification_ul">
+
+          <li class="success lastLi">
+            You currently has no unread notifications
+</li>  
+
+  </ul>
+  </div>
+
+        <%}else{%>
+          <div class="icon_wrap"><span class="icon-button">
+            <span class="material-icons" style = "font-size: 30px;">notifications</span>
+            <span class="icon-button__badge"><%=numberOfNotifications%></span>
+          </span></div>   <div class="notification_dd">
+            <ul class="notification_ul">
+
+<style>
+  .firstLi button{border: none; background: transparent;}
+</style>
+
+              <li class="success firstLi">
+                <h6>Notifications</h6>
+                <form action="/markAsRead" method = "POST">
+                  <button>Mark all as read</button>
+                 
+                </form></li>  
+<%for(let i=0; i<numberOfNotifications; i++){%>
+  
+  <li class="success">
+   <%=notificationsArray[i]%>
+ </li>  
+
+<%}%>
+
+</ul>
+</div>
+          <%}%>
+   
+      
+    </div>
+    <div class="profile">
+      <div class="icon_wrap">
+        <%var firstLetterOfName = authName[0]%>
+<span class="circle"><%=firstLetterOfName%></span>
+      </div>
+                 
+      <div class="profile_dd">
+        <ul class="profile_ul">
+          <li class="address"><a class="profile" href="/profiles?user=<%=authName%>"><span class="picon"><i class="fas fa-user-alt"></i>
+              </span>Profile</a>
+          </li>
+          <li><a class="address" href="/dashboard?section=yourBriefs"><span class="picon"><i class="fa fa-desktop" aria-hidden="true"></i></span>Dashboard</a></li>
+          <li><a class="settings" href="/editAccountinformation"><span class="picon"><i class="fas fa-cog"></i></span>Edit account</a></li>
+          <li id = "logoutli"><form action="/logOut" method = "POST"><button id = "logOut" class = 'dissapearNext'><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Log Out</button></form> 
+
+          </li>
+        </ul>
       </div>
     </div>
+  </div>
+</div>
+    <%}else{%>
+
+  <div id = "login"><a href="/login">Login</a></div>
+
+  <style>
+    #login{
+      padding: 10px 19px;
+      background-color: rgba(0,0,0,.5);
+ transition: color, 0.3s;
+border-radius: 20px;
+    }
+    #login a{
+      color: white;
+    }
+    #login:hover{
+      background-color: #9C9A9A;
+
+    }
+  </style>
+      <%}%>
+
+    
     
   <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -267,7 +219,7 @@
       content: "";
       position: absolute;
       top: -20px;
-      right: 15px;
+      right: 19px;
       border: 10px solid;
       border-color: transparent transparent #fff transparent;
   }
@@ -277,6 +229,7 @@
       padding: 10px 20px;
       display: flex;
       align-items: center;
+      color: rgba(0,0,0,.5);
   }
   
   .notification_dd li .notify_icon{
@@ -331,7 +284,9 @@
   .notification_dd li.success .notify_status p{
     color: #47da89;
   }
-  
+  .success:hover{
+    background-color:  #ddd;
+  }
   .notification_dd li.failed .notify_status p{
     color: #fb0001;
   }
@@ -372,7 +327,7 @@
     width: 225px;
   }
   .navbar .profile .profile_dd:before{
-    right: 10px;
+    right: 22px;
   }
   
   .navbar .profile .profile_dd ul li {
@@ -603,4 +558,9 @@
     #logOut .picon{
       padding-right: 14px;
     }
+    .lastLi{
+      border-bottom: 0px !important;
+
+    }
+    .lastLi button{background: transparent; font-size: 16px; border: none;}
   </style>
