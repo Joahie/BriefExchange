@@ -31,27 +31,63 @@ function sortingMongoDB(results){
     return ParsedResults
 }
 
-router.get("/register", (req, res)=>{
+router.get("/register", async (req, res)=>{
+if(req.session.email){
+
+    var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+
     res.render("register", {
+
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+                emailAvailable: true,
+                nameAvailable: true,
+                email: null,
+                name: null,
+                speechranks: null,
+                password: null,
+                confirmPassword: null,
+                parliChecked: null,
+                ldChecked: null,
+                tpChecked: null,
+                speechranksValid: true,
+                passwordsMatching: true,
         emailAvailable: true,
-        nameAvailable: true,
-        email: null,
-        name: null,
-        speechranks: null,
-        password: null,
-        confirmPassword: null,
-        parliChecked: null,
-        ldChecked: null,
-        tpChecked: null,
-        speechranksValid: true,
-        passwordsMatching: true,
-emailAvailable: true,
-        auth: req.session.email,        
-        authName: req.session.name,
-    termsAndConditionsAgreed: true,    })
+                auth: req.session.email,        
+                authName: req.session.name,
+            termsAndConditionsAgreed: true,    })
+}else{
+
+    res.render("register", {
+                emailAvailable: true,
+                nameAvailable: true,
+                email: null,
+                name: null,
+                speechranks: null,
+                password: null,
+                confirmPassword: null,
+                parliChecked: null,
+                ldChecked: null,
+                tpChecked: null,
+                speechranksValid: true,
+                passwordsMatching: true,
+        emailAvailable: true,
+                auth: req.session.email,        
+                authName: req.session.name,
+            termsAndConditionsAgreed: true,    })
+}
 })
 
 router.post("/register",async (req,res)=>{
+    if(req.session.email){
+
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+
+    }else{
+        var numberOfNotifications = null
+        var notificationsArray = null
+    }
+
     var answer = req.body
 
 
@@ -96,6 +132,8 @@ router.post("/register",async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
+    numberOfNotifications: notificationsFromMongo.notifications.length,
+    notificationsArray: notificationsFromMongo.notifications,
         })
     }
     if(existing2>0){
@@ -114,6 +152,8 @@ router.post("/register",async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
         })
     }
     if(!answer.speechranks.includes("http://speechranks.com/")){
@@ -134,6 +174,8 @@ router.post("/register",async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
         })
     }
     if(answer.password != answer.confirmPassword){
@@ -153,6 +195,8 @@ router.post("/register",async (req,res)=>{
             passwordsMatching: false,
             auth: req.session.email,
             authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
         })
     }
     if(!answer.termsAndConditions){
@@ -173,9 +217,10 @@ router.post("/register",async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
         })
     }
-   
 
 var uuid = crypto.randomUUID()
 
@@ -211,6 +256,9 @@ var uuid = crypto.randomUUID()
         auth: req.session.email,
         authName: req.session.name,
         email: recipient,
+
+    numberOfNotifications: notificationsFromMongo.notifications.length,
+    notificationsArray: notificationsFromMongo.notifications,
     })
 
 
@@ -345,7 +393,7 @@ router.get("/", async (req, res)=>{
             auth: req.session.email,
             authName: req.session.name,
             numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications
+            notificationsArray: notificationsFromMongo.notifications,
         })
     }else{
 
