@@ -17,12 +17,3 @@ function switchToTrashCan(i){
         const div = document.getElementById('trashCanR' + i)
         div.innerHTML = "<i onclick = 'trashClickedR("+i+")' class='fa fa-trash fa-2x'></i>"
     }
-
-    document.addEventListener("DOMContentLoaded", function(event) { 
-        var scrollpos = localStorage.getItem('scrollpos');
-        if (scrollpos) window.scrollTo(0, scrollpos);
-    });
-
-    window.onbeforeunload = function(e) {
-        localStorage.setItem('scrollpos', window.scrollY);
-    };

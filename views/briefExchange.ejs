@@ -47,7 +47,17 @@
             <%}else{%><h3>This brief currently has no ratings.</h3><%} %>  
         <h3>Pages: <%=pageLengthTPO[i]%></h3>
         <h3 id ="extraBottomMargin">Arguments: <%=argumentsTPO[i]%></h3>
-        <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about the brief</a></div>
+        <%if(!auth){%>
+            <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about the brief</a></div>
+
+        <%}else{%>
+            <%if(nameTPO[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
+                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about the brief</a></div>        
+                <%}%>    
+            <%}%>
+        
+            
+        
     
     <%if (i+1<numberOfBriefsTPO){%>
     <hr>    
@@ -92,8 +102,15 @@
             
             <h3>Pages: <%=pageLengthTPO[i]%></h3>
         <h3 id ="extraBottomMargin">Arguments: <%=argumentsTPO[i]%></h3>
-        <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about this brief</a></div>
-    
+        <%if(!auth){%>
+            <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about this brief</a></div>
+        <%}else{%>
+            <%if(nameTPO[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
+                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about this brief</a></div>                <%}%>    
+            <%}%>
+
+
+        
     <%if (i+1<numberOfBriefsTPO){%>
     <hr>    
     <%}%>
@@ -121,9 +138,13 @@
                     <%}else{%>
 
                         <%}%>
-                    
-                        <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPR[i]%>">Contact <%=nameTPR[i]%> about this brief</a></div>
-    
+                        <%if(!auth){%>
+                            <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPR[i]%>">Contact <%=nameTPR[i]%> about this brief</a></div>
+        <%}else{%>
+            <%if(nameTPR[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
+                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPR[i]%>">Contact <%=nameTPR[i]%> about this brief</a></div>
+            <%}%>
+            <%}%>
     <%if (i+1<numberOfBriefsTPR){%>
     
         <hr>    
@@ -152,7 +173,14 @@
                                     <%} %>  
                             <h3>Pages: <%=pageLengthLDO[i]%></h3>
                             <h3 id ="extraBottomMargin">Arguments: <%=argumentsLDO[i]%></h3>
-                            <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDO[i]%>">Contact <%=nameLDO[i]%> about this brief</a></div> 
+                            
+                            <%if(!auth){%>
+                                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDO[i]%>">Contact <%=nameLDO[i]%> about this brief</a></div> 
+        <%}else{%>
+            <%if(nameLDO[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
+                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDO[i]%>">Contact <%=nameLDO[i]%> about this brief</a></div> 
+            <%}%>
+            <%}%>
             
             <%if (i+1<numberOfBriefsLDO){%>
                     <hr>    
@@ -178,9 +206,13 @@
                     <h3 id ="extraBottomMargin">Minimum number of arguments: <%=argumentsLDR[i]%></h3>
                     
                     <%}%>
-                    
-                    <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDR[i]%>">Contact <%=nameLDR[i]%> about this brief</a></div>
-    
+                    <%if(!auth){%>
+                                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDR[i]%>">Contact <%=nameLDR[i]%> about this brief</a></div> 
+        <%}else{%>
+            <%if(nameLDR[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
+                <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDR[i]%>">Contact <%=nameLDR[i]%> about this brief</a></div> 
+            <%}%>
+            <%}%>
     <%if (i+1<numberOfBriefsLDR){%>
     
         <hr>    
