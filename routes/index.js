@@ -415,6 +415,13 @@ router.get("/profiles", async (req, res)=>{
 
 //Sample for get function that renders the homepage
 router.get("/", async (req, res)=>{
+    
+function waitforme(milisec) {
+    return new Promise(resolve => {
+        setTimeout(() => { resolve('') }, milisec);
+    })
+}
+
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
         return res.render("index", {
@@ -1285,8 +1292,8 @@ if(section == "yourBriefs"){
                     var receivedBriefsToEmail = []
 
                     for(let i = 0; i<receivedAmount; i++){
-
-                        if(results.inReturn){
+                        console.log(results[receivedAmount-i-1].inReturn)
+                        if(results[receivedAmount-i-1].inReturn){
                             receivedBriefsFromEmail.push(results[receivedAmount-i-1].fromEmail)
                             receivedBriefsToEmail.push(results[receivedAmount-i-1].toEmail)
                             receivedBriefsFrom.push(results[receivedAmount-i-1].from)
@@ -1371,6 +1378,11 @@ if(section == "yourBriefs"){
             notificationsArray: notificationsFromMongo.notifications,
         })
     })
+
+    router.post("/deleteAccount", isAuth, async (req,res)=>{
+        return res.render("accountDeleted")
+    })
+
 router.post("/deleteAccount", isAuth, async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
@@ -2077,7 +2089,6 @@ router.post("/markAsRead", async (req,res)=>{
 
 return res.redirect("/")
 })
-
 router.all('*', async (req, res) => {
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})

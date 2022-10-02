@@ -73,29 +73,34 @@
         <h2>You requested:</h2>
         <h3>Brief name: <%=receivedBriefsFirstBriefName[i]%></h3>
     <h3>Debate format: <%=receivedBriefsFirstBriefDebate[i].toUpperCase()%></h3>
-   <!-- <h3>Link: <a href="<%=receivedBriefsFirstLink[i]%>" target = "_blank"><%=receivedBriefsFirstLink[i]%></a></h3>-->
     
-    <h2 style = "padding-top: 10px;"><%=receivedBriefsFrom[i]%>:</h2>
-    <h3>Brief name: <%=receivedBriefsSecondBriefName[i]%></h3>
+    <h2 style = "padding-top: 10px;"><%=receivedBriefsFrom[i]%> sent to you:</h2>
     <h3>Description: <%=receivedBriefsSecondBriefDescription[i]%></h3>
     <h3>Pages: <%=receivedBriefsSecondBriefPages[i]%></h3>
     <h3>Arguments: <%=receivedBriefsSecondBriefArguments[i]%></h3>
-    <h3>Debate format: <%=receivedBriefsSecondBriefDebate[i].toUpperCase()%></h3>
     <h3>Link: <a href="<%=receivedBriefsSecondLink[i]%>" target = "_blank"><%=receivedBriefsSecondLink[i]%></a></h3>
-    <%}else{%>
-      <h2 id = 'date' style = "padding-bottom: 10px;"><%=receivedBriefsDate[i]%></h2>
-      <h2><%=receivedBriefsTo[i]%> offered:</h2>
-      <h3>Brief name: <%=receivedBriefsFirstBriefName[i]%></h3>
-    <h3>Debate format: <%=receivedBriefsFirstBriefDebate[i].toUpperCase()%></h3>
+    
+    <h2 style = "padding-top: 10px;">In return you sent them:</h2>
+    <h3>They requested: <%=receivedBriefsInReturn[i]%></h3>
     <h3>Link: <a href="<%=receivedBriefsFirstLink[i]%>" target = "_blank"><%=receivedBriefsFirstLink[i]%></a></h3>
-    
-    <h2 style = "padding-top: 10px;">You sent <%=receivedBriefsFrom[i]%>:</h2>
-    <h3>Brief name: <%=receivedBriefsSecondBriefName[i]%></h3>
-    <h3>Description: <%=receivedBriefsSecondBriefDescription[i]%></h3>
-    <h3>Pages: <%=receivedBriefsSecondBriefPages[i]%></h3>
-    <h3>Arguments: <%=receivedBriefsSecondBriefArguments[i]%></h3>
-    <h3>Debate format: <%=receivedBriefsSecondBriefDebate[i].toUpperCase()%></h3>
-    <h3>Link: <a href="<%=receivedBriefsSecondLink[i]%>" target = "_blank"><%=receivedBriefsSecondLink[i]%></a></h3>
+
+
+    <%}else{%>   
+      <h2 id = 'date' style = "padding-bottom: 10px;"><%=receivedBriefsDate[i]%></h2>
+    <h2><%=receivedBriefsTo[i]%> requested:</h2>
+    <h3>Brief name: <%=receivedBriefsFirstBriefName[i]%></h3>
+<h3>Debate format: <%=receivedBriefsFirstBriefDebate[i].toUpperCase()%></h3>
+
+<h2 style = "padding-top: 10px;">You sent them:</h2>
+<h3>Description: <%=receivedBriefsSecondBriefDescription[i]%></h3>
+<h3>Pages: <%=receivedBriefsSecondBriefPages[i]%></h3>
+<h3>Arguments: <%=receivedBriefsSecondBriefArguments[i]%></h3>
+<h3>Link: <a href="<%=receivedBriefsSecondLink[i]%>" target = "_blank"><%=receivedBriefsSecondLink[i]%></a></h3>
+
+<h2 style = "padding-top: 10px;">In return they sent you:</h2>
+<h3>They requested: <%=receivedBriefsInReturn[i]%></h3>
+<h3>Link: <a href="<%=receivedBriefsFirstLink[i]%>" target = "_blank"><%=receivedBriefsFirstLink[i]%></a></h3>
+
     
       <%}%>
     <%}%>
