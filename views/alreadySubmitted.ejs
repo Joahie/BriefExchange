@@ -5,8 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/404.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/cczltUx.png">
+    <%if(reviewingOwn){%>
 
-  <title>StoaExchange</title>
+      <title>Can't contact yourself</title>
+      <%}else{%>
+
+        <title>Already contacted</title>
+        <%}%>
 </head>
 <body>
     <%- include('partials/nav.ejs') %>
