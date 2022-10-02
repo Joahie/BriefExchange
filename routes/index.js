@@ -1290,9 +1290,10 @@ if(section == "yourBriefs"){
                     var receivedBriefsFirstBriefDebate = []
                     var receivedBriefsFromEmail = []
                     var receivedBriefsToEmail = []
-
+                    var receivedBriefsReviewed = []
+                    var receivedBriefsId = []
                     for(let i = 0; i<receivedAmount; i++){
-                        console.log(results[receivedAmount-i-1].inReturn)
+                       
                         if(results[receivedAmount-i-1].inReturn){
                             receivedBriefsFromEmail.push(results[receivedAmount-i-1].fromEmail)
                             receivedBriefsToEmail.push(results[receivedAmount-i-1].toEmail)
@@ -1309,7 +1310,9 @@ if(section == "yourBriefs"){
                             receivedBriefsSecondBriefArguments.push(results[receivedAmount-i-1].secondBriefArguments)
                             receivedBriefsSecondBriefDebate.push("")           
                             receivedBriefsInReturn.push(results[receivedAmount-i-1].inReturn)      
-                            receivedBriefsFirstBriefDebate.push(results[receivedAmount-i-1].firstBriefDebate)      
+                            receivedBriefsFirstBriefDebate.push(results[receivedAmount-i-1].firstBriefDebate)    
+                            receivedBriefsReviewed.push("")  
+                            receivedBriefsId.push(results[receivedAmount-i-1].id)          
                         }else{
                             receivedBriefsFromEmail.push(results[receivedAmount-i-1].fromEmail)
                             receivedBriefsToEmail.push(results[receivedAmount-i-1].toEmail)
@@ -1327,9 +1330,10 @@ if(section == "yourBriefs"){
                             receivedBriefsInReturn.push("")           
                             receivedBriefsSecondBriefDebate.push(results[receivedAmount-i-1].secondBriefDebate)           
                             receivedBriefsFirstBriefDebate.push(results[receivedAmount-i-1].firstBriefDebate)      
-
+                            receivedBriefsReviewed.push(results[receivedAmount-i-1].reviewed)    
+                            receivedBriefsId.push(results[receivedAmount-i-1].id)    
                         }
-                    }    
+                    }    console.log(receivedBriefsReviewed)
                     return res.render("dashboardBriefsYouveReceived",{
                         receivedBriefsInReturn:receivedBriefsInReturn,
                         receivedBriefsFrom:receivedBriefsFrom,
@@ -1351,6 +1355,8 @@ if(section == "yourBriefs"){
                         receivedBriefsFirstBriefDebate:receivedBriefsFirstBriefDebate,
                         receivedBriefsFromEmail:receivedBriefsFromEmail,
                         receivedBriefsToEmail:receivedBriefsToEmail,
+                        receivedBriefsReviewed:receivedBriefsReviewed,
+                        receivedBriefsId:receivedBriefsId,
 
                     })
                 }
@@ -1587,11 +1593,10 @@ router.post("/response", isAuth, async (req,res)=>{
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"bothSidesSent", secondLink: answer.link}})
     var results = await mongoContact.findOne({_id: ObjectId(id)})
 try{if(results.inReturn){
-    //pagelength stuff
-    await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "request", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, inReturn: results.inReturn, firstBriefDebate: results.debate,})
+    await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "request", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, inReturn: results.inReturn, firstBriefDebate: results.debate,reviewed: false, id: results._id})
     await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.offerBriefName}})
 }else{
-    await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "offering", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, secondBriefDebate: results.debate, firstBriefDebate: results.debate,})
+    await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "offering", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, secondBriefDebate: results.debate, firstBriefDebate: results.debate,id: results._id,reviewed: false,id: results._id})
     await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.briefName}})
 }}catch(err){await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.briefName}})}
 
@@ -2026,6 +2031,7 @@ var briefName = temp.briefName
         await mongoRatings.insertOne({id: id, email:req.session.email, rating: req.body.rating})
         var ratings = await mongoRatings.find({id: id}).toArray()
         await mongoAccounts.updateOne({nameToLowerCase: name.toLowerCase().replace(" ","")},{$push:{notifications: "A user has rated your brief on " + briefName + " " + req.body.rating + "/10"}})
+        await mongoBriefsReceived.updateOne({id: id, to: req.session.name},{$set:{reviewed: true}})
         var totalRating = 0
         for(let i = 0; i<ratings.length;i++){
             totalRating = totalRating+ratings[i].rating*1

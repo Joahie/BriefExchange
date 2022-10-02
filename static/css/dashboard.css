@@ -83,7 +83,7 @@
   background:var(--lighterGray);
   color: white !important;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color, 0.3s;
 
 }
 
@@ -92,8 +92,7 @@
   margin-bottom: 50px;
 }
 #body-getStarted:hover{
-    color: #D3D3D3 !important;
-
+  background-color: #949292;
 }
   #body a{
      color: black;

@@ -63,7 +63,9 @@
 <h3>Arguments: <%=receivedBriefsSecondBriefArguments[i]%></h3>
 <h3>Debate format: <%=receivedBriefsSecondBriefDebate[i].toUpperCase()%></h3>
 <h3>Link: <a href="<%=receivedBriefsSecondLink[i]%>" target = "_blank"><%=receivedBriefsSecondLink[i]%></a></h3>
-
+<%if(!receivedBriefsReviewed[i]){%>
+  <div id = "contact-container" style = "margin-top: 30px;" ><a id = "body-getStarted" href="/rateABrief?id=<%=receivedBriefsId[i]%>">Rate <%=receivedBriefsTo[i]%>'s brief</a></div> 
+  <%}%>
   <%}%>
 
     <%}else{%>
@@ -101,7 +103,7 @@
 <h3>They requested: <%=receivedBriefsInReturn[i]%></h3>
 <h3>Link: <a href="<%=receivedBriefsFirstLink[i]%>" target = "_blank"><%=receivedBriefsFirstLink[i]%></a></h3>
 
-    
+
       <%}%>
     <%}%>
 
