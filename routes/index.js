@@ -27,6 +27,32 @@ const isAuth = (req, res, next)=>{
         req.session.nextRedirect = req.originalUrl
 res.redirect('/login')    }
 }
+//middleware for making sure the user verified their email first
+
+const verifyEmail =  (title, description) => {
+    return async (req, res, next) => {
+        if(req.session.email){
+            var results = await mongoAccounts.findOne({email: req.session.email})
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+            if(results.verificationNumber != ""){
+                return res.render("noEmail",{
+                    verificationNumber: results.verificationNumber,
+                    auth: req.session.email,
+                    authName: req.session.name,
+                    numberOfNotifications: notificationsFromMongo.notifications.length,
+                    notificationsArray: notificationsFromMongo.notifications,
+                    typeOfPageName: title,
+                    typeOfPageDescription: description,
+                })
+            }            next()
+    
+        }
+    }
+  }
+
+
 //middleware for redirecting to the same page after marking notifs as read
 const markAsRead = (req,res,next)=>{
     req.session.notificationRedirect = req.originalUrl
@@ -401,7 +427,7 @@ res.redirect('/')
    
 })
 
-router.get("/editAccountInformation", isAuth, markAsRead,async (req, res)=>{
+router.get("/editAccountInformation", verifyEmail("Edit Account Information", "edit your account information"),isAuth, markAsRead,async (req, res)=>{
     user = req.session.name
     var results = await mongoAccounts.findOne({ nameToLowerCase: user.toLowerCase().replace(' ','')})
     if(req.session.email){
@@ -475,7 +501,7 @@ router.get("/verifyEmail", isAuth, markAsRead,async (req,res)=>{
         notificationsArray: notificationsFromMongo.notifications,
     })
 })
-router.get("/addABriefOffer", isAuth, markAsRead,async (req, res)=>{
+router.get("/addABriefOffer", verifyEmail("Add a Brief Offer", "add a brief offer"), isAuth, markAsRead,async (req, res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -495,7 +521,7 @@ let email = req.session.email
         notificationsArray: notificationsFromMongo.notifications,
     })
 })
-router.get("/addABriefRequest", isAuth,markAsRead, async (req, res)=>{
+router.get("/addABriefRequest", verifyEmail("Add a Brief Request", "add a brief request"),isAuth,markAsRead, async (req, res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -517,7 +543,7 @@ let email = req.session.email
 
     })
 })
-    router.get("/dashboard", isAuth, markAsRead,async (req, res)=>{
+    router.get("/dashboard", verifyEmail("Dashboard", "use your dashboard"), isAuth, markAsRead,async (req, res)=>{
         if(req.session.email){
             var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
         }else{
@@ -855,7 +881,7 @@ if(section == "yourBriefs"){
     })
 
 
-router.get("/contact", isAuth, markAsRead,async (req,res)=>{
+router.get("/contact", verifyEmail("Contact", "contact other users"),isAuth, markAsRead,async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -924,7 +950,7 @@ router.get('/termsAndConditions', markAsRead,async (req,res)=>{
         notificationsArray: notificationsFromMongo.notifications,
     })
 })
-router.get("/forgotPassword",markAsRead,  async (req,res)=>{
+router.get("/forgotPassword",verifyEmail("Forgot Password", "reset your password"),markAsRead,  async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -941,7 +967,7 @@ email: "",
         successful: false,    })
 })
 
-router.get("/passwordReset", markAsRead,async (req,res)=>{
+router.get("/passwordReset", verifyEmail("Reset Password", "reset your password"),markAsRead,async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -1010,7 +1036,7 @@ notificationsArray: notificationsFromMongo.notifications,
     }
     })
 
-router.get("/rateABrief",isAuth, markAsRead, async (req,res)=>{
+router.get("/rateABrief",verifyEmail("Rate a Brief", "rate a brief"),isAuth, markAsRead, async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{

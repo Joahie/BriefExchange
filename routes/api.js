@@ -27,6 +27,30 @@ const isAuth = (req, res, next)=>{
         req.session.nextRedirect = req.originalUrl
 res.redirect('/login')    }
 }
+//middleware for verifying email
+
+const verifyEmail =  (title, description) => {
+    return async (req, res, next) => {
+        if(req.session.email){
+            var results = await mongoAccounts.findOne({email: req.session.email})
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+            if(results.verificationNumber != ""){
+                return res.render("noEmail",{
+                    verificationNumber: results.verificationNumber,
+                    auth: req.session.email,
+                    authName: req.session.name,
+                    numberOfNotifications: notificationsFromMongo.notifications.length,
+                    notificationsArray: notificationsFromMongo.notifications,
+                    typeOfPageName: title,
+                    typeOfPageDescription: description,
+                })
+            }            next()
+    
+        }
+    }
+  }
 //middleware for redirecting to the same page after marking notifs as read
 const markAsRead = (req,res,next)=>{
     req.session.notificationRedirect = req.originalUrl
@@ -404,12 +428,12 @@ router.post("/emailVerification", markAsRead, async (req,res)=>{
     return res.render("editAccountInformation", {
         numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
-            auth: req.session.email,
-            authName: req.session.name,    
-            verificationNumber: "emailSent",
+        auth: req.session.email,
+        authName: req.session.name,    
+        verificationNumber: "emailSent",
     })
 })
-router.post('/editAccountInformation', markAsRead,  isAuth, async (req, res)=>{
+router.post('/editAccountInformation', verifyEmail("Edit Account Information","edit your account information"), markAsRead,  isAuth, async (req, res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -587,7 +611,7 @@ if (answer.password){
     return res.redirect("/profiles?user=" + req.session.name)
 
 })
-router.post("/addABriefOffer", isAuth,  markAsRead,  async (req, res)=>{
+router.post("/addABriefOffer",  verifyEmail("Add a Brief Offer","add a brief offer"),isAuth,  markAsRead,  async (req, res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -630,7 +654,7 @@ var date = month + "/" + day + "/" + year
     })})
 
 
-router.post("/addABriefRequest", isAuth, markAsRead, async (req, res)=>{
+router.post("/addABriefRequest",  verifyEmail("Add a Brief Request","add a brief request"),isAuth, markAsRead, async (req, res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -738,7 +762,7 @@ router.post("/deleteAccount", isAuth, markAsRead, async (req,res)=>{
         })
     }
 })
-router.post("/contact",markAsRead,  isAuth, async (req,res)=>{
+router.post("/contact", verifyEmail("Contact","contact other users"),markAsRead,  isAuth, async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -787,7 +811,7 @@ var date = month + "/" + day + "/" + year
     }
     
 })
-router.post("/deleteBrief",markAsRead,   isAuth,async (req,res)=>{
+router.post("/deleteBrief", verifyEmail("Delete Brief","delete your briefs"),markAsRead,   isAuth,async (req,res)=>{
 
         
         idQuery = req.query.id
@@ -796,7 +820,7 @@ router.post("/deleteBrief",markAsRead,   isAuth,async (req,res)=>{
     return res.redirect("/dashboard?section=yourBriefs")
 })
 
-router.post("/reject", markAsRead, isAuth, async (req,res)=>{
+router.post("/reject",  verifyEmail("Reject Request","reject a brief request"),markAsRead, isAuth, async (req,res)=>{
     var id = req.query.id
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"rejected"}})
     var results = await mongoContact.findOne({_id: ObjectId(id)})
@@ -810,7 +834,7 @@ router.post("/reject", markAsRead, isAuth, async (req,res)=>{
 })
   
 
-router.post("/agree", markAsRead, isAuth, async (req,res)=>{
+router.post("/agree",  verifyEmail("Agree","agree to a brief request"),markAsRead, isAuth, async (req,res)=>{
     var id = req.query.id
     var answer = req.body
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"agree", firstLink: answer.link}})
@@ -823,7 +847,7 @@ router.post("/agree", markAsRead, isAuth, async (req,res)=>{
     }
     return res.redirect("/dashboard?section=yourBriefs")
 })
-router.post("/response", isAuth, async (req,res)=>{
+router.post("/response",  verifyEmail("Respond","respond to a brief request"),isAuth, async (req,res)=>{
     var id = req.query.id
     var answer = req.body
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"bothSidesSent", secondLink: answer.link}})
@@ -841,7 +865,7 @@ try{if(results.inReturn){
     res.redirect("dashboard?section=outgoingRequests")
 })
 
-router.post("/deleteContact", isAuth, markAsRead, async (req,res)=>{
+router.post("/deleteContact", verifyEmail("Delete a Request","delete a request"), isAuth, markAsRead, async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -920,7 +944,7 @@ router.post("/deleteContact", isAuth, markAsRead, async (req,res)=>{
             authName: req.session.name,})
 })
 
-router.post("/forgotPassword", markAsRead, async (req,res)=>{
+router.post("/forgotPassword",verifyEmail("Reset Password", "reset your password"), markAsRead, async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -1011,7 +1035,7 @@ await mongoAccounts.updateOne({email: email}, {$set: {uuid: uuid, lastRequest: d
     })
 })
 
-router.post("/passwordReset", markAsRead, async (req,res)=>{
+router.post("/passwordReset",verifyEmail("Reset Password", "reset your password"), markAsRead, async (req,res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{

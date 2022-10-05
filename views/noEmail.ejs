@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/addABrief.css" rel="stylesheet" type="text/css" />
+    <script src = "/js/script.js"></script>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/cczltUx.png">
+
+  <title><%=typeOfPageName%></title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "register">
+  <div class="largerContainer">
+      <div class = "smallerContainer">
+        <%if(verificationNumber == "emailSent"){%>
+          <h1>The email has been sent. If you can't find it, please check your spam folder.</h1>
+        
+         
+          <%}else if(verificationNumber){%>  <form action="/api/emailVerification" method = "POST">
+            <h1>You cannot <%=typeOfPageDescription%> before verifying your email.</h1>
+            <input type="submit" value="Send verification email"/>
+          </form>
+        <%}%>
+      </div></div>
+
+</section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+
+<style>    #select{
+  color:black;
+}
+select:invalid {
+  color: #717172 !important;
+}</style>
