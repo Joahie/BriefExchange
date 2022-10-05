@@ -17,7 +17,7 @@ const { MessageContextMenuCommandInteraction } = require('discord.js');
 const env = require('dotenv').config()
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
 const EMAIL_USERNAME = process.env.EMAIL_USERNAME
-
+const bcrypt = require('bcrypt')
 
 //Middleware for cookie authentication
 const isAuth = (req, res, next)=>{
@@ -39,7 +39,8 @@ function sortingMongoDB(results){
     return ParsedResults
 }
 router.get("/register", markAsRead,async (req, res)=>{
-if(req.session.email){
+
+    if(req.session.email){
 
     var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
 
@@ -87,12 +88,27 @@ if(req.session.email){
 
 router.post("/register",markAsRead, async (req,res)=>{
     if(req.session.email){
-
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        return res.render("register", {
 
-    }else{
-        var numberOfNotifications = null
-        var notificationsArray = null
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+                    emailAvailable: true,
+                    nameAvailable: true,
+                    email: null,
+                    name: null,
+                    speechranks: null,
+                    password: null,
+                    confirmPassword: null,
+                    parliChecked: null,
+                    ldChecked: null,
+                    tpChecked: null,
+                    speechranksValid: true,
+                    passwordsMatching: true,
+            emailAvailable: true,
+                    auth: req.session.email,        
+                    authName: req.session.name,
+                termsAndConditionsAgreed: true,    })
     }
 
     var answer = req.body
@@ -139,8 +155,8 @@ router.post("/register",markAsRead, async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
-    numberOfNotifications: notificationsFromMongo.notifications.length,
-    notificationsArray: notificationsFromMongo.notifications,
+    numberOfNotifications: null,
+    notificationsArray: null,
         })
     }
     if(existing2>0){
@@ -159,8 +175,8 @@ router.post("/register",markAsRead, async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
-            numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,
+            numberOfNotifications: null,
+            notificationsArray: null,
         })
     }
     if(!answer.speechranks.includes("http://speechranks.com/")){
@@ -181,8 +197,8 @@ router.post("/register",markAsRead, async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
-            numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,
+            numberOfNotifications: null,
+            notificationsArray: null,
         })
     }
     if(answer.password != answer.confirmPassword){
@@ -202,8 +218,8 @@ router.post("/register",markAsRead, async (req,res)=>{
             passwordsMatching: false,
             auth: req.session.email,
             authName: req.session.name,
-            numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,
+            numberOfNotifications: null,
+            notificationsArray: null,
         })
     }
     if(!answer.termsAndConditions){
@@ -224,8 +240,8 @@ router.post("/register",markAsRead, async (req,res)=>{
             passwordsMatching: true,
             auth: req.session.email,
             authName: req.session.name,
-            numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,
+            numberOfNotifications: null,
+            notificationsArray: null,
         })
     }
 
@@ -258,14 +274,34 @@ var uuid = crypto.randomUUID()
       console.log(err)
     }
     })
-    await mongoAccounts.insertOne({name: answer.name, speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, nameToLowerCase: answer.name.toLowerCase().replace(" ",""), rating: null, email: answer.email, password: answer.password, verificationNumber: uuid, notifications: []})
+
+    try{
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(answer.password, salt)
+        await mongoAccounts.insertOne({name: answer.name, speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, nameToLowerCase: answer.name.toLowerCase().replace(" ",""), rating: null, email: answer.email, password: hashedPassword, verificationNumber: uuid, notifications: []})
+
+    }catch(err){
+        if(req.session.email){
+            var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        }else{
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+        }
+        res.status(500).render('500', {
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        });      }
+
     return res.render("emailSent",{
         auth: req.session.email,
         authName: req.session.name,
         email: recipient,
 
-    numberOfNotifications: notificationsFromMongo.notifications.length,
-    notificationsArray: notificationsFromMongo.notifications,
+    numberOfNotifications: null,
+    notificationsArray: null,
     })
 
 
@@ -274,6 +310,8 @@ var uuid = crypto.randomUUID()
 
 router.post("/login",markAsRead,  async (req, res)=>{
     var answer = req.body
+    
+
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -285,23 +323,43 @@ router.post("/login",markAsRead,  async (req, res)=>{
     var existing =  await mongoAccounts.count({email: answer.email})
     if (existing >0){
         var results =  await mongoAccounts.findOne({ email: answer.email})
-        if(results.password == answer.password){
-            req.session.email = answer.email.toLowerCase()
-            req.session.name = results.name
-            return res.redirect(req.session.nextRedirect || "/")
-        }else{
-            return res.render("login",{
-                accountExisting: true,
-                passwordCorrect: false,
-                email: answer.email,
-                password: answer.password,
+        
+        try{
+            if (await bcrypt.compare(answer.password, results.password)){
+                req.session.email = answer.email.toLowerCase()
+                req.session.name = results.name
+                return res.redirect(req.session.nextRedirect || "/")
+            }else{
+                return res.render("login",{
+                    accountExisting: true,
+                    passwordCorrect: false,
+                    email: answer.email,
+                    password: answer.password,
+                    auth: req.session.email,
+                    authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+    
+                })
+            }
+        }catch(err){
+            console.log(err)
+            if(req.session.email){
+                var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+            }else{
+                var notificationsFromMongo = {
+                    "notifications":[]
+                    }
+            }
+            res.status(500).render('500', {
                 auth: req.session.email,
                 authName: req.session.name,
-        numberOfNotifications: notificationsFromMongo.notifications.length,
-        notificationsArray: notificationsFromMongo.notifications,
-
-            })
+                numberOfNotifications: notificationsFromMongo.notifications.length,
+                notificationsArray: notificationsFromMongo.notifications,
+            });   
         }
+           
+        
     }else{
         return res.render("login", {
             accountExisting: false,
@@ -1531,7 +1589,7 @@ if(count >0){
         })
     }catch(err){
         console.log(err)
-        return res.render("404",{
+        return  res.status(404).render("404",{
             auth:req.session.email,
             authName: req.session.name, numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
@@ -2082,7 +2140,10 @@ router.post("/markAsRead", markAsRead, isAuth, async (req,res)=>{
 
     return res.redirect(req.session.notificationRedirect || "/")
 })
-router.all('*', async (req, res) => {
+
+
+
+router.use(async (req, res, next) => {
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -2095,7 +2156,23 @@ router.all('*', async (req, res) => {
         authName: req.session.name,
         numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
-    });
-});
+    });  })
+
+    router.use(async (err, req, res, next) => {
+        if(req.session.email){
+            var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        }else{
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+        }
+        console.error(err.stack)
+        res.status(500).render('500', {
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        });  
+      })
 
 module.exports = router;

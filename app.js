@@ -10,19 +10,23 @@ app.use(express.urlencoded({ extended: false }));
 const session = require('express-session')
 const MongoDBSession = require("connect-mongodb-session")(session)
 const PORT = 3000
+const helmet = require("helmet");
+const hpp = require('hpp');
 
 //Configuring cookies
 const store = new MongoDBSession({
     uri: URI,
     collection: 'mySessions'
 })
+
 app.use(session({
     secret: SECRET,
     resave: false,
     saveUninitialized: false,
     store: store
 }))
-
+app.disable('x-powered-by')
+app.use(hpp());
 //Connecting to MongoDB and server
 mongoclient.connect(async function (err, mongoclient) {
     console.log("Successfully connected to MongoDB!");

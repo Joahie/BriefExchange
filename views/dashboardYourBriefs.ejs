@@ -16,33 +16,8 @@
     <%- include('partials/nav.ejs') %>
 
   <section id = "body">
-    <style>
-      .buttonContainer{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 0px 200px 0px 200px; 
-        padding-top: 100px;
-      }
-      .rightButtons button{
-        margin: 0px;
-        transition: background 0.3s;
-      }
-      .rightButtons button:hover{
-        background-color: #D3D3D3;
-      }
-
-      #rightButtonOne{
-        border-radius:  5px 0px  0px 0px;
-
-      }
-      #rightButtonTwo{
-        border-radius:  0px 5px  0px 0px;
-
-      }
-    </style>
     <div class="buttonContainer topButtons">
-      <div>
+      <div class = "leftButtons">
         <button onclick="replace(1)" id="buttonOne">Your briefs</button>
     <button onclick="replace(4)" id="buttonTwo">Briefs you've received</button>
 
