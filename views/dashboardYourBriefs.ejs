@@ -51,7 +51,7 @@
               
               
                   <%for(let i = 0; i<numberOfBriefOfferings; i++){%>
-                      <h2 id = 'date'><%=date[i]%></h2><form action='/deleteBrief?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
+                      <h2 id = 'date'><%=date[i]%></h2><form action='/api/deleteBrief?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
                           <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'><%=debate[i]%> Brief: <%=briefName[i]%></h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
                       </form>
               
@@ -110,7 +110,7 @@
               <%}else if(requestStatus[v] == 'agree'){%>
                 <h4 style = 'font-size: 20px; padding-top: 10px'>Your brief has been uploaded. You'll be notified when <%=from[v]%> uploads theirs.</h4>
                 <%}else{%>
-                        <div id = 'buttonContent<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='accept(<%=v%>, "<%=requestActualId[v]%>")'>Accept</button><form id = 'inline-block' action='/reject?id=<%=requestActualId[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformation(<%=v%>)">Get more information</button></div>
+                        <div id = 'buttonContent<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='accept(<%=v%>, "<%=requestActualId[v]%>")'>Accept</button><form id = 'inline-block' action='/api/reject?id=<%=requestActualId[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformation(<%=v%>)">Get more information</button></div>
                       </div>
                           <%}%>
                 </details>
@@ -123,12 +123,12 @@
                     }
                       function accept(i, id){
                           const div = document.getElementById('buttonContent' + i)
-                          div.innerHTML=`<form action = '/agree?id=`+id+`' method = 'POST'><input name = 'link' class = 'feedback-input' type = 'url' placeholder='Link to your brief'><p>Your brief won't be sent to <%=from[i]%> until they also upload theirs.</p><button type='button' style = 'margin-bottom: 10px;' onclick='cancel(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
+                          div.innerHTML=`<form action = '/api/agree?id=`+id+`' method = 'POST'><input name = 'link' class = 'feedback-input' type = 'url' placeholder='Link to your brief'><p>Your brief won't be sent to <%=from[i]%> until they also upload theirs.</p><button type='button' style = 'margin-bottom: 10px;' onclick='cancel(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
                           
                       }
                       function cancel(i, id){
                           const div = document.getElementById('buttonContent' + i)
-                          div.innerHTML=`<button style = 'margin-top: 10px;' id = 'inline-block' onclick='accept(`+i+`,"`+id+`")'>Accept</button><form id = 'inline-block' action='/reject?id=`+id+`' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = 'getMoreInformation(<%=v%>)'>Get more information</button>`
+                          div.innerHTML=`<button style = 'margin-top: 10px;' id = 'inline-block' onclick='accept(`+i+`,"`+id+`")'>Accept</button><form id = 'inline-block' action='/api/reject?id=`+id+`' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = 'getMoreInformation(<%=v%>)'>Get more information</button>`
                   
                       }</script>
               
@@ -152,11 +152,11 @@
 
                               <%if(!pageLengthR[i] && !argumentsR[i]){%>
               
-                                  <h2 id = 'date'><%=dateR[i]%></h2><form action='/deleteBrief?id=<%=idR[i]%>' method = 'POST' id = 'deleteFormR<%=i%>'>
+                                  <h2 id = 'date'><%=dateR[i]%></h2><form action='/api/deleteBrief?id=<%=idR[i]%>' method = 'POST' id = 'deleteFormR<%=i%>'>
                                       <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 style = 'margin-bottom: 0px;' id = 'thirtypx'><%=debateR[i]%> Brief: <%=briefNameR[i]%></h2><div id ='trashCanR<%=i%>' ><i onclick = 'trashClickedR(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
                                   </form>
                                                       <%}else{%>
-                                                          <h2 id = 'date'><%=dateR[i]%></h2><form action='/deleteBrief?id=<%=idR[i]%>' method = 'POST' id = 'deleteFormR<%=i%>'>
+                                                          <h2 id = 'date'><%=dateR[i]%></h2><form action='/api/deleteBrief?id=<%=idR[i]%>' method = 'POST' id = 'deleteFormR<%=i%>'>
                                                               <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'><%=debateR[i]%> Brief: <%=briefNameR[i]%></h2><div id ='trashCanR<%=i%>' ><i onclick = 'trashClickedR(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
                                                           </form>
                                       <%}%>
@@ -207,7 +207,7 @@
 
                                       <%}else if(requestStatus[v] == 'agree'){%>                                        <h4 style = 'font-size: 20px; padding-top: 10px'>Your brief has been uploaded. You'll be notified when <%=from[v]%> uploads theirs.</h4>
                                         <%}else{%>
-                                                <div id = 'buttonContentR<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='acceptR(<%=v%>, "<%=requestActualId[v]%>")'>Accept</button><form id = 'inline-block' action='/reject?id=<%=requestActualId[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformationR(<%=v%>)">Get more information</button></div>
+                                                <div id = 'buttonContentR<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='acceptR(<%=v%>, "<%=requestActualId[v]%>")'>Accept</button><form id = 'inline-block' action='/api/reject?id=<%=requestActualId[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformationR(<%=v%>)">Get more information</button></div>
                                               </div>
 
                                                   <%}%>
@@ -222,12 +222,12 @@
                     }
                       function acceptR(i, id){
                           const div = document.getElementById('buttonContentR' + i)
-                          div.innerHTML=`<form action = '/agree?id=`+id+`' method = 'POST'><input name = 'link' class = 'feedback-input' type = 'url' placeholder='Link to your brief'><p>Your brief won't be sent to <%=from[i]%> until they also upload theirs.</p><button type='button' style = 'margin-bottom: 10px;' onclick='cancelR(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
+                          div.innerHTML=`<form action = '/api/agree?id=`+id+`' method = 'POST'><input name = 'link' class = 'feedback-input' type = 'url' placeholder='Link to your brief'><p>Your brief won't be sent to <%=from[i]%> until they also upload theirs.</p><button type='button' style = 'margin-bottom: 10px;' onclick='cancelR(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
                           
                       }
                       function cancelR(i, id){
                           const div = document.getElementById('buttonContentR' + i)
-                          div.innerHTML=`<button style = 'margin-top: 10px;' id = 'inline-block' onclick='acceptR(`+i+`,"`+id+`")'>Accept</button><form id = 'inline-block' action='/reject?id=`+id+`' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = 'getMoreInformationR(<%=v%>)'>Get more information</button>`
+                          div.innerHTML=`<button style = 'margin-top: 10px;' id = 'inline-block' onclick='acceptR(`+i+`,"`+id+`")'>Accept</button><form id = 'inline-block' action='/api/reject?id=`+id+`' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = 'getMoreInformationR(<%=v%>)'>Get more information</button>`
                   
                       }
       </script>

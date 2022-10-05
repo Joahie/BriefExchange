@@ -21,14 +21,14 @@
   <h1>The email has been sent. If you can't find it, please check your spam folder.</h1>
 
  
-  <%}else if(verificationNumber){%>  <form action="/emailVerification" method = "POST">
+  <%}else if(verificationNumber){%>  <form action="/api/emailVerification" method = "POST">
     <h1>You cannot edit your account information before verifying your email.</h1>
     <input type="submit" value="Send verification email"/>
   </form>         
     <%}else if(!speechranksValid){%>
       <h1>Edit Account Information</h1>
 
-        <form action="/editAccountInformation" method = "POST">
+        <form action="/api/editAccountInformation" method = "POST">
    
       
             <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
@@ -88,7 +88,7 @@
                           <%}else if(!passwordRight){%>
                             <h1>Edit Account Information</h1>
 
-                            <form action="/editAccountInformation" method = "POST">
+                            <form action="/api/editAccountInformation" method = "POST">
                         
                           
                                 <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
@@ -150,7 +150,7 @@
                     <%}else if(!oldPasswordExisting){%>
                       <h1>Edit Account Information</h1>
 
-                        <form action="/editAccountInformation" method = "POST">
+                        <form action="/api/editAccountInformation" method = "POST">
                     
                       
                             <label for="speechranks">Speechranks</label>  <input required  maxlength = "55" name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
@@ -211,7 +211,7 @@
                                           <%}else if(!speechranksValid){%>
                                             <h1>Edit Account Information</h1>
 
-                                            <form action="/editAccountInformation" method = "POST">
+                                            <form action="/api/editAccountInformation" method = "POST">
                                         
                                           
                                                 <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
@@ -270,7 +270,7 @@
                           </form> <%}else{%>
                                                                 <h1>Edit Account Information</h1>
 
-                                                                <form action="/editAccountInformation" method = "POST">
+                                                                <form action="/api/editAccountInformation" method = "POST">
             <label for="speechranks">Speechranks</label>  <input required  name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks" value = "<%=speechranks%>" />
             <label for="oldPassword">Old password</label><input   name="oldPassword" type="password" class="feedback-input" placeholder="Old password" value = "<%=oldPassword%>" />
             <label for="newPassword">New password</label>

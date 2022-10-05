@@ -21,7 +21,7 @@
    
   <%if(!checked){%>
 
-    <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+    <form method = "POST" action = "/api/rateABrief?id=<%=id%>">           
 
     
    
@@ -50,7 +50,7 @@ padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-botto
 </form>
 <%}else if(!briefReceived){%>
 
-  <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+  <form method = "POST" action = "/api/rateABrief?id=<%=id%>">           
 
     
    
@@ -81,7 +81,7 @@ padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-botto
 
 <%}else if(alreadyReviewed){%>
 
-  <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+  <form method = "POST" action = "/api/rateABrief?id=<%=id%>">           
 
     
    
@@ -113,7 +113,7 @@ padding-top: 0px; margin-bottom: 15px;}.container{margin-top: 0px; padding-botto
 
  <h2>Your rating has been received. Thanks for your feedback on the brief!</h2>
     <%}else{%>
-      <form method = "POST" action = "/rateABrief?id=<%=id%>">           
+      <form method = "POST" action = "/api/rateABrief?id=<%=id%>">           
 
     
    

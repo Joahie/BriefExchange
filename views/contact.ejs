@@ -34,7 +34,7 @@
 <hr>    
 
 <h1 style = "text-align: center; margin-top: 37.35px;">What you're offering</h1>
-<form action="/contact?id=<%=id%>" method = "POST">
+<form action="/api/contact?id=<%=id%>" method = "POST">
     <input name = 'briefName' required class="feedback-input" type="text" placeholder = "Brief name">
     <input name = "description"required class="feedback-input" type="text" placeholder = "Description">
     <input required  name="pages" type="number" class="feedback-input" placeholder="Number of pages" min = 1 max = 300/>
@@ -64,7 +64,7 @@
 <h2>Minimum number of arguments: <%=arguments%></h2>
 <%}%>
 <hr>    
-<form action="/contact?id=<%=id%>" method = "POST">
+<form action="/api/contact?id=<%=id%>" method = "POST">
 <h1 style = "text-align: center; margin-top: 37.35px;">Details on your brief</h1>
 
 <input name = "description" required class="feedback-input" type="text" placeholder = "Description">

@@ -48,7 +48,7 @@
       
           <% total = total-1%>
           <%}else{%>
-      <h2 id = 'date' style = "padding-bottom: 10px;"><%=senderRequestDate[i]%></h2><form action='/deleteContact?id=<%=senderRequestActualId[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
+      <h2 id = 'date' style = "padding-bottom: 10px;"><%=senderRequestDate[i]%></h2><form action='/api/deleteContact?id=<%=senderRequestActualId[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
           <%if(!senderRequestDebate[i]){%>
               <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'>What <a href="/profiles?user=<%=senderRequestToName[i]%>"><%=senderRequestToName[i]%></a> is looking for: </h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
   
@@ -78,7 +78,7 @@
       <%}else if(senderRequestStatus[i] == "agree"){%>
           <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
           <h3><%=senderRequestToName[i]%> has accepted your offer and uploaded the brief you requested. To access it you must first upload the brief that they requested.</h3>
-          <form action = '/response?id=<%=senderRequestActualId[i]%>' method = 'POST'><input required name = 'link' class = 'feedback-input' type = 'url' style = "margin-top: 0px;" placeholder='Link to your brief'><button type = 'submit' id = "responseButton">Send</button></form>
+          <form action = '/api/response?id=<%=senderRequestActualId[i]%>' method = 'POST'><input required name = 'link' class = 'feedback-input' type = 'url' style = "margin-top: 0px;" placeholder='Link to your brief'><button type = 'submit' id = "responseButton">Send</button></form>
           
       <%}else if(senderRequestStatus[i] == "bothSidesSent"){%>
           <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
@@ -106,7 +106,7 @@
           <%}else if(senderRequestStatus[i] == "agree"){%>
               <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>
               <h3><%=senderRequestToName[i]%> has accepted your offer and uploaded the brief you requested. To access it you must first upload the brief that you offered in return.</h3>
-              <form action = '/response?id=<%=senderRequestActualId[i]%>' method = 'POST'><input required name = 'link' class = 'feedback-input' type = 'url' style = "margin-top: 0px;" placeholder='Link to your brief'><button type = 'submit' id = "responseButton">Send</button></form>
+              <form action = '/api/response?id=<%=senderRequestActualId[i]%>' method = 'POST'><input required name = 'link' class = 'feedback-input' type = 'url' style = "margin-top: 0px;" placeholder='Link to your brief'><button type = 'submit' id = "responseButton">Send</button></form>
               
           <%}else if(senderRequestStatus[i] == "bothSidesSent"){%>
               <h2 id = 'thirtypx'  style="padding-top: 10px;">Status: Accepted</h2>

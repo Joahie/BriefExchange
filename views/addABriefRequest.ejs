@@ -20,7 +20,7 @@
           <h1>The email has been sent. If you can't find it, please check your spam folder.</h1>
         
          
-          <%}else if(verificationNumber){%>  <form action="/emailVerification" method = "POST">
+          <%}else if(verificationNumber){%>  <form action="/api/emailVerification" method = "POST">
             <h1>You cannot add a brief request before verifying your email.</h1>
             <input type="submit" value="Send verification email"/>
           </form>
@@ -30,7 +30,7 @@
             <%}else if (maxRequestsMet){%>
         <h1>Add a Brief Request</h1>
     
-    <form method = "POST" action = "/addABriefRequest">     
+    <form method = "POST" action = "/api/addABriefRequest">     
 
       
       
@@ -65,7 +65,7 @@ padding-top: 0px; margin-top: 0px;}</style>
 <%}else {%>
     <h1>Add a Brief Request</h1>
     
-    <form method = "POST" action = "/addABriefRequest">     
+    <form method = "POST" action = "/api/addABriefRequest">     
 
       
       
