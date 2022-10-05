@@ -12,7 +12,6 @@ const MongoDBSession = require("connect-mongodb-session")(session)
 const PORT = 3000
 const helmet = require("helmet");
 const hpp = require('hpp');
-const rateLimit = require('express-rate-limit')
 
 //Configuring cookies
 const store = new MongoDBSession({

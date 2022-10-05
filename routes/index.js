@@ -17,6 +17,7 @@ const env = require('dotenv').config()
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
 const EMAIL_USERNAME = process.env.EMAIL_USERNAME
 const bcrypt = require('bcrypt')
+const rateLimit = require('express-rate-limit')
 
 //Middleware for cookie authentication
 const isAuth = (req, res, next)=>{
@@ -31,6 +32,32 @@ const markAsRead = (req,res,next)=>{
     req.session.notificationRedirect = req.originalUrl
     next()
 }
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 200,
+	standardHeaders: true,
+	legacyHeaders: false,
+    message: async (req, res) => {
+        if(req.session.email){
+            var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        }else{
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+        }
+        res.render('429', {
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+            type: "index",
+        }); 
+		
+	},
+
+})
+router.use(limiter)
 
 function sortingMongoDB(results){
     let StringifiedResults = JSON.stringify(results)

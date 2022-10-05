@@ -36,7 +36,7 @@ const markAsRead = (req,res,next)=>{
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
-	max: 1,
+	max: 50,
 	standardHeaders: true,
 	legacyHeaders: false,
     message: async (req, res) => {
@@ -52,6 +52,7 @@ const limiter = rateLimit({
             authName: req.session.name,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            type: "api",
         }); 
 		
 	},

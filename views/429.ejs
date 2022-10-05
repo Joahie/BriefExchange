@@ -16,7 +16,13 @@
   <section id = "body">
  
    <h1>429</h1>
-<h2>You're being rate limited. You can only send 50 requests every 15 minutes. Click <a href="/">here</a> to return to home.</h2>
+   <%if(type == "api"){%>
+    <h2>You're being rate limited. You can only send 50 requests every 15 minutes. Click <a href="/">here</a> to return to home.</h2>
+
+    <%}else{%>
+      <h2>You're being rate limited. You can only send 200 requests every 15 minutes. Click <a href="/">here</a> to return to home.</h2>
+
+      <%}%>
 </section>
 <%- include('partials/footer.ejs') %>
 
