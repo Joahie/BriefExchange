@@ -15,21 +15,18 @@
     font-size: 45px;
     text-align: center;
   }
-  #buttonFour{
-    margin: 0;
-    border-radius: 0px 5px 0px 0px;
-    border-left: none;
-  }
   #body{
     background: #f8f9fa;
   }
-  
+  #buttonThree{
+    border-radius: 0px 5px 0px 0px;
+  }
   .largerContainer{
       padding: 100px 200px;  
   }
   #body .smallerContainer{
     border: 2px solid var(--lighterGray);
-    border-radius: 0 8px 8px 8px;
+    border-radius: 0 0px 8px 8px;
     padding: 30px;
     box-shadow: rgba(0, 0, 0, 30%) 0px 3px 8px;
   }

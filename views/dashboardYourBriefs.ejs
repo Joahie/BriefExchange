@@ -16,14 +16,46 @@
     <%- include('partials/nav.ejs') %>
 
   <section id = "body">
+    <style>
+      .buttonContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0px 200px 0px 200px; 
+        padding-top: 100px;
+      }
+      .rightButtons button{
+        margin: 0px;
+        transition: background 0.3s;
+      }
+      .rightButtons button:hover{
+        background-color: #D3D3D3;
+      }
+
+      #rightButtonOne{
+        border-radius:  5px 0px  0px 0px;
+
+      }
+      #rightButtonTwo{
+        border-radius:  0px 5px  0px 0px;
+
+      }
+    </style>
     <div class="buttonContainer topButtons">
-      
-    <button onclick="replace(1)" id="buttonOne">Your briefs</button>
+      <div>
+        <button onclick="replace(1)" id="buttonOne">Your briefs</button>
     <button onclick="replace(4)" id="buttonTwo">Briefs you've received</button>
 
 
     <button onclick="replace(2)" id="buttonThree">Outgoing Requests</button>
+      </div>
+    
+<div class = 'rightButtons'>
+  <button onclick="redirect(1)" id="rightButtonOne">Add a brief offer</button>
+  <button onclick="redirect(2)" id="rightButtonTwo">Add a brief request</button></div>
     </div>
+
+    
 
     <div class="largerContainer">
       <div class = "smallerContainer">
@@ -366,7 +398,6 @@
     <style>#body a{
         color: black}
         .topButtons button{
-margin: 100px 0 0 200px;
     border: 1px solid var(--lighterGray);
     background: transparent;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -389,8 +420,7 @@ margin: 100px 0 0 200px;
     margin: 0;
     border: 1px solid var(--lighterGray); 
     border-bottom: none;
-     border-radius:  0px;
-       
+      
    }
   
   .buttonContainer{

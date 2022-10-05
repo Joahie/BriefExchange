@@ -17,3 +17,12 @@ function switchToTrashCan(i){
         const div = document.getElementById('trashCanR' + i)
         div.innerHTML = "<i onclick = 'trashClickedR("+i+")' class='fa fa-trash fa-2x'></i>"
     }
+function redirect(i){
+    if(i==1){
+        window.location.href = "/addABriefOffer";
+
+    }
+    if(i==2){
+        window.location.href = "/addABriefRequest";
+    }
+}
