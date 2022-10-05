@@ -279,7 +279,7 @@ var uuid = crypto.randomUUID()
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(answer.password, salt)
         await mongoAccounts.insertOne({name: answer.name, speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, nameToLowerCase: answer.name.toLowerCase().replace(" ",""), rating: null, email: answer.email, password: hashedPassword, verificationNumber: uuid, notifications: []})
-
+        
     }catch(err){
         if(req.session.email){
             var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
@@ -708,7 +708,7 @@ router.get("/editAccountInformation", isAuth, markAsRead,async (req, res)=>{
             oldPasswordExisting: true,
             verificationNumber: results.verificationNumber,
             numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,
+            notificationsArray: notificationsFromMongo.notifications,oldPasswordExisting: null,
         })
     }
    
@@ -852,9 +852,11 @@ user = req.query.user
             confirmNewPassword: answer.confirmNewPassword,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            verificationNumber: null,
+            oldPasswordExisting: null,
         })}
     }
-    if(answer.oldPassword != results.password && answer.oldPassword){
+    if(await bcrypt.compare(answer.oldPassword, results.password) && answer.oldPassword){
         if(!req.session.email){
             return res.render("noAccess",{
                 auth: req.session.email,
@@ -883,6 +885,8 @@ user = req.query.user
             confirmNewPassword: answer.confirmNewPassword,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            verificationNumber: null,oldPasswordExisting: null,
+
         })}
     }
     if(answer.newPassword != answer.confirmNewPassword){
@@ -914,6 +918,7 @@ user = req.query.user
             confirmNewPassword: answer.confirmNewPassword,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            verificationNumber: null,oldPasswordExisting: null,
         })}
     }
    
@@ -947,14 +952,19 @@ user = req.query.user
             confirmNewPassword: answer.confirmNewPassword,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            verificationNumber: null,
+            oldPasswordExisting: null,
         })}
     }
    
 if (answer.password){
-    await mongoAccounts.updateOne({email: req.session.email},{$set: {speechranks: answer.speechranks, password: answer.newPassword, ld: tempLD, tp: tempTP, parli: tempPARLI, rating: results.rating, name: results.name, nameToLowerCase: results.nameToLowerCase}})
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(answer.password, salt)
+    
+    await mongoAccounts.updateOne({email: req.session.email},{$set: {speechranks: answer.speechranks, password: hashedPassword, ld: tempLD, tp: tempTP, parli: tempPARLI, rating: results.rating, name: results.name, nameToLowerCase: results.nameToLowerCase}})
 
 }else{
-    await mongoAccounts.updateOne({email: req.session.email},{$set: {speechranks: answer.speechranks, password: results.password, ld: tempLD, tp: tempTP, parli: tempPARLI, rating: results.rating, name: results.name, nameToLowerCase: results.nameToLowerCase}})
+    await mongoAccounts.updateOne({email: req.session.email},{$set: {speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, rating: results.rating, name: results.name, nameToLowerCase: results.nameToLowerCase}})
 
 }
     return res.redirect("/profiles?user=" + req.session.name)
@@ -1433,18 +1443,16 @@ router.post("/deleteAccount", isAuth, markAsRead, async (req,res)=>{
             }
     }
 
-    var results = await mongoAccounts.count({email: req.session.email, password: req.body.password})
+    var results = await mongoAccounts.findOne({email: req.session.email})
     var briefsLength = await mongoBrief.count()
     var briefsContent = await mongoBrief.find().toArray()
-    if(results >0){
+    if(await bcrypt.compare(answer.password, results.password)){
         await mongoAccounts.deleteOne({email: req.session.email, password: req.body.password})
 
-        for(let i = 0; i< briefsLength;i++){
-            if(briefsContent[i].email == req.session.email){
-                await mongoBrief.deleteOne({_id: briefsContent[i]._id})
-            }
-        }
-
+        await mongoContact.deleteMany({to: req.session.email})
+        await mongoContact.deleteMany({email: req.session.email})
+        await mongoBrief.deleteMany({email: req.session.email})
+        
     const emailContents = `
     <h1 style = "color:black;">Your account has been successfuly deleted.</h1>
     <h2 style = "color:black;">Thanks for using StoaExchange, sorry to see you leave so soon.</h2>

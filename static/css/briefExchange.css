@@ -50,17 +50,15 @@
   
   #buttonTwo{
    margin: 0;
-    border: none;
-    border-top: 1px solid var(--lighterGray);
-
+border-left: 0px;
     border-radius:  0px;
   }
 
   #buttonThree{
     margin: 0;
-    border: 1px solid var(--lighterGray); 
     border-bottom: none;
      border-radius:  0px;
+     border-left: 0px;
        
    }
    #buttonOne{background-color: #D3D3D3;}
@@ -103,7 +101,10 @@
       display: none;
     }
   }
-
+.leftButtons button{
+  border: 2px solid;
+  border-bottom: 0px;
+}
   .buttonContainer{
     display: flex;
     flex-direction: row;
@@ -119,16 +120,18 @@
   .rightButtons button:hover{
     background-color: #D3D3D3;
   }
-
   #rightButtonOne{
     border-radius:  5px 0px  0px 0px;
-
+    border: 2px solid;
+    border-bottom: 0px;
+    border-right: 0px;
   }
   #rightButtonTwo{
     border-radius:  0px 5px  0px 0px;
-    border-left: 0px;
-  }
-
+border-left: 0px;
+border: 2px solid;
+border-bottom: 0px;
+    }
   @media screen and (max-width: 1240px) {
     .rightButtons{
       display: none;
