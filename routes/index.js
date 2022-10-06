@@ -47,9 +47,9 @@ const verifyEmail =  (title, description) => {
                     typeOfPageName: title,
                     typeOfPageDescription: description,
                 })
-            }            next()
+            }          
     
-        }
+        }  next()
     }
   }
 

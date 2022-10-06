@@ -11,6 +11,10 @@
 
 </head>
 <body>
+    <%if(!auth){%>
+        
+        <style>.rightButtons{display: none;}</style>
+        <%}%>
     <%- include('partials/nav.ejs') %>
   <section id = "body">
 
