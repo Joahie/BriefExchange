@@ -1,23 +1,39 @@
 {
-  "name": "StoaExchange",
+  "name": "stoaexchange",
   "version": "1.0.0",
-  "description": "StoaExchange",
+  "description": "A website for debaters from the Stoa speech and debate league to exchange evidence and arguments",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "joshua ren",
+  "license": "MIT",
   "dependencies": {
-    "connect-mongodb-session": "^3.1.1", 
-    "cookie-session": "1.4.0", 
+    "@types/node": "^18.0.6",
+    "bcrypt": "^5.1.0",
+    "connect-mongodb-session": "^3.1.1",
+    "cookie-session": "^2.0.0",
     "crypto": "^1.0.1",
-    "dotenv": "^16.0.2",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-rate-limit": "^6.6.0",
     "express-session": "^1.17.3",
-    "moment": "^2.29.4",     
+    "helmet": "^6.0.0",
+    "hpp": "^0.2.3",
+    "moment": "^2.29.4",
     "mongodb": "^4.6.0",
-    "nodemailer": "^6.7.8" 
+    "node-fetch": "^3.2.6",
+    "nodemailer": "^6.8.0"
   },
-  "author": "Joshua Ren",
-  "license": "MIT"
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joahie/StoaExchange.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Joahie/StoaExchange/issues"
+  },
+  "homepage": "https://github.com/Joahie/StoaExchange#readme"
 }
