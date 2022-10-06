@@ -18,6 +18,8 @@ const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
 const EMAIL_USERNAME = process.env.EMAIL_USERNAME
 const bcrypt = require('bcrypt')
 const rateLimit = require('express-rate-limit')
+const helmet = require("helmet");
+
 
 //Middleware for cookie authentication
 const isAuth = (req, res, next)=>{
