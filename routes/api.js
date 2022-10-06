@@ -93,6 +93,7 @@ function sortingMongoDB(results){
     return ParsedResults
 }
 router.post("/register",markAsRead, async (req,res)=>{
+    
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
         return res.render("register", {
@@ -142,7 +143,6 @@ router.post("/register",markAsRead, async (req,res)=>{
         var tempPARLI = false
     }
 
-
     var existing =  await mongoAccounts.count({email: answer.email})
     var existing2 =  await mongoAccounts.count({nameToLowerCase: answer.name.toLowerCase().replace(" ","")})
     if(existing>0){
@@ -150,7 +150,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             emailAvailable: false,
             nameAvailable: true,
             email: answer.email,
-            name: answer.name,
+            name: req.body.name,
             speechranks: answer.speechranks,
             password: answer.password,
             confirmPassword: answer.confirmPassword,
@@ -171,7 +171,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             nameAvailable: false,
             speechranksValid: true,
             email: answer.email,
-            name: answer.name,
+            name: req.body.name,
             speechranks: answer.speechranks,
             password: answer.password,
             confirmPassword: answer.confirmPassword,
@@ -185,7 +185,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             notificationsArray: null,
         })
     }
-    if(!answer.speechranks.includes("http://speechranks.com/")){
+    if(!answer.speechranks.includes("speechranks.com/")){
         return res.render("register",{
             emailAvailable: true,
             nameAvailable: true,
@@ -193,7 +193,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             speechranksValid: false,
             speechranksLink: false,
             email: answer.email,
-            name: answer.name,
+            name: req.body.name,
             speechranks: answer.speechranks,
             password: answer.password,
             confirmPassword: answer.confirmPassword,
@@ -213,7 +213,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             nameAvailable: true,
             passwordCorrect: false,
             email: answer.email,
-            name: answer.name,
+            name: req.body.name,
             speechranks: answer.speechranks,
             password: answer.password,
             confirmPassword: answer.confirmPassword,
@@ -235,7 +235,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             passwordCorrect: true,
             termsAndConditionsAgreed: false,
             email: answer.email,
-            name: answer.name,
+            name: req.body.name,
             speechranks: answer.speechranks,
             password: answer.password,
             confirmPassword: answer.confirmPassword,
@@ -255,7 +255,7 @@ var uuid = crypto.randomUUID()
 
     const emailContents = `
     <h1 style = "color:black;">Thanks for creating a StoaExchange account!</h1>
-    <h2 style = "color:black;"> Please click <a href="http://localhost:3000/verifyEmail?uuid=` + uuid +`" target = "_blank" style = "color: black;">here</a> to complete your signup. If you didn't create an account with us, please ignore this email.</h2>
+    <h2 style = "color:black;"> Please click <a href="https://stoaexchange.joshuaren.repl.co/verifyEmail?uuid=` + uuid +`" target = "_blank" style = "color: black;">here</a> to complete your signup. If you didn't create an account with us, please ignore this email.</h2>
     <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
     ` 
     let transporter = nodemailer.createTransport({
@@ -401,7 +401,7 @@ router.post("/emailVerification", markAsRead, async (req,res)=>{
     const recipient= req.session.email
     const emailContents = `
     <h1 style = "color:black;">Thanks for creating a StoaExchange account!</h1>
-    <h2 style = "color:black;"> Please click <a href="http://localhost:3000/verifyEmail?uuid=` + results.verificationNumber +`" target = "_blank" style = "color: black;">here</a> to complete your signup. If you didn't create an account with us, please ignore this email.</h2>
+    <h2 style = "color:black;"> Please click <a href="https://stoaexchange.joshuaren.repl.co/verifyEmail?uuid=` + results.verificationNumber +`" target = "_blank" style = "color: black;">here</a> to complete your signup. If you didn't create an account with us, please ignore this email.</h2>
     <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
     ` 
     let transporter = nodemailer.createTransport({
@@ -999,7 +999,7 @@ const d = moment()
 await mongoAccounts.updateOne({email: email}, {$set: {uuid: uuid, lastRequest: d}})
 
     const emailContents = `
-    <h2 style = "color:black;">Please click <a href="http://localhost:3000/passwordReset?uuid=` + uuid +`" target = "_blank" style = "color: black;">here</a> to reset your password. If you didn't request a password reset, please disregard this email.</h2>
+    <h2 style = "color:black;">Please click <a href="https://stoaexchange.joshuaren.repl.co/passwordReset?uuid=` + uuid +`" target = "_blank" style = "color: black;">here</a> to reset your password. If you didn't request a password reset, please disregard this email.</h2>
     <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
     ` 
     let transporter = nodemailer.createTransport({
@@ -1220,7 +1220,6 @@ var briefName = temp.briefName
 
 
 router.post("/markAsRead", isAuth, async (req,res)=>{
-    console.log(req.session.notificationRedirect)
     var results = await mongoAccounts.findOne({email: req.session.email})
     await mongoAccounts.updateOne({email: req.session.email},{ $pullAll: { notifications: results.notifications}})    
 
