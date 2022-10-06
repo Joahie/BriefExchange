@@ -33,12 +33,12 @@
         
         
     <%if(!accountExisting){%>
-      <input required  name="email" type="email" class="feedback-input" placeholder="Email"  value = <%=email%> />
+      <input required  name="email" type="email" class="feedback-input" placeholder="Email"  value = "<%=email%>" />
   
       <h3>There is no existing account under this email</h3>
       <style>h3{text-align: center; color:rgb(255, 89, 89);
   padding-top: 0px; margin-top: 5px;}</style>
-    <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = <%=password%> />
+    <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
   
   
     <input type="submit" value="Log In"/>
@@ -54,8 +54,8 @@
   </form>
       <h2>Don't have an account? <a href="/register">Click here to register</a></h2>
             <%}else{%>
-              <input required  name="email" type="email" class="feedback-input" placeholder="Email" value = <%=email%> />
-          <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = <%=password%> />
+              <input required  name="email" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+          <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
   
       <h3>The password is incorrect</h3>
       <style>h3{text-align: center; color:rgb(255, 89, 89);

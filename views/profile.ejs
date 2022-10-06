@@ -22,8 +22,10 @@
         
 <hr>    
     
-      
+      <%if(speechranks){%>
         <a href=<%=speechranks%> target = "_blank"><h2><%=name%>'s Speechranks</h2></a>
+      <%}%>
+        
         <%if (ld && parli && tp){%>
             <h2>Debate Events: Team Policy, Lincoln Douglas, and Parliamentary Debate</h2>
             <%}else if(ld && parli){%>

@@ -170,7 +170,16 @@ router.get("/profiles", markAsRead,async (req, res)=>{
         }
 }
 
-
+if(!req.query.user){
+    return res.render("noProfiles", {
+        name: req.query.user,
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+        unexisting: false,
+    })
+}
     try{
     
 
@@ -257,6 +266,7 @@ router.get("/profiles", markAsRead,async (req, res)=>{
             authName: req.session.name,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            unexisting: true,
         })
     }
 })

@@ -14,8 +14,11 @@
     <%- include('partials/nav.ejs') %>
 
   <section id = "body">
- 
+ <%if(unexisting){%>
 <h2 id ="noProfiles">Sorry, there is currently no user with the name of <%=name%>. Click <a href="/">here</a> to return to home.</h2>
+<%}else{%>
+  <h2 id ="noProfiles">Sorry, something went wrong with your search. Click <a href="/">here</a> to return to home.</h2>
+<%}%>
 </section>
 <%- include('partials/footer.ejs') %>
 

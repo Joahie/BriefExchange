@@ -185,7 +185,7 @@ router.post("/register",markAsRead, async (req,res)=>{
             notificationsArray: null,
         })
     }
-    if(!answer.speechranks.includes("speechranks.com/")){
+    if(answer.speechranks != "" && !answer.speechranks.includes("speechranks.com/")){
         return res.render("register",{
             emailAvailable: true,
             nameAvailable: true,
@@ -466,7 +466,7 @@ user = req.query.user
     var existing =  await mongoAccounts.count({email: answer.email})
     var results =  await mongoAccounts.findOne({email: req.session.email})
     
-    if(!answer.speechranks.includes("http://speechranks.com/")){
+    if(answer.speechranks != "" && !answer.speechranks.includes("speechranks.com/")){
         if(!req.session.email){
             return res.render("noAccess",{
                 auth: req.session.email,
