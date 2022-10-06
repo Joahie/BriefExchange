@@ -90,6 +90,26 @@ function sortingMongoDB(results){
     let ParsedResults = JSON.parse(StringifiedResults)
     return ParsedResults
 }
+router.get("/practiceRounds", markAsRead, async (req,res)=>{
+
+ if(req.session.email){
+    var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+}else{
+    var notificationsFromMongo = {
+        "notifications":[]
+        }
+}
+
+res.render("practiceRounds", {
+   
+    auth: req.session.email,        
+    authName: req.session.name,
+    numberOfNotifications: notificationsFromMongo.notifications.length,
+    notificationsArray: notificationsFromMongo.notifications,
+    })
+
+
+})
 router.get("/register", markAsRead,async (req, res)=>{
 
     if(req.session.email){
@@ -242,12 +262,7 @@ router.get("/profiles", markAsRead,async (req, res)=>{
 
 //Sample for get function that renders the homepage
 router.get("/", markAsRead,async (req, res)=>{
-    
-function waitforme(milisec) {
-    return new Promise(resolve => {
-        setTimeout(() => { resolve('') }, milisec);
-    })
-}
+
 
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})

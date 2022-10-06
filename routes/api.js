@@ -1216,13 +1216,14 @@ var briefName = temp.briefName
 
 
 
-router.post("/markAsRead", markAsRead, isAuth, async (req,res)=>{
+
+router.post("/markAsRead", isAuth, async (req,res)=>{
+    console.log(req.session.notificationRedirect)
     var results = await mongoAccounts.findOne({email: req.session.email})
     await mongoAccounts.updateOne({email: req.session.email},{ $pullAll: { notifications: results.notifications}})    
 
     return res.redirect(req.session.notificationRedirect || "/")
 })
-
 
 
 router.use(async (req, res, next) => {

@@ -49,7 +49,7 @@
     <h6 class = "notificationsHeaderH6">Notifications</h6>
     
 
-    <form action="/markAsRead" method = "POST">
+    <form action="/api/markAsRead" method = "POST">
       <button>Mark all as read</button>
      
     </form></li>  
@@ -98,7 +98,7 @@
           </li>
           <li><a class="address" href="/dashboard?section=yourBriefs"><span class="picon"><i class="fa fa-desktop" aria-hidden="true"></i></span>Dashboard</a></li>
           <li><a class="settings" href="/editAccountinformation"><span class="picon"><i class="fas fa-cog"></i></span>Edit account</a></li>
-          <li id = "logoutli"><form action="/logOut" method = "POST"><button id = "logOut" class = 'dissapearNext' style = "color: rgba(0,0,0,.5);"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Log Out</button></form> 
+          <li id = "logoutli"><form action="/api/logOut" method = "POST"><button id = "logOut" class = 'dissapearNext' style = "color: rgba(0,0,0,.5);"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Log Out</button></form> 
 
           </li>
         </ul>
