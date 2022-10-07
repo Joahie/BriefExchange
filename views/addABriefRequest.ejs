@@ -24,15 +24,7 @@
   <section id = "register">
   <div class="largerContainer">
       <div class = "smallerContainer">
-        <%if(verificationNumber == "emailSent"){%>
-          <h1>The email has been sent. If you can't find it, please check your spam folder.</h1>
-        
-         
-          <%}else if(verificationNumber){%>  <form action="/api/emailVerification" method = "POST">
-            <h1>You cannot add a brief request before verifying your email.</h1>
-            <input type="submit" value="Send verification email"/>
-          </form>
-           <%} else if(completed){%>
+        <%if(completed){%>
             <h1>Your brief request has been created. Click <a href="/profiles?user=<%=authName%>">here</a> to see it on your profile.</h1>
 
             <%}else if (maxRequestsMet){%>
