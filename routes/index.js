@@ -761,7 +761,7 @@ if(section == "yourBriefs"){
                 senderRequestFirstLink.push(results7[senderRequestAmount-i-1].firstLink)
                 senderRequestSecondLink.push(results7[senderRequestAmount-i-1].secondLink)
             }    
-            return res.render("dashboardOutgoingRequests",{
+            return res.render("dashboardOutgoingRequests",{            alreadySent: false,    
                     senderRequestAmount: senderRequestAmount,
                     senderRequestFrom: senderRequestFrom,
                     senderRequestId: senderRequestId,
@@ -785,13 +785,7 @@ if(section == "yourBriefs"){
                     auth: req.session.email,
                     authName: req.session.name, numberOfNotifications: notificationsFromMongo.notifications.length,
                     notificationsArray: notificationsFromMongo.notifications,
-                })}else if(section == "ratings"){
-                    return res.render("dashboardRatings",{
-                        auth: req.session.email,
-                        authName: req.session.name, numberOfNotifications: notificationsFromMongo.notifications.length,
-                        notificationsArray: notificationsFromMongo.notifications,
-                    })
-                }else if(section == "briefsYouveReceived"){
+                })}else if(section == "briefsYouveReceived"){
                     var results = await mongoBriefsReceived.find({ $or: [ { fromEmail: req.session.email}, { toEmail: req.session.email} ] }).toArray()
                     var receivedAmount = await mongoBriefsReceived.count({ $or: [ { fromEmail: req.session.email}, { toEmail: req.session.email} ] })
                

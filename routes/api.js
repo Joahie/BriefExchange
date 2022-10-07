@@ -876,20 +876,175 @@ router.post("/agree",  verifyEmail("Agree","agree to a brief request"),markAsRea
 router.post("/response",  verifyEmail("Respond","respond to a brief request"),isAuth, async (req,res)=>{
     var id = req.query.id
     var answer = req.body
-    await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"bothSidesSent", secondLink: answer.link}})
-    var results = await mongoContact.findOne({_id: ObjectId(id)})
-try{if(results.inReturn){
-    await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "request", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, inReturn: results.inReturn, firstBriefDebate: results.debate,reviewed: false, id: results.id})
-    await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.offerBriefName}})
-}else{
-    await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "offering", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, secondBriefDebate: results.debate, firstBriefDebate: results.debate,id: results.id,reviewed: false})
-    await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.briefName}})
-}}catch(err){await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.briefName}})}
-
-
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    var validToSend = await mongoContact.count({_id: ObjectId(id),status:"bothSidesSent"})
+    if(validToSend == 0){
+        await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"bothSidesSent", secondLink: answer.link}})
+        var results = await mongoContact.findOne({_id: ObjectId(id)})
+    try{if(results.inReturn){
+        await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "request", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, inReturn: results.inReturn, firstBriefDebate: results.debate,reviewed: false, id: results.id})
+        await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.offerBriefName}})
+    }else{
+        await mongoBriefsReceived.insertOne({from: results.name, fromToLowerCase: results.nameToLowerCase, fromEmail: results.email, date: results.date, to: results.toName, toEmail: results.to, firstLink: results.firstLink, secondLink: results.secondLink, type: "offering", firstBriefName: results.offerBriefName, firstBriefDebate: results.offerDebate, secondBriefName: results.briefName, secondBriefDescription: results.description, secondBriefPages: results.pageLength, secondBriefArguments:results.arguments, secondBriefDebate: results.debate, firstBriefDebate: results.debate,id: results.id,reviewed: false})
+        await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.briefName}})
+    }}catch(err){await mongoAccounts.updateOne({nameToLowerCase: results.toName.toLowerCase().replace(" ","")},{$push:{notifications: results.name + " has uploaded their brief on " + results.briefName}})}
     
-    res.redirect("dashboard?section=outgoingRequests")
-})
+
+    section = req.query.section
+    
+    
+        
+    var senderRequestToName = []
+    var senderRequestFrom = []
+    var senderRequestFromEmail = []
+    var senderRequestId = []
+    var senderRequestBriefName = []
+    var senderRequestDescription = []
+    var senderRequestPages = []
+    var senderRequestArguments = []
+    var senderRequestDebate = []
+    var senderRequestAdditional = []
+    var senderRequestActualId = []
+    var senderRequestStatus = []
+    var senderRequestDate = []
+    var senderRequestTo = []
+    var senderRequestOfferDebate = []
+    var senderRequestOfferBriefName = []
+    var senderRequestInReturn = []
+    var senderRequestFirstLink = []
+    var senderRequestSecondLink = []
+    var results7 =  await mongoContact.find({ email: req.session.email}).toArray()
+    var senderRequestAmount =  await mongoContact.count({ email: req.session.email})
+    for(let i = 0; i<senderRequestAmount; i++){
+        senderRequestFrom.push(results7[senderRequestAmount-i-1].name)
+        senderRequestId.push(results7[senderRequestAmount-i-1].id)
+        senderRequestBriefName.push(results7[senderRequestAmount-i-1].briefName)
+        senderRequestDescription.push(results7[senderRequestAmount-i-1].description)
+        senderRequestPages.push(results7[senderRequestAmount-i-1].pageLength)
+        senderRequestArguments.push(results7[senderRequestAmount-i-1].arguments)
+        senderRequestDebate.push(results7[senderRequestAmount-i-1].debate.toUpperCase())
+        senderRequestActualId.push(results7[senderRequestAmount-i-1]._id)
+        senderRequestAdditional.push(results7[senderRequestAmount-i-1].additional)
+        senderRequestDate.push(results7[senderRequestAmount-i-1].date)
+        senderRequestFromEmail.push(results7[senderRequestAmount-i-1].email)
+        senderRequestStatus.push(results7[senderRequestAmount-i-1].status)
+        senderRequestTo.push(results7[senderRequestAmount-i-1].to)
+        senderRequestToName.push(results7[senderRequestAmount-i-1].toName)
+        senderRequestOfferDebate.push(results7[senderRequestAmount-i-1].offerDebate.toUpperCase())
+        senderRequestOfferBriefName.push(results7[senderRequestAmount-i-1].offerBriefName)
+        senderRequestInReturn.push(results7[senderRequestAmount-i-1].inReturn)
+        senderRequestFirstLink.push(results7[senderRequestAmount-i-1].firstLink)
+        senderRequestSecondLink.push(results7[senderRequestAmount-i-1].secondLink)
+    }    
+    return res.render("dashboardOutgoingRequests",{            alreadySent: false,    
+    
+            senderRequestAmount: senderRequestAmount,
+            senderRequestFrom: senderRequestFrom,
+            senderRequestId: senderRequestId,
+            senderRequestActualId: senderRequestActualId,
+            senderRequestBriefName:senderRequestBriefName,
+            senderRequestDescription:senderRequestDescription,
+            senderRequestPages:senderRequestPages,
+            senderRequestArguments:senderRequestArguments,
+            senderRequestDebate:senderRequestDebate,
+            senderRequestAdditional:senderRequestAdditional,
+            senderRequestStatus: senderRequestStatus,
+            senderRequestDate:senderRequestDate,
+            senderRequestFromEmail:senderRequestFromEmail,
+            senderRequestTo:senderRequestTo,
+            senderRequestOfferBriefName:senderRequestOfferBriefName,
+            senderRequestOfferDebate:senderRequestOfferDebate, 
+            senderRequestToName:senderRequestToName,
+            senderRequestInReturn:senderRequestInReturn,
+            senderRequestFirstLink:senderRequestFirstLink,
+            senderRequestSecondLink:senderRequestSecondLink,
+            auth: req.session.email,
+            authName: req.session.name, numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        })
+         }else{ var results = await mongoContact.findOne({_id: ObjectId(id)})
+
+         section = req.query.section
+         
+         
+             
+         var senderRequestToName = []
+         var senderRequestFrom = []
+         var senderRequestFromEmail = []
+         var senderRequestId = []
+         var senderRequestBriefName = []
+         var senderRequestDescription = []
+         var senderRequestPages = []
+         var senderRequestArguments = []
+         var senderRequestDebate = []
+         var senderRequestAdditional = []
+         var senderRequestActualId = []
+         var senderRequestStatus = []
+         var senderRequestDate = []
+         var senderRequestTo = []
+         var senderRequestOfferDebate = []
+         var senderRequestOfferBriefName = []
+         var senderRequestInReturn = []
+         var senderRequestFirstLink = []
+         var senderRequestSecondLink = []
+         var results7 =  await mongoContact.find({ email: req.session.email}).toArray()
+         var senderRequestAmount =  await mongoContact.count({ email: req.session.email})
+         for(let i = 0; i<senderRequestAmount; i++){
+             senderRequestFrom.push(results7[senderRequestAmount-i-1].name)
+             senderRequestId.push(results7[senderRequestAmount-i-1].id)
+             senderRequestBriefName.push(results7[senderRequestAmount-i-1].briefName)
+             senderRequestDescription.push(results7[senderRequestAmount-i-1].description)
+             senderRequestPages.push(results7[senderRequestAmount-i-1].pageLength)
+             senderRequestArguments.push(results7[senderRequestAmount-i-1].arguments)
+             senderRequestDebate.push(results7[senderRequestAmount-i-1].debate.toUpperCase())
+             senderRequestActualId.push(results7[senderRequestAmount-i-1]._id)
+             senderRequestAdditional.push(results7[senderRequestAmount-i-1].additional)
+             senderRequestDate.push(results7[senderRequestAmount-i-1].date)
+             senderRequestFromEmail.push(results7[senderRequestAmount-i-1].email)
+             senderRequestStatus.push(results7[senderRequestAmount-i-1].status)
+             senderRequestTo.push(results7[senderRequestAmount-i-1].to)
+             senderRequestToName.push(results7[senderRequestAmount-i-1].toName)
+             senderRequestOfferDebate.push(results7[senderRequestAmount-i-1].offerDebate.toUpperCase())
+             senderRequestOfferBriefName.push(results7[senderRequestAmount-i-1].offerBriefName)
+             senderRequestInReturn.push(results7[senderRequestAmount-i-1].inReturn)
+             senderRequestFirstLink.push(results7[senderRequestAmount-i-1].firstLink)
+             senderRequestSecondLink.push(results7[senderRequestAmount-i-1].secondLink)
+         }    
+         return res.render("dashboardOutgoingRequests",{            alreadySent: false,    
+         
+                 senderRequestAmount: senderRequestAmount,
+                 senderRequestFrom: senderRequestFrom,
+                 senderRequestId: senderRequestId,
+                 senderRequestActualId: senderRequestActualId,
+                 senderRequestBriefName:senderRequestBriefName,
+                 senderRequestDescription:senderRequestDescription,
+                 senderRequestPages:senderRequestPages,
+                 senderRequestArguments:senderRequestArguments,
+                 senderRequestDebate:senderRequestDebate,
+                 senderRequestAdditional:senderRequestAdditional,
+                 senderRequestStatus: senderRequestStatus,
+                 senderRequestDate:senderRequestDate,
+                 senderRequestFromEmail:senderRequestFromEmail,
+                 senderRequestTo:senderRequestTo,
+                 senderRequestOfferBriefName:senderRequestOfferBriefName,
+                 senderRequestOfferDebate:senderRequestOfferDebate, 
+                 senderRequestToName:senderRequestToName,
+                 senderRequestInReturn:senderRequestInReturn,
+                 senderRequestFirstLink:senderRequestFirstLink,
+                 senderRequestSecondLink:senderRequestSecondLink,
+                 auth: req.session.email,
+                 authName: req.session.name, numberOfNotifications: notificationsFromMongo.notifications.length,
+                 notificationsArray: notificationsFromMongo.notifications,
+             })
+            
+         }
+     })
 
 router.post("/deleteContact", verifyEmail("Delete a Request","delete a request"), isAuth, markAsRead, async (req,res)=>{
     if(req.session.email){
@@ -944,7 +1099,8 @@ router.post("/deleteContact", verifyEmail("Delete a Request","delete a request")
         senderRequestFirstLink.push(results7[senderRequestAmount-i-1].firstLink)
         senderRequestSecondLink.push(results7[senderRequestAmount-i-1].secondLink)
     }    
-    return res.render("dashboardOutgoingRequests",{
+    return res.render("dashboardOutgoingRequests",{            alreadySent: false,    
+
             senderRequestAmount: senderRequestAmount,
             senderRequestFrom: senderRequestFrom,
             senderRequestId: senderRequestId,
