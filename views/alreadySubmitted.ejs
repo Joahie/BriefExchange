@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<style>
+            
+  @media screen and (max-width: 600px) {
+    #removeSomePadding{
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }}
+      </style><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -23,7 +30,7 @@
       <h2>Sorry, you can't contact yourself about your own briefs. If you'd like to see their other briefs, visit the brief marketplace here <a href="/briefExchange">here</a>.</h2>
       <%}else{%>
 
-        <h2>Sorry, you've already contacted <%=name%> regarding this brief. If you'd like to see their other briefs, visit their profile <a href="/profiles?user=<%=name%>">here</a>.</h2>
+        <h2 id = "removeSomePadding">Sorry, you've already contacted <%=name%> regarding this brief. If you'd like to see their other briefs, visit their profile <a href="/profiles?user=<%=name%>">here</a>.</h2>
         <%}%>
 </section>
 <%- include('partials/footer.ejs') %>

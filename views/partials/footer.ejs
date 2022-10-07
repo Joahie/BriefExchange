@@ -6,7 +6,7 @@
           <h3 class="footer-heading">Legal</h3>
           <p><a href="/termsAndConditions"  style = "text-decoration: underline">Terms and Conditions</a></p>
         </div>
-        <div class="footer-column">
+        <div id = "footerDissapearFirst"class="footer-column">
 
           <h3 class="footer-heading">Contact Us</h3>
           <p>Reach out to us at <a  style = "text-decoration: underline" href="mailto:StoaExchange@gmail.com" target = "_blank" class="footer-link">StoaExchange@gmail.com</a></p>
@@ -69,4 +69,15 @@
     }
     .footer-column{
       flex-basis: 50%;
-    }</style>
+    }
+    
+     
+  @media screen and (max-width: 485px) {
+    #footerDissapearFirst{
+      display: none;
+    }
+  }
+    
+    </style>
+
+

@@ -19,7 +19,8 @@ const EMAIL_USERNAME = process.env.EMAIL_USERNAME
 const bcrypt = require('bcrypt')
 const rateLimit = require('express-rate-limit')
 const helmet = require("helmet");
-
+const mongoSanitize = require('express-mongo-sanitize');
+router.use(mongoSanitize());
 
 //Middleware for cookie authentication
 const isAuth = (req, res, next)=>{

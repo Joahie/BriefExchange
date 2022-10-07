@@ -22,7 +22,7 @@
 
     </div>
     <div id ="divtwo">
-       <h1>Why use StoaExchange?</h1>
+       <h1 style = "word-wrap: break-word">Why use StoaExchange?</h1>
       <h2><span>01</span>Access a marketplace for briefs</h2>
       <p>Offer briefs for other users to trade for, or ask for specific briefs that you're in need of.</p>
         <h2><span>02</span>Rate briefs and users</h2>
@@ -40,7 +40,7 @@
           <h3 class="footer-heading">Legal</h3>
           <p><a href="/termsAndConditions" style = "text-decoration: underline">Terms and Conditions</a></p>
         </div>
-         <div class="footer-column">
+         <div class="footer-column" id = "footerDissapearFirst">
            <h3 class="footer-heading">Contact Us</h3>
            <p>Reach out to us at <a  style = "text-decoration: underline" href="mailto:StoaExchange@gmail.com" target = "_blank" class="footer-link">StoaExchange@gmail.com</a></p>
          </div>
@@ -79,3 +79,14 @@
     }
   }
   </script>
+
+  <style> 
+    @media screen and (max-width: 485px) {
+      #footerDissapearFirst{
+        display: none;
+      }
+      #divone, #divtwo{
+        padding-right:20px !important;
+        padding-left: 20px !important;
+      }
+    }</style>

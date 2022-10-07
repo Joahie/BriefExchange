@@ -19,7 +19,8 @@ const EMAIL_USERNAME = process.env.EMAIL_USERNAME
 const bcrypt = require('bcrypt')
 const rateLimit = require('express-rate-limit')
 const helmet = require("helmet");
-
+const mongoSanitize = require('express-mongo-sanitize');
+router.use(mongoSanitize());
 //Middleware for cookie authentication
 const isAuth = (req, res, next)=>{
     if(req.session.email){
@@ -507,13 +508,9 @@ router.get("/verifyEmail", isAuth, markAsRead,async (req,res)=>{
 
     var uuid = req.query.uuid
     var results =  await mongoAccounts.findOne({email: req.session.email, verificationNumber: uuid})
-    try{if (!results.name){
-        return res.render("noAccess",{
-            auth: req.session.email,
-            authName: req.session.name,numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,
-        })
-    }}catch(err){
+    var number =  await mongoAccounts.count({email: req.session.email, verificationNumber: uuid})
+
+    if (number == 0){
         return res.render("noAccess",{
             auth: req.session.email,
             authName: req.session.name,numberOfNotifications: notificationsFromMongo.notifications.length,

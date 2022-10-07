@@ -12,6 +12,9 @@ const MongoDBSession = require("connect-mongodb-session")(session)
 const PORT = 3000
 const helmet = require("helmet");
 const hpp = require('hpp');
+const mongoSanitize = require('express-mongo-sanitize');
+
+app.use(mongoSanitize());
 
 //Configuring cookies
 const store = new MongoDBSession({
