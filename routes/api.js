@@ -693,6 +693,7 @@ router.post("/addABriefRequest",  verifyEmail("Add a Brief Request","add a brief
     results = await mongoBrief.count({type: "request", nameToLowerCase: req.session.name.toLowerCase().replace(" ", "")})
     if (results > 14){
         return res.render("addABriefRequest",{
+            
             auth: req.session.email,
             authName: req.session.name,
             maxRequestsMet: true,
@@ -800,6 +801,18 @@ router.post("/contact", verifyEmail("Contact","contact other users"),markAsRead,
     var answer = req.body
 var id = req.query.id
 var results = await mongoBrief.findOne({_id: ObjectId(id)})
+
+var alreadyRequested = await mongoContact.count({id: id, nameToLowerCase: req.session.name.toLowerCase().replace(" ","")})
+if(alreadyRequested !=0){
+    return res.render("alreadySubmitted",{
+        reviewingOwn: false,
+        name: results.name,
+        auth: req.session.email,
+            authName: req.session.name,
+           numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+    })
+}
 var d = new Date();
 var month = d.getMonth()+1
 var year = d.getFullYear()
@@ -807,10 +820,8 @@ var day = d.getDate()
 var date = month + "/" + day + "/" + year
     if(results.type == "request"){
         if(answer.additional){
-            console.log('chad1')
             await mongoContact.insertOne({ status: "none", inReturn: answer.inReturn, toName: results.name, debate: "", name: req.session.name, nameToLowerCase: req.session.name.toLowerCase().replace(" ",""), email: req.session.email, date: date,id:req.query.id, description: answer.description, pageLength: answer.pages, arguments: answer.arguments, additional: answer.additional,to: results.email, status: "none", offerDebate: results.debate, offerBriefName: results.briefName})
         }else{
-            console.log('chad2')
             await mongoContact.insertOne({name: req.session.name, nameToLowerCase: req.session.name.toLowerCase().replace(" ",""), email: req.session.email, date: date,id:req.query.id, description: answer.description, pageLength: answer.pages, arguments: answer.arguments, to: results.email, status: "none", offerDebate: results.debate, offerBriefName: results.briefName, debate: "", toName: results.name, inReturn: answer.inReturn, })
         }       
         await mongoAccounts.updateOne({email: results.email}, {$push:{notifications: req.session.name + " responded to your post requesting a brief on "+results.briefName}})
@@ -822,11 +833,11 @@ var date = month + "/" + day + "/" + year
             notificationsArray: notificationsFromMongo.notifications,
         })
     }else{
-        if(answer.additional){console.log('chad3' )
+        if(answer.additional){
         await mongoContact.insertOne({ status: "none",toName: results.name, to:results.email, additional: answer.additional, name: req.session.name, nameToLowerCase: req.session.name.toLowerCase().replace(" ",""), email: req.session.email, date: date,id:req.query.id, briefName: answer.briefName, description: answer.description, pageLength: answer.pages, arguments: answer.arguments, debate: answer.debate, offerDebate: results.debate, offerBriefName: results.briefName})
     }else{
         await mongoContact.insertOne({name: req.session.name, nameToLowerCase: req.session.name.toLowerCase().replace(" ",""), email: req.session.email, date: date,id:req.query.id, briefName: answer.briefName, description: answer.description, pageLength: answer.pages, arguments: answer.arguments, debate: answer.debate, offerDebate: results.debate, offerBriefName: results.briefName,to:results.email,toName: results.name, status: "none"})
-         console.log('chad4')}       
+         }       
         await mongoAccounts.updateOne({email: results.email}, {$push:{notifications: req.session.name + " responded to your post offering a brief on "+results.briefName}})
 
         return res.render("accountDeleted", {
