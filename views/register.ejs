@@ -35,7 +35,7 @@
 padding-top: 0px; margin-top: 5px;}</style>
 
   <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
-   <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks profile (optional)" value = "<%=speechranks%>" />
+   <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" value = "<%=speechranks%>" />
   <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
         <input required  name="confirmPassword" type="password" class="feedback-input" placeholder="Confirm password" value = "<%=confirmPassword%>" />
 
@@ -91,7 +91,7 @@ padding-top: 0px; margin-top: 5px;}</style>
       <h3>A profile has already been created with this email</h3>
       <style>h3{text-align: center; color:rgb(255, 89, 89);
   padding-top: 0px; margin-top: 5px;}</style>
-       <input name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks profile (optional)" value = "<%=speechranks%>" />
+       <input name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" value = "<%=speechranks%>" />
       <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
             <input required  name="confirmPassword" type="password" class="feedback-input" placeholder="Confirm password" value = "<%=confirmPassword%>" />
     
@@ -138,6 +138,65 @@ padding-top: 0px; margin-top: 5px;}</style>
               <input  name = "termsAndConditions" type="checkbox">
               <span class="checkmark"></span>
             </label>
+            <%}else if(!fullName){%>
+          
+              <input required  name="name" maxlength = "40"type="text" class="feedback-input" placeholder="Full name" value = "<%=name%>" />
+        
+              <h3>Please enter your full name</h3>
+              <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
+        
+               <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" value = "<%=speechranks%>" />
+        
+             
+              <style>h3{text-align: center; color:rgb(255, 89, 89);
+          padding-top: 0px; margin-top: 5px;}</style>
+              <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
+                    <input required  name="confirmPassword" type="password" class="feedback-input" placeholder="Confirm password" value = "<%=confirmPassword%>" />
+            
+                    <h2 id="noBottomPadding">Debate events</h2>
+                    <div id = "checkRequired">
+                      <%if(tpChecked){%>
+              <label class="container">Team Policy
+                <input name = "tp" type="checkbox" checked>
+                <span class="checkmark"></span>
+              </label>
+              <%}else{%>
+                <label class="container">Team Policy
+                  <input name = "tp" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <%}%>
+                <%if(ldChecked){%>
+                  <label class="container">Lincoln Douglas
+                    <input name = "ld" type="checkbox" checked>
+                    <span class="checkmark"></span>
+                  </label>
+                  <%}else{%>
+                    <label class="container">Lincoln Douglas
+                      <input name = "ld" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <%}%>
+                    <%if(parliChecked){%>
+                      <label class="lastContainer container">Parliamentary Debate
+                        <input name = "parli" type="checkbox" checked>
+                        <span class="checkmark"></span>
+                      </label>
+                      <%}else{%>
+                        <label class="lastContainer container">Parliamentary Debate
+                          <input name = "parli" type="checkbox">
+                          <span class="checkmark"></span>
+                        </label>
+                        <%}%>
+              
+             
+                    </div>      
+              
+                    <label class="container"style = "padding-bottom: 20px">I agree to the <a  style = "color: black;" href="/termsAndConditions" target = "_blank">StoaExchange Terms and Conditions</a>
+                      <input  name = "termsAndConditions" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+           
       <%}else if(!speechranksValid){%>
           
       <input required  name="name" maxlength = "40"type="text" class="feedback-input" placeholder="Full name" value = "<%=name%>" />
@@ -145,7 +204,7 @@ padding-top: 0px; margin-top: 5px;}</style>
   
       <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
 
-       <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks profile (optional)" value = "<%=speechranks%>" />
+       <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" value = "<%=speechranks%>" />
 
       <h3>Please enter a valid Speechranks link</h3>
       <style>h3{text-align: center; color:rgb(255, 89, 89);
@@ -203,7 +262,7 @@ padding-top: 0px; margin-top: 5px;}</style>
           
                 <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
         
-                 <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks profile (optional)" value = "<%=speechranks%>" />
+                 <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" value = "<%=speechranks%>" />
         
              
                 <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
@@ -261,7 +320,7 @@ padding-top: 0px; margin-top: 5px;}</style>
           
                 <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" value = "<%=email%>" />
         
-                 <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks profile (optional)" value = "<%=speechranks%>" />
+                 <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" value = "<%=speechranks%>" />
         
              
                 <input required  name="password" type="password" class="feedback-input" placeholder="Password" value = "<%=password%>" />
@@ -316,7 +375,7 @@ padding-top: 0px; margin-top: 5px;}</style>
                 <%}else{%>
         <input required  name="name" maxlength = "40"type="text" class="feedback-input" placeholder="Full name" />
         <input required  name="email" maxlength = "320" type="email" class="feedback-input" placeholder="Email" />
-         <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Speechranks profile (optional)" />
+         <input   name="speechranks" maxlength = "55"  type="url" class="feedback-input" placeholder="Link to Speechranks profile (optional)" />
         <input required  name="password" type="password" class="feedback-input" placeholder="Password" />
               <input required  name="confirmPassword" type="password" class="feedback-input" placeholder="Confirm password" />
       

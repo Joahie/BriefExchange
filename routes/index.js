@@ -118,7 +118,7 @@ router.get("/register", markAsRead,async (req, res)=>{
     var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
 
     res.render("register", {
-
+        fullName: true,
         numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
                 emailAvailable: true,
@@ -139,7 +139,7 @@ router.get("/register", markAsRead,async (req, res)=>{
             termsAndConditionsAgreed: true,    })
 }else{
 
-    res.render("register", {
+    res.render("register", {fullName: true,
                 emailAvailable: true,
                 nameAvailable: true,
                 email: null,
@@ -507,7 +507,7 @@ router.get("/verifyEmail", isAuth, markAsRead,async (req,res)=>{
 
     var uuid = req.query.uuid
     var results =  await mongoAccounts.findOne({email: req.session.email, verificationNumber: uuid})
-    try{if (!results.speechranks){
+    try{if (!results.name){
         return res.render("noAccess",{
             auth: req.session.email,
             authName: req.session.name,numberOfNotifications: notificationsFromMongo.notifications.length,

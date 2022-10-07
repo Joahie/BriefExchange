@@ -146,7 +146,7 @@ router.post("/register",markAsRead, async (req,res)=>{
     var existing =  await mongoAccounts.count({email: answer.email})
     var existing2 =  await mongoAccounts.count({nameToLowerCase: answer.name.toLowerCase().replace(" ","")})
     if(existing>0){
-        return res.render("register",{
+        return res.render("register",{            fullName: true,
             emailAvailable: false,
             nameAvailable: true,
             email: answer.email,
@@ -166,7 +166,7 @@ router.post("/register",markAsRead, async (req,res)=>{
         })
     }
     if(existing2>0){
-        return res.render("register",{
+        return res.render("register",{            fullName: true,
             emailAvailable: true,
             nameAvailable: false,
             speechranksValid: true,
@@ -185,8 +185,32 @@ router.post("/register",markAsRead, async (req,res)=>{
             notificationsArray: null,
         })
     }
-    if(answer.speechranks != "" && !answer.speechranks.includes("speechranks.com/")){
+
+    if(!answer.name.includes(" ")){
         return res.render("register",{
+            fullName: false,
+            emailAvailable: true,
+            nameAvailable: true,
+            passwordCorrect: true,
+            speechranksValid: true,
+            speechranksLink: false,
+            email: answer.email,
+            name: req.body.name,
+            speechranks: answer.speechranks,
+            password: answer.password,
+            confirmPassword: answer.confirmPassword,
+            parliChecked: tempPARLI,
+            ldChecked: tempLD,
+            tpChecked: tempTP,
+            passwordsMatching: true,
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: null,
+            notificationsArray: null,
+        })
+    }
+    if(answer.speechranks != "" && !answer.speechranks.includes("speechranks.com/")){
+        return res.render("register",{            fullName: true,
             emailAvailable: true,
             nameAvailable: true,
             passwordCorrect: true,
@@ -208,7 +232,7 @@ router.post("/register",markAsRead, async (req,res)=>{
         })
     }
     if(answer.password != answer.confirmPassword){
-        return res.render("register",{
+        return res.render("register",{            fullName: true,
             emailAvailable: true,
             nameAvailable: true,
             passwordCorrect: false,
@@ -229,7 +253,7 @@ router.post("/register",markAsRead, async (req,res)=>{
         })
     }
     if(!answer.termsAndConditions){
-        return res.render("register",{
+        return res.render("register",{            fullName: true,
             emailAvailable: true,
             nameAvailable: true,
             passwordCorrect: true,
