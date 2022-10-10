@@ -120,7 +120,7 @@ router.post("/register",markAsRead, async (req,res)=>{
     }
 
     var answer = req.body
-
+    
 
     const recipient= answer.email
 
@@ -144,7 +144,7 @@ router.post("/register",markAsRead, async (req,res)=>{
         var tempPARLI = false
     }
 
-    var existing =  await mongoAccounts.count({email: answer.email})
+    var existing =  await mongoAccounts.count({email: answer.email.toLowerCase()})
     var existing2 =  await mongoAccounts.count({nameToLowerCase: answer.name.toLowerCase().replace(" ","")})
     if(existing>0){
         return res.render("register",{            fullName: true,
@@ -279,7 +279,7 @@ router.post("/register",markAsRead, async (req,res)=>{
 var uuid = crypto.randomUUID()
 
     const emailContents = `
-    <h1 style = "color:black;">Thanks for creating a StoaExchange account!</h1>
+    <h1 style = "color:black;">Thanks for creating a BriefExchange account!</h1>
     <h2 style = "color:black;"> Please click <a href="https://stoaexchange.joshuaren.repl.co/verifyEmail?uuid=` + uuid +`" target = "_blank" style = "color: black;">here</a> to complete your signup. If you didn't create an account with us, please ignore this email.</h2>
     <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
     ` 
@@ -296,7 +296,7 @@ var uuid = crypto.randomUUID()
     const mailOptions = {
         from: EMAIL_USERNAME, 
         to: recipient,
-        subject: 'StoaExchange email verification',
+        subject: 'BriefExchange email verification',
         html: emailContents,
     };
     
@@ -309,7 +309,7 @@ var uuid = crypto.randomUUID()
     try{
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(answer.password, salt)
-        await mongoAccounts.insertOne({name: answer.name, speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, nameToLowerCase: answer.name.toLowerCase().replace(" ",""), rating: null, email: answer.email, password: hashedPassword, verificationNumber: uuid, notifications: []})
+        await mongoAccounts.insertOne({name: answer.name, speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, nameToLowerCase: answer.name.toLowerCase().replace(" ",""), rating: null, email: answer.email.toLowerCase(), password: hashedPassword, verificationNumber: uuid, notifications: []})
         
     }catch(err){
         if(req.session.email){
@@ -351,9 +351,9 @@ router.post("/login",markAsRead,  async (req, res)=>{
             }
     }
 
-    var existing =  await mongoAccounts.count({email: answer.email})
+    var existing =  await mongoAccounts.count({email: answer.email.toLowerCase()})
     if (existing >0){
-        var results =  await mongoAccounts.findOne({ email: answer.email})
+        var results =  await mongoAccounts.findOne({ email: answer.email.toLowerCase()})
         
         try{
             if (await bcrypt.compare(answer.password, results.password)){
@@ -425,7 +425,7 @@ router.post("/emailVerification", markAsRead, async (req,res)=>{
 
     const recipient= req.session.email
     const emailContents = `
-    <h1 style = "color:black;">Thanks for creating a StoaExchange account!</h1>
+    <h1 style = "color:black;">Thanks for creating a BriefExchange account!</h1>
     <h2 style = "color:black;"> Please click <a href="https://stoaexchange.joshuaren.repl.co/verifyEmail?uuid=` + results.verificationNumber +`" target = "_blank" style = "color: black;">here</a> to complete your signup. If you didn't create an account with us, please ignore this email.</h2>
     <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
     ` 
@@ -442,7 +442,7 @@ router.post("/emailVerification", markAsRead, async (req,res)=>{
     const mailOptions = {
         from: EMAIL_USERNAME, 
         to: recipient,
-        subject: 'StoaExchange email verification',
+        subject: 'BriefExchange email verification',
         html: emailContents,
     };
     
@@ -488,7 +488,7 @@ user = req.query.user
     }
 
 
-    var existing =  await mongoAccounts.count({email: answer.email})
+    var existing =  await mongoAccounts.count({email: answer.email.toLowerCase()})
     var results =  await mongoAccounts.findOne({email: req.session.email})
     
     if(answer.speechranks != "" && !answer.speechranks.includes("speechranks.com/")){
@@ -661,7 +661,7 @@ answer = req.body
             verificationNumber: results.verificationNumber,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
-    
+            description: answer.description,
         })
     }
     var d = new Date();
@@ -669,7 +669,7 @@ var month = d.getMonth()+1
 var year = d.getFullYear()
 var day = d.getDate()
 var date = month + "/" + day + "/" + year
-    await mongoBrief.insertOne({name: req.session.name, arguments: answer.arguments, briefName: answer.briefName, email: req.session.email, pageLength: answer.pages, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), type: "offering", debate: answer.debate, date: date, rating: null})
+    await mongoBrief.insertOne({name: req.session.name, arguments: answer.arguments, briefName: answer.briefName, email: req.session.email, pageLength: answer.pages, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), type: "offering", debate: answer.debate, date: date, rating: null, description: answer.description})
     return res.render("addABriefOffer",{
         auth: req.session.email,
         authName: req.session.name,
@@ -693,7 +693,6 @@ router.post("/addABriefRequest",  verifyEmail("Add a Brief Request","add a brief
     results = await mongoBrief.count({type: "request", nameToLowerCase: req.session.name.toLowerCase().replace(" ", "")})
     if (results > 14){
         return res.render("addABriefRequest",{
-            
             auth: req.session.email,
             authName: req.session.name,
             maxRequestsMet: true,
@@ -744,7 +743,7 @@ router.post("/deleteAccount", isAuth, markAsRead, async (req,res)=>{
         
     const emailContents = `
     <h1 style = "color:black;">Your account has been successfuly deleted.</h1>
-    <h2 style = "color:black;">Thanks for using StoaExchange, sorry to see you leave so soon.</h2>
+    <h2 style = "color:black;">Thanks for using BriefExchange, sorry to see you leave so soon.</h2>
     <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
     ` 
     recipient = req.session.email
@@ -761,7 +760,7 @@ router.post("/deleteAccount", isAuth, markAsRead, async (req,res)=>{
     const mailOptions = {
         from: EMAIL_USERNAME, 
         to: recipient,
-        subject: 'StoaExchange account deleted',
+        subject: 'BriefExchange account deleted',
         html: emailContents,
     };
     
@@ -1207,7 +1206,7 @@ await mongoAccounts.updateOne({email: email}, {$set: {uuid: uuid, lastRequest: d
     const mailOptions = {
         from: EMAIL_USERNAME, 
         to: recipient,
-        subject: 'StoaExchange password reset',
+        subject: 'BriefExchange password reset',
         html: emailContents,
     };
     
@@ -1239,7 +1238,7 @@ router.post("/passwordReset",verifyEmail("Reset Password", "reset your password"
     }var uuid = req.query.uuid
     var answer = req.body
 
-    var results = await mongoAccounts.count({uuid: uuid, email: answer.email})
+    var results = await mongoAccounts.count({uuid: uuid, email: answer.email.toLowerCase()})
     if (results <1) {
         return res.render("passwordReset",{
             auth: req.session.email,
@@ -1272,10 +1271,10 @@ router.post("/passwordReset",verifyEmail("Reset Password", "reset your password"
         })    }
        
 
-        await mongoAccounts.updateOne({uuid: uuid, email: answer.email},{$set:{password: answer.newPassword}})
+        await mongoAccounts.updateOne({uuid: uuid, email: answer.email.toLowerCase()},{$set:{password: answer.newPassword}})
 var recipient = answer.email
         const emailContents = `
-        <h1 style = "color:black;">The password for your StoaExchange account was just changed.</h1>
+        <h1 style = "color:black;">The password for your BriefExchange account was just changed.</h1>
         <h2 style = "color:black;">If that wasn't you, please email us at <a href = "mailto:StoaExchange@gmail.com" target="_blank">StoaExchange@gmail.com</a>.</h2>
         <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
         ` 
@@ -1292,7 +1291,7 @@ var recipient = answer.email
         const mailOptions = {
             from: EMAIL_USERNAME, 
             to: recipient,
-            subject: 'StoaExchange password change',
+            subject: 'BriefExchange password change',
             html: emailContents,
         };
         

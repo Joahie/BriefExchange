@@ -1,7 +1,7 @@
 {
-  "name": "stoaexchange",
+  "name": "briefexchange",
   "version": "1.0.0",
-  "description": "A website for debaters from the Stoa speech and debate league to exchange evidence and arguments",
+  "description": "A website for debaters to exchange evidence and arguments",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
