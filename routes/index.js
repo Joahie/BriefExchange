@@ -321,6 +321,7 @@ router.get("/briefExchange", markAsRead,async (req,res)=>{
     var nameToLowerCaseTPO = []
     var idTPO = []
     var numberOfRatingsTPO = []
+    var descriptionTPO = []
    
     var nameTPR = []
     var briefNameTPR = []
@@ -340,6 +341,7 @@ router.get("/briefExchange", markAsRead,async (req,res)=>{
     var nameToLowerCaseLDO = []
     var idLDO = []
     var numberOfRatingsLDO = []
+    var descriptionLDO = []
 
     var nameLDR = []
     var briefNameLDR = []
@@ -358,6 +360,7 @@ router.get("/briefExchange", markAsRead,async (req,res)=>{
         dateTPO.push(results1[results-i-1].date)
         idTPO.push(results1[results-i-1]._id)
         nameToLowerCaseTPO.push(results1[results-i-1].nameToLowerCase)
+        descriptionTPO.push(results1[results-i-1].description)
         briefRatingTPO.push(Math.floor(results1[results-i-1].rating))
         var temp = await mongoRatings.count({id: results1[results-i-1]._id.toString()})
         numberOfRatingsTPO.push(temp)
@@ -373,6 +376,7 @@ router.get("/briefExchange", markAsRead,async (req,res)=>{
         briefRatingLDO.push(Math.floor(results5[results4-i-1].rating))
         var temp = await mongoRatings.count({id: results5[results4-i-1]._id.toString()})
         numberOfRatingsLDO.push(temp)
+        descriptionLDO.push(results5[results4-i-1].description)
     }
 
     for(let i = 0; i<results2; i++){
@@ -434,6 +438,8 @@ router.get("/briefExchange", markAsRead,async (req,res)=>{
         numberOfRatingsTPO:numberOfRatingsTPO,
         numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
+        descriptionTPO: descriptionTPO,
+        descriptionLDO: descriptionLDO,
     })
 })
 

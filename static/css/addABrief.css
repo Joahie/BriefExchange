@@ -51,11 +51,6 @@
           outline:0;
         }
         
-        section textarea {
-          height: 150px;
-          line-height: 150%;
-          resize:vertical;
-        }
         
         section [type="submit"] {
           width: 100%;

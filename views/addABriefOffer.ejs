@@ -44,6 +44,8 @@
   <input required  name="briefName" type="text" class="feedback-input" placeholder="Brief name" maxlength = "100" value = "<%=briefName%>" />
   <input required  name="pages" type="number" class="feedback-input" placeholder="Number of pages" min = 1 max = 300 value = "<%=pages%>"/>
       <input required  name="arguments" type="number" class="feedback-input" placeholder="Number of arguments" min = 1 max = 100 value = "<%=arguments%>"/>
+      <textarea required name="description" class = "feedback-input description-input" cols="30" rows="10"maxlength = "400" placeholder = "Description" value = "<%=description%>"></textarea>  
+
       <div class = 'styleSelect'>
         <%if(debate == "tp"){%>
 
@@ -79,6 +81,9 @@ padding-top: 0px; margin-top: 0px;}</style>
   <input required  name="briefName" type="text" class="feedback-input" placeholder="Brief name" maxlength = "100"/>
   <input required  name="pages" type="number" class="feedback-input" placeholder="Number of pages" min = 1 max = 300/>
       <input required  name="arguments" type="number" class="feedback-input" placeholder="Number of arguments" min = 1 max = 100/>
+      <textarea required name="description" class = "feedback-input description-input" maxlength = "400" placeholder = "Description"></textarea>  
+      
+
       <div class = 'styleSelect'>
 <select name = "debate" required class="feedback-input" id="select">
             <option value="" disabled selected>Select the debate format</option>
@@ -106,4 +111,9 @@ padding-top: 0px; margin-top: 0px;}</style>
 }
 select:invalid {
   color: #717172 !important;
+}
+.description-input{
+  height: 115px;
+  resize: none;
+font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }</style>

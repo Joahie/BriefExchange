@@ -57,7 +57,9 @@
             
             <%}else{%><h3>This brief currently has no ratings.</h3><%} %>  
         <h3>Pages: <%=pageLengthTPO[i]%></h3>
-        <h3 id ="extraBottomMargin">Arguments: <%=argumentsTPO[i]%></h3>
+        <h3>Arguments: <%=argumentsTPO[i]%></h3>
+
+        <h3 id ="extraBottomMargin">Description: <%=descriptionTPO[i]%></h3>
         <%if(!auth){%>
             <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about the brief</a></div>
 
@@ -112,8 +114,9 @@
             
             
             <h3>Pages: <%=pageLengthTPO[i]%></h3>
-        <h3 id ="extraBottomMargin">Arguments: <%=argumentsTPO[i]%></h3>
-        <%if(!auth){%>
+            <h3>Arguments: <%=argumentsTPO[i]%></h3>
+
+<h3 id ="extraBottomMargin">Description: <%=descriptionTPO[i]%></h3>        <%if(!auth){%>
             <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idTPO[i]%>">Contact <%=nameTPO[i]%> about this brief</a></div>
         <%}else{%>
             <%if(nameTPO[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
@@ -183,8 +186,9 @@
                     <%}%>                                    
                                     <%} %>  
                             <h3>Pages: <%=pageLengthLDO[i]%></h3>
-                            <h3 id ="extraBottomMargin">Arguments: <%=argumentsLDO[i]%></h3>
-                            
+                            <h3>Arguments: <%=argumentsLDO[i]%></h3>
+
+<h3 id ="extraBottomMargin">Description: <%=descriptionLDO[i]%></h3>                            
                             <%if(!auth){%>
                                 <div id = "contact-container"><a id = "body-getStarted" href="/contact?id=<%=idLDO[i]%>">Contact <%=nameLDO[i]%> about this brief</a></div> 
         <%}else{%>
