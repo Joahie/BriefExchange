@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/addABrief.css" rel="stylesheet" type="text/css" />
+    <script src = "/js/script.js"></script>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/cczltUx.png">
+
+  <title>Request a practice round</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "register">
+  <div class="largerContainer">
+      <div class = "smallerContainer">
+       <%if(completed){%>
+            <h1>Your practice round request has been created. Click <a href="/profiles?user=<%=authName%>">here</a> to see it on your profile.</h1>
+
+            <%}else if (maxOfferingsMet){%>
+    
+<%}else {%>
+    <h1>Request a practice round</h1>
+    
+    <form method = "POST" action = "/api/requestAPracticeRound">     
+
+      
+      <div class = 'styleSelect'>
+        <select name = "debate" required class="feedback-input" id="select">
+                    <option value="" disabled selected>Select the debate format</option>
+        
+          <option value="tp">Team Policy</option>
+          <option value="ld">Lincoln Douglas</option>
+          <option value="parli">Parliamentary</option>
+        </select>                
+              </div>              
+      
+  <input required  name="date" type="text" class="feedback-input" placeholder="Availability (date and time)" maxlength = "150"/>
+      <input  name="additional" type="text" class="feedback-input" placeholder="Additional information (optional)" maxlength = "150"/>
+      <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  name = "judge" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+
+
+  <input type="submit" value="Submit"/>
+</form>
+<%}%>
+      </div></div>
+
+</section>
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+
+<style>    
+#select{
+  color:black;
+}
+select:invalid {
+  color: #717172 !important;
+}
+            
+@media screen and (max-width: 600px) {
+  #removeSomePadding{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }}
+
+      
+  .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 16px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #d6d6d6;
+      }
+      
+      .container:hover input ~ .checkmark {
+        background-color: #ccc;
+      }
+      
+      .container input:checked ~ .checkmark {
+        background-color: black;
+      }
+      
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      .container input:checked ~ .checkmark:after {
+        display: block;
+      }
+      
+      /* Style the checkmark/indicator */
+      .container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+</style>

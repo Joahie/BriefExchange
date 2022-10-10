@@ -9,6 +9,7 @@ const mongoBrief = mongoclient.db("StoaExchange").collection("briefs");
 const mongoContact = mongoclient.db("StoaExchange").collection("contact");
 const mongoRatings = mongoclient.db("StoaExchange").collection("ratings");
 const mongoBriefsReceived = mongoclient.db("StoaExchange").collection("briefsReceived");
+const mongoPracticeRoundRequests = mongoclient.db("StoaExchange").collection("practiceRoundRequests");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const moment = require('moment');
@@ -1409,7 +1410,46 @@ var briefName = temp.briefName
 
 
 
+router.post("/requestAPracticeRound", isAuth, async(req,res)=>{
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+answer = req.body
+    results = await mongoBrief.count({nameToLowerCase: req.session.name.toLowerCase().replace(" ", "")})
+    if (results > 9){
+        return res.render("requestAPracticeRound",{
+            auth: req.session.email,
+            authName: req.session.name,
+            maxOfferingsMet: true,
+            completed: false,
+            debate: answer.debate,
+            availability: answer.availability,
+            additional: answer.additional,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        })
+    }
+    var d = new Date();
+var month = d.getMonth()+1
+var year = d.getFullYear()
+var day = d.getDate()
+var date = month + "/" + day + "/" + year
+    await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability})
+    return res.render("requestAPracticeRound",{
+        auth: req.session.email,
+        authName: req.session.name,
+        maxOfferingsMet: false,
+        completed: true,
+        verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
 
+    })    
+
+})
 router.post("/markAsRead", isAuth, async (req,res)=>{
     var results = await mongoAccounts.findOne({email: req.session.email})
     await mongoAccounts.updateOne({email: req.session.email},{ $pullAll: { notifications: results.notifications}})    

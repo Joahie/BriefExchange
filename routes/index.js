@@ -470,6 +470,7 @@ router.get("/editAccountInformation", verifyEmail("Edit Account Information", "e
             "notifications":[]
             }
     }
+    
     if(req.session.name != user){
         return res.render("noAccess",{
             auth: req.session.email,
@@ -478,6 +479,7 @@ router.get("/editAccountInformation", verifyEmail("Edit Account Information", "e
             notificationsArray: notificationsFromMongo.notifications,
         })
     }else{
+        console.log("pag")
         return res.render("editAccountInformation", {
             name: results.name,
             speechranks: results.speechranks,
@@ -497,7 +499,7 @@ router.get("/editAccountInformation", verifyEmail("Edit Account Information", "e
             oldPasswordExisting: true,
             verificationNumber: results.verificationNumber,
             numberOfNotifications: notificationsFromMongo.notifications.length,
-            notificationsArray: notificationsFromMongo.notifications,oldPasswordExisting: null,
+            notificationsArray: notificationsFromMongo.notifications,
         })
     }
    
@@ -538,7 +540,7 @@ router.get("/addABriefOffer", verifyEmail("Add a Brief Offer", "add a brief offe
             "notifications":[]
             }
     }
-let email = req.session.email
+    let email = req.session.email
     var results = await mongoAccounts.findOne({ email: email})
     return res.render('addABriefOffer',{
         auth: req.session.email,
@@ -550,6 +552,27 @@ let email = req.session.email
         notificationsArray: notificationsFromMongo.notifications,
     })
 })
+
+
+router.get("/requestAPracticeRound", verifyEmail("Request a practice round", "request a practice round"), isAuth, markAsRead,async (req, res)=>{
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    return res.render('requestAPracticeRound',{
+        auth: req.session.email,
+        authName: req.session.name,
+        maxOfferingsMet: false,
+        completed: false,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    })
+})
+
+
 router.get("/addABriefRequest", verifyEmail("Add a Brief Request", "add a brief request"),isAuth,markAsRead, async (req, res)=>{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
