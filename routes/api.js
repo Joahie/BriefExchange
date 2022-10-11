@@ -1419,8 +1419,8 @@ router.post("/requestAPracticeRound", isAuth, async(req,res)=>{
             }
     }
 answer = req.body
-    results = await mongoBrief.count({nameToLowerCase: req.session.name.toLowerCase().replace(" ", "")})
-    if (results > 9){
+    results = await mongoBrief.count({nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate})
+    if (results > 4){
         return res.render("requestAPracticeRound",{
             auth: req.session.email,
             authName: req.session.name,
@@ -1431,6 +1431,7 @@ answer = req.body
             additional: answer.additional,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+            judge: answer.judge,
         })
     }
     var d = new Date();
@@ -1438,7 +1439,12 @@ var month = d.getMonth()+1
 var year = d.getFullYear()
 var day = d.getDate()
 var date = month + "/" + day + "/" + year
-    await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability})
+if(answer.judge)    {
+    var judgeTrueOrFalse = true;
+}else{
+    var judgeTrueOrFalse = false;
+}
+await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, judge: judgeTrueOrFalse,})
     return res.render("requestAPracticeRound",{
         auth: req.session.email,
         authName: req.session.name,
