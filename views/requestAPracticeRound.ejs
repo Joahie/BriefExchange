@@ -20,7 +20,74 @@
             <h1>Your practice round request has been created. Click <a href="/profiles?user=<%=authName%>">here</a> to see it on your profile.</h1>
 
             <%}else if (maxOfferingsMet){%>
+              <h1>Request a practice round</h1>
     
+              <form method = "POST" action = "/api/requestAPracticeRound">     
+          
+                <%if(debate == "tp"){%>
+
+                  <div class = 'styleSelect'>
+                    <select name = "debate" required class="feedback-input" id="select">
+                                <option value="" disabled >Select the debate format</option>
+                    
+                      <option selected value="tp">Team Policy</option>
+                      <option value="ld">Lincoln Douglas</option>
+                      <option value="parli">Parliamentary</option>
+                    </select>                
+                          </div>              
+                  <%}else if (debate == "ld"){%>
+
+                    <div class = 'styleSelect'>
+                      <select name = "debate" required class="feedback-input" id="select">
+                                  <option value="" disabled >Select the debate format</option>
+                      
+                        <option value="tp">Team Policy</option>
+                        <option selected value="ld">Lincoln Douglas</option>
+                        <option value="parli">Parliamentary</option>
+                      </select>                
+                            </div>              
+                    <%}else if (debate == "parli"){%>
+
+                      <div class = 'styleSelect'>
+                        <select name = "debate" required class="feedback-input" id="select">
+                                    <option value="" disabled >Select the debate format</option>
+                        
+                          <option value="tp">Team Policy</option>
+                          <option value="ld">Lincoln Douglas</option>
+                          <option selected value="parli">Parliamentary</option>
+                        </select>                
+                              </div>              
+                      <%}else{%>
+
+                <div class = 'styleSelect'>
+                  <select name = "debate" required class="feedback-input" id="select">
+                              <option value="" disabled selected>Select the debate format</option>
+                  
+                    <option value="tp">Team Policy</option>
+                    <option value="ld">Lincoln Douglas</option>
+                    <option value="parli">Parliamentary</option>
+                  </select>                
+                        </div>              <%}%>
+                
+            <input required  name="availability" type="text" class="feedback-input" placeholder="Availability (date and time)" value = "<%=availability%>"maxlength = "150"/>
+                <input  name="additional" type="text" class="feedback-input" placeholder="Additional information (optional)" maxlength = "150"value = "<%=additional%>"/>
+                <%if(judge){%>
+                  <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  checked name = "judge" type="checkbox">
+                    <span  class="checkmark"></span>
+                  </label>
+                  <%}else{%>
+                    <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  name = "judge" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <%}%>
+                
+          
+                <h3 id = "removeSomePadding">Sorry, you've already reached the maximum number of practice round requests allowed on our website (5 requests). To post this request please delete a previous one before proceeding.</h3>
+                <style>h3{text-align: center; color:rgb(255, 89, 89);
+          padding-top: 0px; margin-top: 0px;}</style>
+          
+            <input type="submit" value="Submit"/>
+          </form>
 <%}else {%>
     <h1>Request a practice round</h1>
     
@@ -37,7 +104,7 @@
         </select>                
               </div>              
       
-  <input required  name="date" type="text" class="feedback-input" placeholder="Availability (date and time)" maxlength = "150"/>
+  <input required  name="availability" type="text" class="feedback-input" placeholder="Availability (date and time)" maxlength = "150"/>
       <input  name="additional" type="text" class="feedback-input" placeholder="Additional information (optional)" maxlength = "150"/>
       <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  name = "judge" type="checkbox">
         <span class="checkmark"></span>

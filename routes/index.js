@@ -612,6 +612,7 @@ let email = req.session.email
        
 
 if(section == "yourBriefs"){
+    var description = []
     var date = []
     var id = []
     var dateR = []
@@ -674,6 +675,7 @@ if(section == "yourBriefs"){
 
     for(let i = 0; i<results2; i++){
         briefName.push(results3[results2-i-1].briefName)
+        description.push(results3[results2-i-1].description)
         id.push(results3[results2-i-1]._id)
         arguments.push(results3[results2-i-1].arguments)
         pageLength.push(results3[results2-i-1].pageLength)
@@ -692,6 +694,7 @@ if(section == "yourBriefs"){
             rating: Math.floor(sortingMongoDB(results).rating),
             numberOfBriefOfferings: results2,
             briefName: briefName,
+            description: description,
             arguments: arguments,
             pageLength: pageLength,
             briefRating: briefRating,

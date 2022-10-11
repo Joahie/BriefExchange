@@ -72,7 +72,8 @@
                       <h3>Pages: <%=pageLength[i]%></h3>
                       <h3>Arguments: <%=arguments[i]%></h3>
               
-              
+                      <h3>Description: <%=description[i]%></h3>
+
                       <% var myVariable = false; %>
               <%for(let f = 0; f<requestAmount; f++){%>
                   <%if(requestId[f]==id[i] && requestStatus[f] != 'rejected'&& requestStatus[f] != 'deleted'){%>
