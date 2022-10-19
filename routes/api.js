@@ -10,6 +10,7 @@ const mongoContact = mongoclient.db("StoaExchange").collection("contact");
 const mongoRatings = mongoclient.db("StoaExchange").collection("ratings");
 const mongoBriefsReceived = mongoclient.db("StoaExchange").collection("briefsReceived");
 const mongoPracticeRoundRequests = mongoclient.db("StoaExchange").collection("practiceRoundRequests");
+const mongoContactPR = mongoclient.db("StoaExchange").collection("practiceRoundContact");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const moment = require('moment');
@@ -1419,7 +1420,7 @@ router.post("/requestAPracticeRound", isAuth, async(req,res)=>{
             }
     }
 answer = req.body
-    results = await mongoBrief.count({nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate})
+    results = await mongoPracticeRoundRequests.count({nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate})
     if (results > 4){
         return res.render("requestAPracticeRound",{
             auth: req.session.email,
@@ -1432,6 +1433,12 @@ answer = req.body
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
             judge: answer.judge,
+            skype: answer.skype,
+            discord: answer.discord,
+            googleMeet: answer.googleMeet,
+            faceTime: answer.faceTime,
+            zoom: answer.zoom,
+            noAnswer: false,
         })
     }
     var d = new Date();
@@ -1444,7 +1451,52 @@ if(answer.judge)    {
 }else{
     var judgeTrueOrFalse = false;
 }
-await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, judge: judgeTrueOrFalse,})
+if(answer.zoom)    {
+    var zoomTF = true;
+}else{
+    var zoomTF = false;
+}if(answer.discord)    {
+    var discordTF = true;
+}else{
+    var discordTF = false;
+}
+if(answer.skype)    {
+    var skypeTF = true;
+}else{
+    var skypeTF = false;
+}
+if(answer.googleMeet)    {
+    var googleMeetTF = true;
+}else{
+    var googleMeetTF = false;
+}
+if(answer.faceTime)    {
+    var faceTimeTF = true;
+}else{
+    var faceTimeTF = false;
+}
+
+if(!faceTimeTF && !discordTF &&!zoomTF &&!googleMeetTF &&!skypeTF){
+    return res.render("requestAPracticeRound",{
+        auth: req.session.email,
+        authName: req.session.name,
+        maxOfferingsMet: false,
+        completed: false,
+        verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+        noAnswer: true,
+        debate: answer.debate,
+        availability: answer.availability,
+        additional: answer.additional,
+        judge: answer.judge,
+        skype: answer.skype,
+        discord: answer.discord,
+        googleMeet: answer.googleMeet,
+        faceTime: answer.faceTime,
+        zoom: answer.zoom,
+    })    
+}
+await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, judge: judgeTrueOrFalse,faceTime: faceTimeTF, discord: discordTF, zoom: zoomTF, googleMeet: googleMeetTF, skype: skypeTF })
     return res.render("requestAPracticeRound",{
         auth: req.session.email,
         authName: req.session.name,
@@ -1452,7 +1504,129 @@ await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.s
         completed: true,
         verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
+        noAnswer: false,
+    })    
 
+})
+
+
+router.post("/contactPracticeRound", isAuth, async(req,res)=>{
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+        }
+    }
+    id = req.query.id
+answer = req.body
+    results = await mongoContactPR.count({id: id})
+    results2 = await mongoContactPR.findOne({id: id})
+    if(!results2.skype){
+        var skype = false;
+    }else{
+        if(answer.skype){
+            var skype = "checked";
+        }else{
+            var skype = "unchecked";
+        }
+    }
+    if(!results2.discord){
+        var discord = false;
+    }else{
+        if(answer.discord){
+            var discord = "checked";
+        }else{
+            var discord = "unchecked";
+        }
+    }
+    if(!results2.googleMeet){
+        var googleMeet = false;
+    }else{
+        if(answer.googleMeet){
+            var googleMeet = "checked";
+        }else{
+            var googleMeet = "unchecked";
+        }
+    }
+    if(!results2.faceTime){
+        var faceTime = false;
+    }else{
+        if(answer.faceTime){
+            var faceTime = "checked";
+        }else{
+            var faceTime = "unchecked";
+        }
+    }
+    if(!results2.zoom){
+        var zoom = false;
+    }else{
+        if(answer.zoom){
+            var zoom = "checked";
+        }else{
+            var zoom = "unchecked";
+        }
+    }
+
+    if (results > 0){
+
+        return res.render("contactPracticeRound",{
+            auth: req.session.email,
+            authName: req.session.name,
+            maxOfferingsMet: true,
+            completed: false,           
+            availability: answer.availability,
+            additional: answer.additional,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,          
+            skype: skype,
+            discord: discord,
+            googleMeet: googleMeet,
+            faceTime: faceTime,
+            zoom: zoom,
+            noAnswer: false,
+        })
+    }
+    var d = new Date();
+var month = d.getMonth()+1
+var year = d.getFullYear()
+var day = d.getDate()
+var date = month + "/" + day + "/" + year
+if(answer.judge)    {
+    var judgeTrueOrFalse = true;
+}else{
+    var judgeTrueOrFalse = false;
+}
+
+if((faceTime == "unchecked" || !faceTime)&&(discord == "unchecked" || !discord)&&(googleMeet == "unchecked" || !googleMeet)&&(zoom == "unchecked" || !zoom)&&(skype == "unchecked" || !skype)){
+    return res.render("requestAPracticeRound",{
+        auth: req.session.email,
+        authName: req.session.name,
+        maxOfferingsMet: false,
+        completed: false,
+        verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+        noAnswer: true,
+        debate: answer.debate,
+        availability: answer.availability,
+        additional: answer.additional,
+        judge: answer.judge,
+        skype: faceTime,
+        discord: discord,
+        googleMeet: googleMeet,
+        faceTime: faceTime,
+        zoom: zoom,
+    })    
+}
+await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, judge: judgeTrueOrFalse,faceTime: faceTimeTF, discord: discordTF, zoom: zoomTF, googleMeet: googleMeetTF, skype: skypeTF })
+    return res.render("requestAPracticeRound",{
+        auth: req.session.email,
+        authName: req.session.name,
+        maxOfferingsMet: false,
+        completed: true,
+        verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+        noAnswer: false,
     })    
 
 })
