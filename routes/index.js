@@ -9,6 +9,8 @@ const mongoBrief = mongoclient.db("StoaExchange").collection("briefs");
 const mongoContact = mongoclient.db("StoaExchange").collection("contact");
 const mongoRatings = mongoclient.db("StoaExchange").collection("ratings");
 const mongoBriefsReceived = mongoclient.db("StoaExchange").collection("briefsReceived");
+const mongoPracticeRoundRequests = mongoclient.db("StoaExchange").collection("practiceRoundRequests");
+const mongoContactPR = mongoclient.db("StoaExchange").collection("practiceRoundContact");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const moment = require('moment');
@@ -92,6 +94,7 @@ function sortingMongoDB(results){
     let ParsedResults = JSON.parse(StringifiedResults)
     return ParsedResults
 }
+
 router.get("/practiceRounds", markAsRead, async (req,res)=>{
 
  if(req.session.email){
@@ -102,8 +105,36 @@ router.get("/practiceRounds", markAsRead, async (req,res)=>{
         }
 }
 
+var results = await mongoPracticeRoundRequests.count({debate: "tp"})
+var results1 = await mongoPracticeRoundRequests.find({debate: "tp"}).toArray()
+
+var namePRRTP = []
+var datePRRTP = []
+var nameToLowerCasePRRTP = []
+var idPRRTP = []
+var additionalPRRTP = []
+var availabilityPRRTP = []
+var judgePRRTP = []
+
+for(let i = 0; i<results; i++){
+    namePRRTP.push(results1[results-i-1].name)
+    datePRRTP.push(results1[results-i-1].date)
+    nameToLowerCasePRRTP.push(results1[results-i-1].nameToLowerCase)
+    idPRRTP.push(results1[results-i-1]._id)
+    additionalPRRTP.push(results1[results-i-1].additional)
+    availabilityPRRTP.push(results1[results-i-1].availability)
+    judgePRRTP.push(results1[results-i-1].judge)
+}
 res.render("practiceRounds", {
    
+namePRRTP:namePRRTP,
+datePRRTP:datePRRTP,
+nameToLowerCasePRRTP:nameToLowerCasePRRTP,
+idPRRTP:idPRRTP,
+additionalPRRTP:additionalPRRTP,
+availabilityPRRTP:availabilityPRRTP,
+judgePRRTP:judgePRRTP,
+numberOfRequestsPRRTP: results,
     auth: req.session.email,        
     authName: req.session.name,
     numberOfNotifications: notificationsFromMongo.notifications.length,
@@ -112,6 +143,7 @@ res.render("practiceRounds", {
 
 
 })
+
 router.get("/register", markAsRead,async (req, res)=>{
 
     if(req.session.email){
@@ -569,6 +601,8 @@ router.get("/requestAPracticeRound", verifyEmail("Request a practice round", "re
         completed: false,
         numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
+        noAnswer: false,
+
     })
 })
 
@@ -974,6 +1008,68 @@ if(count >0){
             type: results.type,
             id: id, numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
+        })
+    }catch(err){
+        console.log(err)
+        return  res.status(404).render("404",{
+            auth:req.session.email,
+            authName: req.session.name, numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        })
+    }    
+})
+  
+router.get("/contactForPracticeRound", verifyEmail("Contact", "contact other users"),isAuth, markAsRead,async (req,res)=>{
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    var id = req.query.id
+    var results1 = await mongoContactPR.findOne({id: id, email: req.session.email})
+    if (results1){
+        return res.render("alreadySubmittedContact",{
+            auth:req.session.email,
+            authName: req.session.name,
+            name: results1.toName,
+            reviewingOwn: false, numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        })
+    }
+    var count = await mongoPracticeRoundRequests.count({_id: ObjectId(id), nameToLowerCase: req.session.name.toLowerCase().replace(" ","")})
+
+if(count >0){
+    return res.render("alreadySubmittedContact",{ 
+        auth:req.session.email,
+            authName: req.session.name,
+            reviewingOwn: true, numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+    })
+}
+    try{
+        var results = await mongoPracticeRoundRequests.findOne({_id: ObjectId(id)})
+        return res.render("contactPracticeRound",{
+            name: results.name,
+            briefName: results.briefName,
+            rating: results.rating,
+            pages: results.pageLength,
+            arguments: results.arguments,
+            date: results.date,
+            debate: results.debate.toUpperCase(),
+            auth:req.session.email,
+            authName: req.session.name,
+            type: results.type,
+            id: id, 
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+            skype: results.skype,
+            zoom: results.zoom,
+            discord: results.discord,
+            googleMeet: results.googleMeet,
+            faceTime: results.faceTime,
+            noAnswer: false,
         })
     }catch(err){
         console.log(err)

@@ -27,10 +27,10 @@
   <section id = "body">
     <%if(reviewingOwn){%>
 
-      <h2>Sorry, you can't contact yourself about your own briefs. If you'd like to see their other briefs, visit the brief marketplace <a href="/briefExchange">here</a>.</h2>
+      <h2>Sorry, you can't contact yourself about a practice round. If you'd like to find a practice round, click <a href="/practiceRounds">here</a>.</h2>
       <%}else{%>
 
-        <h2 id = "removeSomePadding">Sorry, you've already contacted <%=name%> regarding this brief. If you'd like to see their other briefs, visit their profile <a href="/profiles?user=<%=name%>">here</a>.</h2>
+        <h2 id = "removeSomePadding">Sorry, you've already contacted <%=name%> regarding a practice round. If you'd like to see their other practice rounds, visit their profile <a href="/profiles?user=<%=name%>">here</a>.</h2>
         <%}%>
 </section>
 <%- include('partials/footer.ejs') %>

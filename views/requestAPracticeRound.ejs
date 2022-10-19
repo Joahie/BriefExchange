@@ -19,6 +19,149 @@
        <%if(completed){%>
             <h1>Your practice round request has been created. Click <a href="/profiles?user=<%=authName%>">here</a> to see it on your profile.</h1>
 
+            <%}else if (noAnswer){%>
+              <h1>Request a practice round</h1>
+    
+              <form method = "POST" action = "/api/requestAPracticeRound">     
+          
+                <%if(debate == "tp"){%>
+
+                  <div class = 'styleSelect'>
+                    <select name = "debate" required class="feedback-input" id="select">
+                                <option value="" disabled >Select the debate format</option>
+                    
+                      <option selected value="tp">Team Policy</option>
+                      <option value="ld">Lincoln Douglas</option>
+                      <option value="parli">Parliamentary</option>
+                    </select>                
+                          </div>              
+                  <%}else if (debate == "ld"){%>
+
+                    <div class = 'styleSelect'>
+                      <select name = "debate" required class="feedback-input" id="select">
+                                  <option value="" disabled >Select the debate format</option>
+                      
+                        <option value="tp">Team Policy</option>
+                        <option selected value="ld">Lincoln Douglas</option>
+                        <option value="parli">Parliamentary</option>
+                      </select>                
+                            </div>              
+                    <%}else if (debate == "parli"){%>
+
+                      <div class = 'styleSelect'>
+                        <select name = "debate" required class="feedback-input" id="select">
+                                    <option value="" disabled >Select the debate format</option>
+                        
+                          <option value="tp">Team Policy</option>
+                          <option value="ld">Lincoln Douglas</option>
+                          <option selected value="parli">Parliamentary</option>
+                        </select>                
+                              </div>              
+                      <%}else{%>
+
+                <div class = 'styleSelect'>
+                  <select name = "debate" required class="feedback-input" id="select">
+                              <option value="" disabled selected>Select the debate format</option>
+                  
+                    <option value="tp">Team Policy</option>
+                    <option value="ld">Lincoln Douglas</option>
+                    <option value="parli">Parliamentary</option>
+                  </select>                
+                        </div>              <%}%>
+                
+            <input required  name="availability" type="text" class="feedback-input" placeholder="Availability (date and time)" value = "<%=availability%>"maxlength = "150"/>
+                <input  name="additional" type="text" class="feedback-input" placeholder="Additional information (optional)" maxlength = "150"value = "<%=additional%>"/>
+
+ 
+  <h2 id="noBottomPadding" style = "padding-bottom: 0px;">Platforms</h2>
+  <div id = "checkRequired">
+    <%if(zoom){%>
+
+      <label class="container">Zoom
+        <input checked name = "zoom" type="checkbox">
+        <span class="checkmark"></span>
+        </label>
+    <%}else{%>
+
+      <label class="container">Zoom
+        <input name = "zoom" type="checkbox">
+        <span class="checkmark"></span>
+        </label>
+      <%}%>
+      <%if(googleMeet){%>
+
+        <label class="container">Google Meet
+          <input checked name = "googleMeet" type="checkbox">
+          <span class="checkmark"></span>
+          </label>
+      <%}else{%>
+  
+     
+<label class="container">Google Meet
+  <input name = "googleMeet" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+        <%}%>
+        <%if(discord){%>
+
+          <label class="container">Discord
+            <input checked name = "discord" type="checkbox">
+            <span class="checkmark"></span>
+            </label>
+        <%}else{%>
+    
+<label class="container">Discord
+  <input name = "discord" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+          <%}%>
+          <%if(skype){%>
+
+            <label class="container">Skype
+              <input checked name = "skype" type="checkbox">
+              <span class="checkmark"></span>
+              </label>
+          <%}else{%>
+      
+<label class="container">Skype
+  <input name = "skype" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+            <%}%>
+            <%if(faceTime){%>
+
+              <label class="lastContainer container">FaceTime
+                <input checked name = "faceTime" type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+            <%}else{%>
+        
+            
+<label class="lastContainer container">FaceTime
+  <input name = "faceTime" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+              <%}%>
+
+  </div>   
+  <h3 id = "removeSomePadding">You must select at least one platform before proceeding.</h3>
+
+                <%if(judge){%>
+                  <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  checked name = "judge" type="checkbox">
+                    <span  class="checkmark"></span>
+                  </label>
+                  <%}else{%>
+                    <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  name = "judge" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <%}%>
+                
+          
+                <style>h3{text-align: center; color:rgb(255, 89, 89);
+          padding-top: 0px; margin-top: 0px;}</style>
+          
+            <input type="submit" value="Submit"/>
+          </form>
             <%}else if (maxOfferingsMet){%>
               <h1>Request a practice round</h1>
     
@@ -71,6 +214,79 @@
                 
             <input required  name="availability" type="text" class="feedback-input" placeholder="Availability (date and time)" value = "<%=availability%>"maxlength = "150"/>
                 <input  name="additional" type="text" class="feedback-input" placeholder="Additional information (optional)" maxlength = "150"value = "<%=additional%>"/>
+
+ 
+  <h2 id="noBottomPadding" style = "padding-bottom: 0px;">Platforms</h2>
+  <div id = "checkRequired">
+    <%if(zoom){%>
+
+      <label class="container">Zoom
+        <input checked name = "zoom" type="checkbox">
+        <span class="checkmark"></span>
+        </label>
+    <%}else{%>
+
+      <label class="container">Zoom
+        <input name = "zoom" type="checkbox">
+        <span class="checkmark"></span>
+        </label>
+      <%}%>
+      <%if(googleMeet){%>
+
+        <label class="container">Google Meet
+          <input checked name = "googleMeet" type="checkbox">
+          <span class="checkmark"></span>
+          </label>
+      <%}else{%>
+  
+     
+<label class="container">Google Meet
+  <input name = "googleMeet" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+        <%}%>
+        <%if(discord){%>
+
+          <label class="container">Discord
+            <input checked name = "discord" type="checkbox">
+            <span class="checkmark"></span>
+            </label>
+        <%}else{%>
+    
+<label class="container">Discord
+  <input name = "discord" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+          <%}%>
+          <%if(skype){%>
+
+            <label class="container">Skype
+              <input checked name = "skype" type="checkbox">
+              <span class="checkmark"></span>
+              </label>
+          <%}else{%>
+      
+<label class="container">Skype
+  <input name = "skype" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+            <%}%>
+            <%if(faceTime){%>
+
+              <label class="lastContainer container">FaceTime
+                <input checked name = "faceTime" type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+            <%}else{%>
+        
+            
+<label class="lastContainer container">FaceTime
+  <input name = "faceTime" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+              <%}%>
+
+  </div>   
                 <%if(judge){%>
                   <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  checked name = "judge" type="checkbox">
                     <span  class="checkmark"></span>
@@ -106,6 +322,34 @@
       
   <input required  name="availability" type="text" class="feedback-input" placeholder="Availability (date and time)" maxlength = "150"/>
       <input  name="additional" type="text" class="feedback-input" placeholder="Additional information (optional)" maxlength = "150"/>
+
+ 
+  <h2 id="noBottomPadding" style = "padding-bottom: 0px;">Platforms</h2>
+  <div id = "checkRequired">
+    
+<label class="container">Zoom
+<input name = "zoom" type="checkbox">
+<span class="checkmark"></span>
+</label>
+<label class="container">Google Meet
+  <input name = "googleMeet" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+<label class="container">Discord
+<input name = "discord" type="checkbox">
+<span class="checkmark"></span>
+</label>
+<label class="container">Skype
+<input name = "skype" type="checkbox">
+<span class="checkmark"></span>
+</label>
+
+<label class="lastContainer container">FaceTime
+  <input name = "faceTime" type="checkbox">
+  <span class="checkmark"></span>
+  </label>
+  </div>   
+
       <label class="container"style = "padding-bottom: 20px; padding-top: 3px; margin-top: 10px;">   I would like a judge <input  name = "judge" type="checkbox">
         <span class="checkmark"></span>
       </label>

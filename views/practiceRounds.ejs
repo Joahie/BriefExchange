@@ -1,34 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/profile.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
   <title>Practice Rounds</title>
+  <link href="/css/briefExchange.css" rel="stylesheet" type="text/css" />
   <script src = "/js/script.js"></script>
   <link rel="icon" type="image/x-icon" href="https://i.imgur.com/cczltUx.png">
 
 </head>
 <body>
+    <%if(!auth){%>
+        
+        <style>.rightButtons{display: none;}</style>
+        <%}%>
     <%- include('partials/nav.ejs') %>
-
   <section id = "body">
+
+    <div class="buttonContainer">
+   <div class = 'leftButtons'>
+
+    <button onclick="replace(1)" id="buttonOne">TP practice rounds</button>
+    <button onclick="replace(2)" id="buttonTwo">LD practice rounds</button>
+    <button onclick="replace(3)" id="buttonThree">Parliamentary practice rounds</button>
+    <button onclick="replace(4)" id="buttonFour">Judge a practice round</button>
+   </div>
+
+<div class = 'rightButtons'>
+    <button onclick="redirect(3)" id="rightButtonOne">Request a practice round</button>
+          </div>
+    </div>
+
     <div class="largerContainer">
-      <div class = "smallerContainer">
-<h1 style = "text-align: center;">Practice Rounds</h1>
-<hr>
-<h2>Unfortunately we're still working on this section of the website. We're hard at work on this page, and will try to complete the beta version within a month.</h2>
+      <div class = "smallerContainer" id = "replaceThisDiv">
+      
+      
+        
+
+    <%for(let i = 0; i<numberOfRequestsPRRTP; i++){%>
+        
+    
+        <h2 id = "date"><%=datePRRTP[i]%></h2>
+        <h2><a href="/profiles/?user=<%=nameToLowerCasePRRTP[i]%>"><%=namePRRTP[i]%></a></h2>
+      
+        <h3>Debate format: TP</h3>
+        <h3>Availability: <%=availabilityPRRTP[i]%></h3>
+        <%if(additionalPRRTP[i]){%>
+        <h3>Additional: <%=additionalPRRTP[i]%></h3>
+<%}%>
+        <h3 id ="extraBottomMargin">Judge: <%=judgePRRTP[i]%></h3>
+        <%if(!auth){%>
+     
+        <%}else{%>
+            <%if(namePRRTP[i].toLowerCase().replace(" ", "") != authName.toLowerCase().replace(" ", "")){%>
+              <div id = "contact-container"><a id = "body-getStarted" href="/contactForPracticeRound?id=<%=idPRRTP[i]%>">Contact <%=namePRRTP[i]%> about the round</a></div>
+                <%}%>    
+            <%}%>
+        
+            
+        
+    
+    <%if (i+1<numberOfRequestsPRRTP){%>
+    <hr>    
+    <%}%>
+    <%}%>
       </div>
     </div>
   </section>
   <%- include('partials/footer.ejs') %>
 
-
 </body>
 
 </html>
+<script  src="ejs.min.js"></script>
+<script>
+    function replace(number){
 
-</html>
-
-<style>#body li{line-height: 1.5; font-size: 17px;}</style>
+        if(number == 1){
+            
+            document.getElementById("replaceThisDiv").innerHTML = (`
+    
+            `);
+        }
+        if(number == 2){
+            var div = document.getElementById('replaceThisDiv');
+            div.innerHTML = `  `;
+        }
+        if(number == 3){
+            var div = document.getElementById('replaceThisDiv');
+            div.innerHTML = `  
+         `;
+        }
+        if(number == 4){
+            var div = document.getElementById('replaceThisDiv');
+            div.innerHTML = `
+            `;
+        }
+    }
+    </script>
+    <style>#body a{
+        color: black}
+        #rightButtonOne{
+          border-right: 2px solid;
+          border-radius: 5px 5px  0px 0px;
+        }</style>

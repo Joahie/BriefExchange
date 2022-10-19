@@ -25,4 +25,7 @@ function redirect(i){
     if(i==2){
         window.location.href = "/addABriefRequest";
     }
+    if(i==3){
+        window.location.href = "/requestAPracticeRound";
+    }
 }
