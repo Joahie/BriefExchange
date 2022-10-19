@@ -17,14 +17,245 @@
   <section id = "body">
     <div class="largerContainer">
       <div class = "smallerContainer">
-        
+        <%if(completed){%>
+          <h1>Your request has been sent to <%=name%>. Click <a href="/practiceRounds">here</a> to continue browsing for practice rounds.</h1>
+
+          <%}else if (maxOfferingsMet){%>
+
+            <h1 style = "text-align: center; margin-top: 37.35px; margin-bottom: 37.35px;">Contact <%=name%> about a practice round</h1>
+            <form action="/api/contactPracticeRound?id=<%=id%>" method = "POST">
+            
+              
+              <input required type="text" class="feedback-input" name = "availability" placeholder = "Availability (date and time)" value = "<%=availability%>">
+            
+            <input type="text" class="feedback-input" name = "additional" placeholder = "Additional information (optional)" value = "<%=additional%>">
+            
+            <%if(skype || faceTime || discord || googleMeet || zoom){%>
+              <%var number = 0%>
+            
+              <%if(zoom){%>
+                <%number++%>
+                    <%}%>
+                    <%if(googleMeet){%>  <%number++%>
+              
+                 <%}%>
+              
+                <%if(discord){%>  <%number++%>
+              
+              
+               <%}%>
+              <%if(skype){%>  <%number++%>
+              
+               <%}%>
+              
+              <%if(faceTime){%>  <%number++%>
+              
+              
+                <%}%>
+            <%if(number < 2){%>
+              <h2 id="noBottomPadding" style = "padding-bottom: 0px; text-align: center; margin-top: 10px;">Platform</h2>
+            
+            
+              <%}else{%>
+                <h2 id="noBottomPadding" style = "padding-bottom: 0px; text-align: center; margin-top: 10px;">Platforms</h2>
+            
+              <%}%>
+              <div id = "checkRequired" style = "margin-bottom: 35px;">
+                <%}%>
+                <%if(zoom == "checked"){%>
+                  <label class="container">Zoom
+                    <input checked name = "zoom" type="checkbox">
+                    <span class="checkmark"></span>
+                    </label>
+                    <%}else if(zoom == "unchecked"){%>
+            
+                      <label class="container">Zoom
+                        <input name = "zoom" type="checkbox">
+                        <span class="checkmark"></span>
+                        </label>
+                        <%}%>
+                        <%if(googleMeet == "checked"){%>
+                          <label class="container">Google Meet
+                            <input checked name = "googleMeet" type="checkbox">
+                            <span class="checkmark"></span>
+                            </label>
+                            <%}else if(googleMeet == "unchecked"){%>
+                    
+                              <label class="container">Google Meet
+                                <input name = "googleMeet" type="checkbox">
+                                <span class="checkmark"></span>
+                                </label>
+                                <%}%>
+                                <%if(discord == "checked"){%>
+                                  <label class="container">Discord
+                                    <input checked name = "discord" type="checkbox">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                    <%}else if(discord == "unchecked"){%>
+                            
+                                      <label class="container">Discord
+                                        <input name = "discord" type="checkbox">
+                                        <span class="checkmark"></span>
+                                        </label>
+                      <%}%>  <%if(skype == "checked"){%>
+                        <label class="container">Skype
+                          <input checked name = "skype" type="checkbox">
+                          <span class="checkmark"></span>
+                          </label>
+                          <%}else if(skype == "unchecked"){%>
+                  
+                            <label class="container">Skype
+                              <input name = "skype" type="checkbox">
+                              <span class="checkmark"></span>
+                              </label>
+                              <%}%>
+                              <%if(faceTime == "checked"){%>
+                                <label class="container">Face Time
+                                  <input checked name = "faceTime" type="checkbox">
+                                  <span class="checkmark"></span>
+                                  </label>
+                                  <%}else if(faceTime == "unchecked"){%>
+                          
+                                    <label class="container">Face Time
+                                      <input name = "faceTime" type="checkbox">
+                                      <span class="checkmark"></span>
+                                      </label>
+                                      <%}%>
+            
+                <%if(skype || faceTime || discord || googleMeet || zoom){%>   
+              </div>   
+                    <%}%>
+                    <h3 id = "removeSomePadding">Sorry, you cannot contact the same person twice about the same practice round. To continue browsing for practice rounds click <a style = "color: red;" href="/practiceRounds">here</a>.</h3>
+                    <style>h3{text-align: center; color:rgb(255, 89, 89);
+              padding-top: 0px; margin-top: 0px;}</style>
+            
+            
+            <input type="submit" value = "Contact <%=name%>"></form>
+               
+                      
+
+
+            <%}else if(noAnswer){%>
+         
 <h1 style = "text-align: center; margin-top: 37.35px; margin-bottom: 37.35px;">Contact <%=name%> about a practice round</h1>
 <form action="/api/contactPracticeRound?id=<%=id%>" method = "POST">
 
   
-  <input type="text" class="feedback-input" placeholder = "Availability (date and time)">
+  <input required type="text" class="feedback-input" name = "availability" placeholder = "Availability (date and time)" value = "<%=availability%>">
 
-<input type="text" class="feedback-input" placeholder = "Additional information (optional)">
+<input type="text" class="feedback-input" name = "additional" placeholder = "Additional information (optional)" value = "<%=additional%>">
+
+<%if(skype || faceTime || discord || googleMeet || zoom){%>
+  <%var number = 0%>
+
+  <%if(zoom){%>
+    <%number++%>
+        <%}%>
+        <%if(googleMeet){%>  <%number++%>
+  
+     <%}%>
+  
+    <%if(discord){%>  <%number++%>
+  
+  
+   <%}%>
+  <%if(skype){%>  <%number++%>
+  
+   <%}%>
+  
+  <%if(faceTime){%>  <%number++%>
+  
+  
+    <%}%>
+<%if(number < 2){%>
+  <h2 id="noBottomPadding" style = "padding-bottom: 0px; text-align: center; margin-top: 10px;">Platform</h2>
+
+
+  <%}else{%>
+    <h2 id="noBottomPadding" style = "padding-bottom: 0px; text-align: center; margin-top: 10px;">Platforms</h2>
+
+  <%}%>
+  <div id = "checkRequired" style = "margin-bottom: 35px;">
+    <%}%>
+    <%if(zoom == "checked"){%>
+      <label class="container">Zoom
+        <input checked name = "zoom" type="checkbox">
+        <span class="checkmark"></span>
+        </label>
+        <%}else if(zoom == "unchecked"){%>
+
+          <label class="container">Zoom
+            <input name = "zoom" type="checkbox">
+            <span class="checkmark"></span>
+            </label>
+            <%}%>
+            <%if(googleMeet == "checked"){%>
+              <label class="container">Google Meet
+                <input checked name = "googleMeet" type="checkbox">
+                <span class="checkmark"></span>
+                </label>
+                <%}else if(googleMeet == "unchecked"){%>
+        
+                  <label class="container">Google Meet
+                    <input name = "googleMeet" type="checkbox">
+                    <span class="checkmark"></span>
+                    </label>
+                    <%}%>
+                    <%if(discord == "checked"){%>
+                      <label class="container">Discord
+                        <input checked name = "discord" type="checkbox">
+                        <span class="checkmark"></span>
+                        </label>
+                        <%}else if(discord == "unchecked"){%>
+                
+                          <label class="container">Discord
+                            <input name = "discord" type="checkbox">
+                            <span class="checkmark"></span>
+                            </label>
+          <%}%>  <%if(skype == "checked"){%>
+            <label class="container">Skype
+              <input checked name = "skype" type="checkbox">
+              <span class="checkmark"></span>
+              </label>
+              <%}else if(skype == "unchecked"){%>
+      
+                <label class="container">Skype
+                  <input name = "skype" type="checkbox">
+                  <span class="checkmark"></span>
+                  </label>
+                  <%}%>
+                  <%if(faceTime == "checked"){%>
+                    <label class="container">Face Time
+                      <input checked name = "faceTime" type="checkbox">
+                      <span class="checkmark"></span>
+                      </label>
+                      <%}else if(faceTime == "unchecked"){%>
+              
+                        <label class="container">Face Time
+                          <input name = "faceTime" type="checkbox">
+                          <span class="checkmark"></span>
+                          </label>
+                          <%}%>
+
+    <%if(skype || faceTime || discord || googleMeet || zoom){%>   
+  </div>   
+        <%}%>
+        <h3 id = "removeSomePadding">You must select at least one platform before proceeding.</h3>
+        <style>h3{text-align: center; color:rgb(255, 89, 89);
+  padding-top: 0px; margin-top: 0px;}</style>
+
+
+<input type="submit" value = "Contact <%=name%>"></form>
+   
+            <%}else{%>
+            
+<h1 style = "text-align: center; margin-top: 37.35px; margin-bottom: 37.35px;">Contact <%=name%> about a practice round</h1>
+<form action="/api/contactPracticeRound?id=<%=id%>" method = "POST">
+
+  
+  <input type="text" class="feedback-input" name = "availability" placeholder = "Availability (date and time)">
+
+<input type="text" class="feedback-input"name = "additional"  placeholder = "Additional information (optional)">
 
 <%if(skype || faceTime || discord || googleMeet || zoom){%>
   <%var number = 0%>
@@ -99,6 +330,7 @@
 
 <input type="submit" value = "Contact <%=name%>"></form>
 
+            <%}%>
       </div>
     </div>
   </section>

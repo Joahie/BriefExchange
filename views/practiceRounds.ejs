@@ -44,12 +44,176 @@
         <h2 id = "date"><%=datePRRTP[i]%></h2>
         <h2><a href="/profiles/?user=<%=nameToLowerCasePRRTP[i]%>"><%=namePRRTP[i]%></a></h2>
       
-        <h3>Debate format: TP</h3>
         <h3>Availability: <%=availabilityPRRTP[i]%></h3>
         <%if(additionalPRRTP[i]){%>
         <h3>Additional: <%=additionalPRRTP[i]%></h3>
 <%}%>
-        <h3 id ="extraBottomMargin">Judge: <%=judgePRRTP[i]%></h3>
+<%var number = 0%>
+<%var stringOfPlatforms = ""%>
+<%if(zoomPRRTP[i]){%>
+  <%number++%>
+<%}%>
+<%if(discordPRRTP[i]){%>
+  <%number++%>
+<%}%>
+<%if(skypePRRTP[i]){%>
+  <%number++%>
+<%}%>
+<%if(googleMeetPRRTP[i]){%>
+  <%number++%>
+<%}%>
+<%if(faceTimePRRTP[i]){%>
+  <%number++%>
+<%}%>
+
+<%var numberPlaceholder = number%>
+
+
+<%var firstTime = true%>
+
+<%if(numberPlaceholder >1 && numberPlaceholder != 2){%>
+  <%if(zoomPRRTP[i]){%>
+    <%if(number == 1){%>
+      <%stringOfPlatforms = stringOfPlatforms + ", or Zoom"%>
+      <%}else{%>
+        <%if(firstTime){%>
+          <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+          <%firstTime = false%>
+          <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + ", Zoom"%>
+            <%}%>
+        
+        <%}%>
+    <%number = number - 1%>
+  <%}%>
+  
+  <%if(discordPRRTP[i]){%>
+    <%if(number == 1){%>
+      <%stringOfPlatforms = stringOfPlatforms + ", or Discord"%>
+      <%}else{%> <%if(firstTime){%>
+        <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+        <%firstTime = false%>
+        <%}else{%>
+        <%stringOfPlatforms = stringOfPlatforms + ", Discord"%>
+<%}%>
+        <%}%>
+    <%number = number - 1%>
+  <%}%>
+  <%if(skypePRRTP[i]){%> <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Skype"%>
+    <%}else{%>
+      <%if(firstTime){%>
+        <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+        <%firstTime = false%>
+        <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + ", Skype"%>
+<%}%>
+      <%}%>
+  <%number = number - 1%>
+  <%}%>
+  <%if(googleMeetPRRTP[i]){%> <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Google Meet"%>
+    <%}else{%>
+      <%if(firstTime){%>
+        <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+        <%firstTime = false%>
+        <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + ", Google Meet"%>
+<%}%>
+      <%}%>
+  <%number = number - 1%>
+  <%}%>
+  <%if(faceTimePRRTP[i]){%> <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Face Time"%>
+    <%}else{%>
+      <%if(firstTime){%>
+        <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+        <%firstTime = false%>
+        <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + ", Face Time"%>
+<%}%>
+      <%}%>
+  <%number = number - 1%>
+  <%}%>
+  <h3>Available platforms: <%=stringOfPlatforms%></h3>
+  
+  <%}else if(numberPlaceholder == 2){%>
+
+  <%if(zoomPRRTP[i]){%>
+    <%if(number == 1){%>
+      <%stringOfPlatforms = stringOfPlatforms + " or Zoom"%>
+      <%}else{%>
+        <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+        <%}%>
+    <%number = number - 1%>
+  <%}%>
+  
+  <%if(discordPRRTP[i]){%>
+    <%if(number == 1){%>
+      <%stringOfPlatforms = stringOfPlatforms + " or Discord"%>
+      <%}else{%>
+        <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+
+        <%}%>
+    <%number = number - 1%>
+  <%}%>
+  <%if(skypePRRTP[i]){%> <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Skype"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+
+      <%}%>
+  <%number = number - 1%>
+  <%}%>
+  <%if(googleMeetPRRTP[i]){%> <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Google Meet"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+
+      <%}%>
+  <%number = number - 1%>
+  <%}%>
+  <%if(faceTimePRRTP[i]){%> <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Face Time"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+
+      <%}%>
+  <%number = number - 1%>
+  <%}%>
+  <h3>Available platforms: <%=stringOfPlatforms%></h3>
+<%}else{%>
+  
+  <%if(zoomPRRTP[i]){%>
+    <%stringOfPlatforms = "Zoom"%>
+  <%}%>
+  
+  <%if(discordPRRTP[i]){%>
+    <%stringOfPlatforms = "Discord"%>
+
+  <%}%>
+  <%if(skypePRRTP[i]){%> 
+    <%stringOfPlatforms = "Skype"%>
+
+  <%}%>
+  <%if(googleMeetPRRTP[i]){%> 
+    <%stringOfPlatforms = "Google Meet"%>
+
+  <%}%>
+  <%if(faceTimePRRTP[i]){%> 
+    <%stringOfPlatforms = "Face Time"%>
+
+  <%}%>
+  <h3>Available platform: <%=stringOfPlatforms%></h3>
+<%}%>
+
+
+<%if(judgePRRTP[i]){%>
+  <h3 id ="extraBottomMargin">Judge needed</h3>
+<%}else{%>
+  <h3 id ="extraBottomMargin">No judge needed</h3>
+  <%}%>
+       
         <%if(!auth){%>
      
         <%}else{%>

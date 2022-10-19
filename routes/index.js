@@ -115,6 +115,12 @@ var idPRRTP = []
 var additionalPRRTP = []
 var availabilityPRRTP = []
 var judgePRRTP = []
+var zoomPRRTP = []
+var discordPRRTP = []
+var googleMeetPRRTP = []
+var faceTimePRRTP = []
+var skypePRRTP = []
+
 
 for(let i = 0; i<results; i++){
     namePRRTP.push(results1[results-i-1].name)
@@ -124,17 +130,28 @@ for(let i = 0; i<results; i++){
     additionalPRRTP.push(results1[results-i-1].additional)
     availabilityPRRTP.push(results1[results-i-1].availability)
     judgePRRTP.push(results1[results-i-1].judge)
+    zoomPRRTP.push(results1[results-i-1].zoom)
+    skypePRRTP.push(results1[results-i-1].skype)
+    googleMeetPRRTP.push(results1[results-i-1].googleMeet)
+    faceTimePRRTP.push(results1[results-i-1].faceTime)
+    discordPRRTP.push(results1[results-i-1].discord)
 }
 res.render("practiceRounds", {
-   
-namePRRTP:namePRRTP,
-datePRRTP:datePRRTP,
-nameToLowerCasePRRTP:nameToLowerCasePRRTP,
-idPRRTP:idPRRTP,
-additionalPRRTP:additionalPRRTP,
-availabilityPRRTP:availabilityPRRTP,
-judgePRRTP:judgePRRTP,
-numberOfRequestsPRRTP: results,
+    
+    namePRRTP:namePRRTP,
+    datePRRTP:datePRRTP,
+    nameToLowerCasePRRTP:nameToLowerCasePRRTP,
+    idPRRTP:idPRRTP,
+    additionalPRRTP:additionalPRRTP,
+    availabilityPRRTP:availabilityPRRTP,
+    judgePRRTP:judgePRRTP,
+    numberOfRequestsPRRTP: results,
+    discordPRRTP: discordPRRTP,
+    zoomPRRTP: zoomPRRTP,
+    faceTimePRRTP: faceTimePRRTP,
+    skypePRRTP: skypePRRTP,
+    googleMeetPRRTP: googleMeetPRRTP,
+
     auth: req.session.email,        
     authName: req.session.name,
     numberOfNotifications: notificationsFromMongo.notifications.length,
@@ -1070,6 +1087,8 @@ if(count >0){
             googleMeet: results.googleMeet,
             faceTime: results.faceTime,
             noAnswer: false,
+            completed: false,
+            maxOfferingsMet: false,
         })
     }catch(err){
         console.log(err)

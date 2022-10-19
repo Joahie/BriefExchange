@@ -1421,7 +1421,7 @@ router.post("/requestAPracticeRound", isAuth, async(req,res)=>{
     }
 answer = req.body
     results = await mongoPracticeRoundRequests.count({nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate})
-    if (results > 4){
+    if (results > 0){
         return res.render("requestAPracticeRound",{
             auth: req.session.email,
             authName: req.session.name,
@@ -1521,7 +1521,7 @@ router.post("/contactPracticeRound", isAuth, async(req,res)=>{
     id = req.query.id
 answer = req.body
     results = await mongoContactPR.count({id: id})
-    results2 = await mongoContactPR.findOne({id: id})
+    results2 = await mongoPracticeRoundRequests.findOne({_id: ObjectId(id)})
     if(!results2.skype){
         var skype = false;
     }else{
@@ -1585,6 +1585,7 @@ answer = req.body
             faceTime: faceTime,
             zoom: zoom,
             noAnswer: false,
+            name: results2.name,
         })
     }
     var d = new Date();
@@ -1597,9 +1598,23 @@ if(answer.judge)    {
 }else{
     var judgeTrueOrFalse = false;
 }
-
+if(answer.zoom){
+    zoom = true;
+}
+if(answer.faceTime){
+    faceTime = true;
+}
+if(answer.googleMeet){
+    googleMeet = true;
+}
+if(answer.skype){
+    skype = true;
+}
+if(answer.discord){
+    discord = true;
+}
 if((faceTime == "unchecked" || !faceTime)&&(discord == "unchecked" || !discord)&&(googleMeet == "unchecked" || !googleMeet)&&(zoom == "unchecked" || !zoom)&&(skype == "unchecked" || !skype)){
-    return res.render("requestAPracticeRound",{
+    return res.render("contactPracticeRound",{
         auth: req.session.email,
         authName: req.session.name,
         maxOfferingsMet: false,
@@ -1616,10 +1631,21 @@ if((faceTime == "unchecked" || !faceTime)&&(discord == "unchecked" || !discord)&
         googleMeet: googleMeet,
         faceTime: faceTime,
         zoom: zoom,
+        name: results2.name,
+        
     })    
 }
-await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, judge: judgeTrueOrFalse,faceTime: faceTimeTF, discord: discordTF, zoom: zoomTF, googleMeet: googleMeetTF, skype: skypeTF })
-    return res.render("requestAPracticeRound",{
+if(results2.debate == "parli"){
+    var debateFormat = "Parliamentary Debate"
+}else if(results2.debate == "ld"){
+    var debateFormat = "Lincoln Douglas Debate"
+}else{
+    var debateFormat = "Team Policy Debate"
+}
+await mongoContactPR.insertOne({id: id, requesterName: results2.name,requesterEmail: results2.email,requesterNameToLowerCase: results2.nameToLowerCase,responderName: req.session.name, responderEmail: req.session.email, responderNameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: results2.debate, date: date, additional: results2.additional, availability1: results2.availability, availability2: answer.availability, judge: results2.judge,faceTime: faceTime, discord: discord, zoom: zoom, googleMeet: googleMeet, skype: skype })
+await mongoAccounts.updateOne({email: results2.email}, {$push:{notifications: req.session.name + " responded to your post requesting a " +debateFormat + " practice round."}})
+
+    return res.render("contactPracticeRound",{
         auth: req.session.email,
         authName: req.session.name,
         maxOfferingsMet: false,
@@ -1627,6 +1653,12 @@ await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.s
         verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
         noAnswer: false,
+        name: results2.name,
+        skype: skype,
+        discord: discord,
+        googleMeet: googleMeet,
+        faceTime: faceTime,
+        zoom: zoom,
     })    
 
 })
