@@ -22,7 +22,7 @@
     <button onclick="replace(4)" id="buttonTwo">Briefs you've received</button>
 
 
-    <button onclick="replace(2)" id="buttonThree">Outgoing Requests</button>
+    <button onclick="replace(2)" id="buttonThree">Outgoing requests</button>
       </div>
     
 <div class = 'rightButtons'>
@@ -171,18 +171,18 @@
     function replace(number){
 
         if(number == 1){
-          window.location.href = "/dashboard?section=yourBriefs";
+          window.location.href = "/briefDashboard?section=yourBriefs";
         }
         if(number == 2){
-          window.location.href = "/dashboard?section=outgoingRequests";
+          window.location.href = "/briefDashboard?section=outgoingRequests";
         }
         if(number == 3){
-          window.location.href = "/dashboard?section=ratings";
+          window.location.href = "/briefDashboard?section=ratings";
 
         }
        
         if(number == 4){
-          window.location.href = "/dashboard?section=briefsYouveReceived";
+          window.location.href = "/briefDashboard?section=briefsYouveReceived";
 
         }
     }

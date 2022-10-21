@@ -96,8 +96,9 @@
           <li class="address"><a class="profile" href="/profiles?user=<%=authName%>"><span class="picon"><i class="fas fa-user-alt"></i>
               </span>Profile</a>
           </li>
-          <li><a class="address" href="/dashboard?section=yourBriefs"><span class="picon"><i class="fa fa-desktop" aria-hidden="true"></i></span>Dashboard</a></li>
-          <li><a class="settings" href="/editAccountinformation"><span class="picon"><i class="fas fa-cog"></i></span>Edit account</a></li>
+          <li><a class="address" href="/briefDashboard?section=yourBriefs"><span class="picon"><i class="fa fa-book" aria-hidden="true"></i></span>Briefs Dashboard</a></li>
+          <li><a class="address" href="/practiceRoundDashboard?section=yourPracticeRounds"><span class="picon"><i class="fa fa-desktop" aria-hidden="true"></i></span>Practice Rounds Dashboard</a></li>
+          <li><a class="settings" href="/editAccountinformation"><span class="picon"><i class="fas fa-cog"></i></span>Edit Account</a></li>
           <li id = "logoutli"><form action="/api/logOut" method = "POST"><button id = "logOut" class = 'dissapearNext' style = "color: rgba(0,0,0,.5);"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Log Out</button></form> 
 
           </li>

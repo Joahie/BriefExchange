@@ -95,6 +95,91 @@ function sortingMongoDB(results){
     return ParsedResults
 }
 
+
+
+router.get("/practiceRoundDashboard", markAsRead,  verifyEmail("Practice rounds dashboard", "use your practice rounds dashboard"), isAuth, markAsRead,async (req, res)=>{
+
+ if(req.session.email){
+    var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+}else{
+    var notificationsFromMongo = {
+        "notifications":[]
+        }
+}
+
+section = req.query.section
+    try{
+        var user = req.session.name
+        var userToLowerCase = user.toLowerCase().replace(" ", "")
+        if(section == "yourPracticeRounds"){
+            var results1 = await mongoPracticeRoundRequests.find({nameToLowerCase: userToLowerCase}).toArray()
+            var results = await mongoPracticeRoundRequests.count({nameToLowerCase: userToLowerCase})
+console.log(results1)        
+        var name = []
+        var date = []
+        var nameToLowerCase = []
+        var id = []
+        var additional = []
+        var availability = []
+        var judge = []
+        var zoom = []
+        var discord = []
+        var googleMeet = []
+        var faceTime = []
+        var skype = []
+        var debate = []
+
+        for(let i = 0; i<results; i++){
+            name.push(results1[results-i-1].name)
+            date.push(results1[results-i-1].date)
+            nameToLowerCase.push(results1[results-i-1].nameToLowerCase)
+            id.push(results1[results-i-1]._id)
+            additional.push(results1[results-i-1].additional)
+            availability.push(results1[results-i-1].availability)
+            judge.push(results1[results-i-1].judge)
+            zoom.push(results1[results-i-1].zoom)
+            skype.push(results1[results-i-1].skype)
+            googleMeet.push(results1[results-i-1].googleMeet)
+            faceTime.push(results1[results-i-1].faceTime)
+            discord.push(results1[results-i-1].discord)
+            if(results1[results-i-1].debate == "tp"){
+                debate.push("Team Policy Debate")
+
+            }else if (results1[results-i-1].debate == "ld"){
+                debate.push("Lincoln Douglas Debate")
+            }else{
+                debate.push("Parliamentary Debate")
+            }
+        }
+        
+        return res.render("dashboardYourPracticeRounds",{
+            auth: req.session.email,        
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+            name:name,
+            date:date,
+            nameToLowerCase:nameToLowerCase,
+            id:id,
+            additional:additional,
+            availability:availability,
+            judge:judge,
+            numberOfRequests: results,
+            discord: discord,
+            zoom: zoom,
+            faceTime: faceTime,
+            skype: skype,
+            googleMeet: googleMeet,
+            debate: debate,
+        })
+
+
+    }
+}catch(err){
+console.log(err)
+}
+
+})
 router.get("/practiceRounds", markAsRead, async (req,res)=>{
 
  if(req.session.email){
@@ -107,6 +192,10 @@ router.get("/practiceRounds", markAsRead, async (req,res)=>{
 
 var results = await mongoPracticeRoundRequests.count({debate: "tp"})
 var results1 = await mongoPracticeRoundRequests.find({debate: "tp"}).toArray()
+var results2 = await mongoPracticeRoundRequests.count({debate: "ld"})
+var results3 = await mongoPracticeRoundRequests.find({debate: "ld"}).toArray()
+var results4 = await mongoPracticeRoundRequests.count({debate: "parli"})
+var results5 = await mongoPracticeRoundRequests.find({debate: "parli"}).toArray()
 
 var namePRRTP = []
 var datePRRTP = []
@@ -120,6 +209,32 @@ var discordPRRTP = []
 var googleMeetPRRTP = []
 var faceTimePRRTP = []
 var skypePRRTP = []
+
+var namePRRLD = []
+var datePRRLD = []
+var nameToLowerCasePRRLD = []
+var idPRRLD = []
+var additionalPRRLD = []
+var availabilityPRRLD = []
+var judgePRRLD = []
+var zoomPRRLD = []
+var discordPRRLD = []
+var googleMeetPRRLD = []
+var faceTimePRRLD = []
+var skypePRRLD = []
+var namePRRP = []
+var datePRRP = []
+var nameToLowerCasePRRP = []
+var idPRRP = []
+var additionalPRRP = []
+var availabilityPRRP = []
+var judgePRRP = []
+var zoomPRRP = []
+var discordPRRP = []
+var googleMeetPRRP = []
+var faceTimePRRP = []
+var skypePRRP = []
+
 
 
 for(let i = 0; i<results; i++){
@@ -136,6 +251,37 @@ for(let i = 0; i<results; i++){
     faceTimePRRTP.push(results1[results-i-1].faceTime)
     discordPRRTP.push(results1[results-i-1].discord)
 }
+
+for(let i = 0; i<results2; i++){
+    namePRRLD.push(results3[results2-i-1].name)
+    datePRRLD.push(results3[results2-i-1].date)
+    nameToLowerCasePRRLD.push(results3[results2-i-1].nameToLowerCase)
+    idPRRLD.push(results3[results2-i-1]._id)
+    additionalPRRLD.push(results3[results2-i-1].additional)
+    availabilityPRRLD.push(results3[results2-i-1].availability)
+    judgePRRLD.push(results3[results2-i-1].judge)
+    zoomPRRLD.push(results3[results2-i-1].zoom)
+    skypePRRLD.push(results3[results2-i-1].skype)
+    googleMeetPRRLD.push(results3[results2-i-1].googleMeet)
+    faceTimePRRLD.push(results3[results2-i-1].faceTime)
+    discordPRRLD.push(results3[results2-i-1].discord)
+}
+
+
+for(let i = 0; i<results4; i++){
+    namePRRP.push(results5[results4-i-1].name)
+    datePRRP.push(results5[results4-i-1].date)
+    nameToLowerCasePRRP.push(results5[results4-i-1].nameToLowerCase)
+    idPRRP.push(results5[results4-i-1]._id)
+    additionalPRRP.push(results5[results4-i-1].additional)
+    availabilityPRRP.push(results5[results4-i-1].availability)
+    judgePRRP.push(results5[results4-i-1].judge)
+    zoomPRRP.push(results5[results4-i-1].zoom)
+    skypePRRP.push(results5[results4-i-1].skype)
+    googleMeetPRRP.push(results5[results4-i-1].googleMeet)
+    faceTimePRRP.push(results5[results4-i-1].faceTime)
+    discordPRRP.push(results5[results4-i-1].discord)
+}
 res.render("practiceRounds", {
     
     namePRRTP:namePRRTP,
@@ -151,6 +297,34 @@ res.render("practiceRounds", {
     faceTimePRRTP: faceTimePRRTP,
     skypePRRTP: skypePRRTP,
     googleMeetPRRTP: googleMeetPRRTP,
+
+    namePRRLD:namePRRLD,
+    datePRRLD:datePRRLD,
+    nameToLowerCasePRRLD:nameToLowerCasePRRLD,
+    idPRRLD:idPRRLD,
+    additionalPRRLD:additionalPRRLD,
+    availabilityPRRLD:availabilityPRRLD,
+    judgePRRLD:judgePRRLD,
+    numberOfRequestsPRRLD: results2,
+    discordPRRLD: discordPRRLD,
+    zoomPRRLD: zoomPRRLD,
+    faceTimePRRLD: faceTimePRRLD,
+    skypePRRLD: skypePRRLD,
+    googleMeetPRRLD: googleMeetPRRLD,
+    
+    namePRRP:namePRRP,
+    datePRRP:datePRRP,
+    nameToLowerCasePRRP:nameToLowerCasePRRP,
+    idPRRP:idPRRP,
+    additionalPRRP:additionalPRRP,
+    availabilityPRRP:availabilityPRRP,
+    judgePRRP:judgePRRP,
+    numberOfRequestsPRRP: results4,
+    discordPRRP: discordPRRP,
+    zoomPRRP: zoomPRRP,
+    faceTimePRRP: faceTimePRRP,
+    skypePRRP: skypePRRP,
+    googleMeetPRRP: googleMeetPRRP,
 
     auth: req.session.email,        
     authName: req.session.name,
@@ -646,7 +820,7 @@ let email = req.session.email
 
     })
 })
-    router.get("/dashboard", verifyEmail("Dashboard", "use your dashboard"), isAuth, markAsRead,async (req, res)=>{
+    router.get("/briefDashboard", verifyEmail("Brief Dashboard", "use your brief dashboard"), isAuth, markAsRead,async (req, res)=>{
         if(req.session.email){
             var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
         }else{

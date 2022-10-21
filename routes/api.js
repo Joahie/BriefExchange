@@ -856,7 +856,16 @@ router.post("/deleteBrief", verifyEmail("Delete Brief","delete your briefs"),mar
         idQuery = req.query.id
     await mongoBrief.deleteOne({_id: ObjectId(idQuery)})
 
-    return res.redirect("/dashboard?section=yourBriefs")
+    return res.redirect("/briefDashboard?section=yourBriefs")
+})
+
+router.post("/deletePracticeRoundRequest", verifyEmail("Delete Practice Round Request","delete your practice round requests"),markAsRead,   isAuth,async (req,res)=>{
+
+        
+        idQuery = req.query.id
+    await mongoPracticeRoundRequests.deleteOne({_id: ObjectId(idQuery)})
+
+    return res.redirect("/practiceRoundDashboard?section=yourPracticeRounds")
 })
 
 router.post("/reject",  verifyEmail("Reject Request","reject a brief request"),markAsRead, isAuth, async (req,res)=>{
@@ -869,7 +878,7 @@ router.post("/reject",  verifyEmail("Reject Request","reject a brief request"),m
         await mongoAccounts.updateOne({email: results.email},{$push:{notifications: results.toName + " has rejected your request to trade for a brief on " + results.briefName}})
     }
     
-    return res.redirect("/dashboard?section=yourBriefs")
+    return res.redirect("/briefDashboard?section=yourBriefs")
 })
   
 
@@ -884,7 +893,7 @@ router.post("/agree",  verifyEmail("Agree","agree to a brief request"),markAsRea
     }else{
         await mongoAccounts.updateOne({email: results.email}, {$push:{notifications: req.session.name + " has agreed to your request for a brief on "+results.offerBriefName}})
     }
-    return res.redirect("/dashboard?section=yourBriefs")
+    return res.redirect("/briefDashboard?section=yourBriefs")
 })
 router.post("/response",  verifyEmail("Respond","respond to a brief request"),isAuth, async (req,res)=>{
     var id = req.query.id
