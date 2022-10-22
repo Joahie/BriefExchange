@@ -120,7 +120,7 @@
             
                   function getMoreInformation(i){
                       const div = document.getElementById('buttonContent' +i)
-                      div.innerHTML=`<h4 style = 'font-size: 20px'><%=from[i]%>'s email: <%=requestFromEmail[i]%></h4>`
+                      div.innerHTML=`<h4 style='padding-top: 8px;'><%=from[i]%>'s email: <a target = '_blank' href = 'mailto:<%=requestFromEmail[i]%>'><%=requestFromEmail[i]%></a></h4>`
                     }
                       function accept(i, id){
                           const div = document.getElementById('buttonContent' + i)
@@ -190,7 +190,7 @@
 
                                       <details>
                                           <summary>
-                                        <h4 id = 'requestFrom'>Request from <a href='/profiles?user=<%=from[i]%>'><%=from[v]%></a></h4>    <span class='icon'>▼</span><span class='otherIcon'>▲</span>
+                                        <h4 id = 'requestFrom'>Request from <a href='/profiles?user=<%=from[v]%>'><%=from[v]%></a></h4>    <span class='icon'>▼</span><span class='otherIcon'>▲</span>
                                           </summary>
                                           <div id = 'dropdownContainer'>
                                             <h2 id = 'date' style = 'margin-top: 0px;'><%=requestDate[v]%></h2>
@@ -219,7 +219,7 @@
       
       function getMoreInformationR(i){
                       const div = document.getElementById('buttonContentR' +i)
-                      div.innerHTML="<h4 style = 'font-size: 20px'><%=from[i]%>'s email: <%=requestFromEmail[i]%></h4>"
+                      div.innerHTML=`<h4 style='padding-top: 8px;'><%=from[i]%>'s email: <a target = '_blank' href = 'mailto:<%=requestFromEmail[i]%>'><%=requestFromEmail[i]%></a></h4>`
                     }
                       function acceptR(i, id){
                           const div = document.getElementById('buttonContentR' + i)

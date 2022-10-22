@@ -30,6 +30,9 @@
     padding: 30px;
     box-shadow: rgba(0, 0, 0, 30%) 0px 3px 8px;
   }
+  h4{
+    user-select: text;
+  }
   #buttonTwo{
     border-right: 0px;
     border-left: 0px;

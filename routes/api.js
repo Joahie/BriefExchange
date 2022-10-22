@@ -868,6 +868,17 @@ router.post("/deletePracticeRoundRequest", verifyEmail("Delete Practice Round Re
     return res.redirect("/practiceRoundDashboard?section=yourPracticeRounds")
 })
 
+router.post("/rejectPracticeRoundRequest",  verifyEmail("Reject Request","reject a practice round request"),markAsRead, isAuth, async (req,res)=>{
+    var id = req.query.id
+    await mongoContactPR.updateOne({_id: ObjectId(id)}, {$set: {status:"rejected"}})
+    var results = await mongoContactPR.findOne({_id: ObjectId(id)})
+    await mongoAccounts.updateOne({email: results.responderEmail},{$push:{notifications: results.requesterName + " has rejected your practice round request."}})
+    
+    
+    return res.redirect("/practiceRoundDashboard?section=yourPracticeRounds")
+})
+  
+
 router.post("/reject",  verifyEmail("Reject Request","reject a brief request"),markAsRead, isAuth, async (req,res)=>{
     var id = req.query.id
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"rejected"}})
@@ -1651,7 +1662,7 @@ if(results2.debate == "parli"){
 }else{
     var debateFormat = "Team Policy Debate"
 }
-await mongoContactPR.insertOne({id: id, requesterName: results2.name,requesterEmail: results2.email,requesterNameToLowerCase: results2.nameToLowerCase,responderName: req.session.name, responderEmail: req.session.email, responderNameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: results2.debate, date: date, additional: results2.additional, availability1: results2.availability, availability2: answer.availability, judge: results2.judge,faceTime: faceTime, discord: discord, zoom: zoom, googleMeet: googleMeet, skype: skype })
+await mongoContactPR.insertOne({id: id, requesterName: results2.name,requesterEmail: results2.email,requesterNameToLowerCase: results2.nameToLowerCase,responderName: req.session.name, responderEmail: req.session.email, responderNameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: results2.debate, date: date, additional1: results2.additional, additional2: answer.additional, availability1: results2.availability, availability2: answer.availability, judge: results2.judge,faceTime: faceTime, discord: discord, zoom: zoom, googleMeet: googleMeet, skype: skype, status: "none" })
 await mongoAccounts.updateOne({email: results2.email}, {$push:{notifications: req.session.name + " responded to your post requesting a " +debateFormat + " practice round."}})
 
     return res.render("contactPracticeRound",{

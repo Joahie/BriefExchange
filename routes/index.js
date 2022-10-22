@@ -114,7 +114,8 @@ section = req.query.section
         if(section == "yourPracticeRounds"){
             var results1 = await mongoPracticeRoundRequests.find({nameToLowerCase: userToLowerCase}).toArray()
             var results = await mongoPracticeRoundRequests.count({nameToLowerCase: userToLowerCase})
-console.log(results1)        
+            var results2 = await mongoContactPR.find({requesterNameToLowerCase: userToLowerCase}).toArray()
+            var results3 = await mongoContactPR.count({requesterNameToLowerCase: userToLowerCase})
         var name = []
         var date = []
         var nameToLowerCase = []
@@ -129,6 +130,43 @@ console.log(results1)
         var skype = []
         var debate = []
 
+        var idRES = []
+        var requesterNameRES = []
+        var requesterEmailRES = []
+        var requesterNameToLowerCaseRES = []
+        var responderNameRES = []
+        var responderEmailRES = []
+        var responderNameToLowerCaseRES = []
+        var dateRES = []
+        var availability2RES = []
+        var zoomRES = []
+        var discordRES = []
+        var googleMeetRES = []
+        var faceTimeRES = []
+        var skypeRES = []
+        var statusRES = []
+        var actualIdRES = []
+        var additionalRES = []
+
+        for(let i = 0; i<results3; i++){
+            statusRES.push(results2[results3-i-1].status)
+            requesterNameRES.push(results2[results3-i-1].requesterName)
+            requesterEmailRES.push(results2[results3-i-1].requesterEmail)
+            responderNameRES.push(results2[results3-i-1].responderName)
+            responderEmailRES.push(results2[results3-i-1].responderEmail)
+            requesterNameToLowerCaseRES.push(results2[results3-i-1].requesterNameToLowerCase)
+            availability2RES.push(results2[results3-i-1].availability2)
+            dateRES.push(results2[results3-i-1].date)
+            idRES.push(results2[results3-i-1].id)
+            zoomRES.push(results2[results3-i-1].zoom)
+            skypeRES.push(results2[results3-i-1].skype)
+            googleMeetRES.push(results2[results3-i-1].googleMeet)
+            faceTimeRES.push(results2[results3-i-1].faceTime)
+            discordRES.push(results2[results3-i-1].discord)
+            actualIdRES.push(results2[results3-i-1]._id)
+            additionalRES.push(results2[results3-i-1].additional2)
+
+        }
         for(let i = 0; i<results; i++){
             name.push(results1[results-i-1].name)
             date.push(results1[results-i-1].date)
@@ -150,7 +188,7 @@ console.log(results1)
             }else{
                 debate.push("Parliamentary Debate")
             }
-        }
+        }  
         
         return res.render("dashboardYourPracticeRounds",{
             auth: req.session.email,        
@@ -171,6 +209,24 @@ console.log(results1)
             skype: skype,
             googleMeet: googleMeet,
             debate: debate,
+
+            additionalRES:additionalRES,
+            actualIdRES: actualIdRES,
+            idRES: idRES,
+            requesterNameRES:requesterNameRES,
+            requesterNameToLowerCaseRES:requesterNameToLowerCaseRES,
+            requesterEmailRES:requesterEmailRES,
+            responderNameRES: responderNameRES,
+            dateRES:dateRES,
+            availability2RES:availability2RES,
+            zoomRES:zoomRES,
+            faceTimeRES: faceTimeRES,
+            skypeRES: skypeRES,
+            googleMeetRES: googleMeetRES,
+            discordRES: discordRES,
+            requestAmount: results3,
+            statusRES: statusRES,
+            responderEmailRES:responderEmailRES,
         })
 
 

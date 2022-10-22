@@ -48,7 +48,7 @@
 
               
                   <%for(let i = 0; i<numberOfRequests; i++){%>
-                      <h2 id = 'date'><%=date[i]%></h2><form action='/api/deletePracticeROundRequest?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
+                      <h2 id = 'date'><%=date[i]%></h2><form action='/api/deletePracticeRoundRequest?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
                           <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'>Debate Format: <%=debate[i]%></h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
                       </form>
                       <h3>Availability: <%=availability[i]%></h3>
@@ -226,6 +226,218 @@
 <%}else{%>
   <h3 id ="extraBottomMargin">No judge needed</h3>
   <%}%>
+
+  <% var myVariable = false; %>
+  <%for(let f = 0; f<requestAmount; f++){%>
+      <%if(idRES[f]==id[i] && statusRES[f] != 'rejected'){%>
+          <% var myVariable = true; %>
+  
+      <%}%>
+  <%}%>
+
+  <%if (myVariable){%>
+  
+    <h3 style = 'margin-top: 18px' id ='noBottomMargin'>Responses:</h3>
+
+<%}%>
+       <%for(let v = 0; v<requestAmount; v++){%>
+           <%if(idRES[v]==id[i] && statusRES[v] != 'rejected'){%>
+
+
+<details>
+    <summary>
+  <h4 id = 'requestFrom'>Response from <a href='/profiles?user=<%=requesterNameRES[v]%>'><%=requesterNameRES[v]%></a></h4>    <span class='icon'>▼</span><span class='otherIcon'>▲</span>
+    </summary>
+    <div id = 'dropdownContainer'>
+      <h2 id = 'date' style = 'margin-top: 0px;'><%=dateRES[v]%></h2>
+      <h4>Availability: <%=availability2RES[v]%></h4>
+      <%if(additionalRES[v]){%>
+      <h4>Additional Information: <%=additionalRES[v]%></h4>
+      <%}%>
+
+
+
+      <%var number = 0%>
+      <%var stringOfPlatforms = ""%>
+      <%if(zoomRES[v]){%>
+        <%number++%>
+      <%}%>
+      <%if(discordRES[v]){%>
+        <%number++%>
+      <%}%>
+      <%if(skypeRES[v]){%>
+        <%number++%>
+      <%}%>
+      <%if(googleMeetRES[v]){%>
+        <%number++%>
+      <%}%>
+      <%if(faceTimeRES[v]){%>
+        <%number++%>
+      <%}%>
+      
+      <%var numberPlaceholder = number%>
+      
+      
+      <%var firstTime = true%>
+      
+      <%if(numberPlaceholder >1 && numberPlaceholder != 2){%>
+        <%if(zoomRES[v]){%>
+          <%if(number == 1){%>
+            <%stringOfPlatforms = stringOfPlatforms + ", or Zoom"%>
+            <%}else{%>
+              <%if(firstTime){%>
+                <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+                <%firstTime = false%>
+                <%}else{%>
+                  <%stringOfPlatforms = stringOfPlatforms + ", Zoom"%>
+                  <%}%>
+              
+              <%}%>
+          <%number = number - 1%>
+        <%}%>
+        
+        <%if(discordRES[v]){%>
+          <%if(number == 1){%>
+            <%stringOfPlatforms = stringOfPlatforms + ", or Discord"%>
+            <%}else{%> <%if(firstTime){%>
+              <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+              <%firstTime = false%>
+              <%}else{%>
+              <%stringOfPlatforms = stringOfPlatforms + ", Discord"%>
+      <%}%>
+              <%}%>
+          <%number = number - 1%>
+        <%}%>
+        <%if(skypeRES[v]){%> <%if(number == 1){%>
+          <%stringOfPlatforms = stringOfPlatforms + ", or Skype"%>
+          <%}else{%>
+            <%if(firstTime){%>
+              <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+              <%firstTime = false%>
+              <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + ", Skype"%>
+      <%}%>
+            <%}%>
+        <%number = number - 1%>
+        <%}%>
+        <%if(googleMeetRES[v]){%> <%if(number == 1){%>
+          <%stringOfPlatforms = stringOfPlatforms + ", or Google Meet"%>
+          <%}else{%>
+            <%if(firstTime){%>
+              <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+              <%firstTime = false%>
+              <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + ", Google Meet"%>
+      <%}%>
+            <%}%>
+        <%number = number - 1%>
+        <%}%>
+        <%if(faceTimeRES[v]){%> <%if(number == 1){%>
+          <%stringOfPlatforms = stringOfPlatforms + ", or Face Time"%>
+          <%}else{%>
+            <%if(firstTime){%>
+              <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+              <%firstTime = false%>
+              <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + ", Face Time"%>
+      <%}%>
+            <%}%>
+        <%number = number - 1%>
+        <%}%>
+        <h4>Available platforms: <%=stringOfPlatforms%></h4>
+        
+        <%}else if(numberPlaceholder == 2){%>
+      
+        <%if(zoomRES[v]){%>
+          <%if(number == 1){%>
+            <%stringOfPlatforms = stringOfPlatforms + " or Zoom"%>
+            <%}else{%>
+              <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+              <%}%>
+          <%number = number - 1%>
+        <%}%>
+        
+        <%if(discordRES[v]){%>
+          <%if(number == 1){%>
+            <%stringOfPlatforms = stringOfPlatforms + " or Discord"%>
+            <%}else{%>
+              <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+      
+              <%}%>
+          <%number = number - 1%>
+        <%}%>
+        <%if(skypeRES[v]){%> <%if(number == 1){%>
+          <%stringOfPlatforms = stringOfPlatforms + " or Skype"%>
+          <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+      
+            <%}%>
+        <%number = number - 1%>
+        <%}%>
+        <%if(googleMeetRES[v]){%> <%if(number == 1){%>
+          <%stringOfPlatforms = stringOfPlatforms + " or Google Meet"%>
+          <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+      
+            <%}%>
+        <%number = number - 1%>
+        <%}%>
+        <%if(faceTimeRES[v]){%> <%if(number == 1){%>
+          <%stringOfPlatforms = stringOfPlatforms + " or Face Time"%>
+          <%}else{%>
+            <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+      
+            <%}%>
+        <%number = number - 1%>
+        <%}%>
+        <h4>Available platforms: <%=stringOfPlatforms%></h4>
+      <%}else{%>
+        
+        <%if(zoomRES[v]){%>
+          <%stringOfPlatforms = "Zoom"%>
+        <%}%>
+        
+        <%if(discordRES[v]){%>
+          <%stringOfPlatforms = "Discord"%>
+      
+        <%}%>
+        <%if(skypeRES[v]){%> 
+          <%stringOfPlatforms = "Skype"%>
+      
+        <%}%>
+        <%if(googleMeetRES[v]){%> 
+          <%stringOfPlatforms = "Google Meet"%>
+      
+        <%}%>
+        <%if(faceTimeRES[v]){%> 
+          <%stringOfPlatforms = "Face Time"%>
+      
+        <%}%>
+        <h4>Available platform: <%=stringOfPlatforms%></h4>
+      <%}%>
+
+          <%if(statusRES[v] == "bothSidesSent"){%>
+            <h4 style = 'font-size: 20px; padding-top: 10px'><%=requesterNameRES[v]%></h3>
+            </h4>
+
+<%}else if(statusRES[v] == 'agree'){%>                                        <h4 style = 'font-size: 20px; padding-top: 10px'></h4>
+  <%}else{%>
+          <div id = 'buttonContentR<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='acceptR(<%=v%>, "<%=actualIdRES[v]%>")'>Accept</button><form id = 'inline-block' action='/api/rejectPracticeRoundRequest?id=<%=actualIdRES[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformationR(<%=v%>)">Get more information</button></div>
+        </div>
+
+            <%}%>
+  </details>
+
+  <script>
+
+    function getMoreInformationR(i){
+                  const div = document.getElementById('buttonContentR' +i)
+                  div.innerHTML="<h4 style='padding-top: 8px;'><%=responderNameRES[i]%>'s email: <a target = '_blank' href = 'mailto:<%=responderEmailRES[i]%>'><%=responderEmailRES[i]%></a></h4>"
+                }
+    </script>
+  <%}%>
+  <%}%>
+
   <%}%>
               <style>i{color: rgba(0,0,0, 0.5)} #date{margin-bottom: 19px;}
               #replaceThisDiv button{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px;  font-weight: bold;
