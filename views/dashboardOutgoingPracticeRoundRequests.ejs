@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <title>Dashboard: Outgoing practice round requests</title>
+  <script src="https://kit.fontawesome.com/d61eecf5e3.js" crossorigin="anonymous"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/scroll.js"></script>
+  <link rel="icon" type="image/x-icon" href="https://i.imgur.com/cczltUx.png">
+
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+  <section id = "body">
+    <div class="buttonContainer topButtons">
+      <div class = "leftButtons">
+        <button onclick="replace(5)" id="buttonOne">Your practice round requests</button>
+    <button onclick="replace(6)" id="buttonTwo">Your responses</button>
+
+
+    <button onclick="replace(7)" id="buttonThree">Outgoing Responses</button>
+      </div>
+    
+<div class = 'rightButtons'>
+  <button onclick="redirect(3)" style = "border-radius: 5px 5px 0px 0px;"id="rightButtonTwo">Request a practice round</button></div>
+    </div>
+
+    
+
+    <div class="largerContainer">
+      <div class = "smallerContainer">
+        <div id ="replaceThisDiv">
+          <script  src="ejs.min.js"></script>
+      
+              <h1>Your Responses</h1>
+              
+              <hr>    
+                  
+              <span class='briefSection'>
+                 
+                <%if (numberOfRequests == 0){%>
+                  <h2 class = 'briefSectionheader'>You currently have no responses to any practice rounds</h2>
+              <%}%>
+
+          
+              <%for(let i = 0; i<numberOfRequests; i++){%>
+                  <h2 id = 'date'><%=date[i]%></h2><form action='/api/deletePracticeRoundResponse?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
+                      <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'><a href="/profiles?user=<%=requesterName[i]%>"><%=requesterName[i]%></a> requested a practice round:</h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
+                  </form>
+                  <h3> Debate Format: <%=debate[i]%></h3>
+                  <h3> Availability: <%=availability1[i]%></h3>
+
+                  <%if(additional[i]){%>
+                    <h3>Additional information: <%=additional[i]%></h3>
+<%}%>
+
+
+
+
+
+<%var number = 0%>
+<%var stringOfPlatforms = ""%>
+<%if(zoomOG[i]){%>
+<%number++%>
+<%}%>
+<%if(discordOG[i]){%>
+<%number++%>
+<%}%>
+<%if(skypeOG[i]){%>
+<%number++%>
+<%}%>
+<%if(googleMeetOG[i]){%>
+<%number++%>
+<%}%>
+<%if(faceTimeOG[i]){%>
+<%number++%>
+<%}%>
+
+<%var numberPlaceholder = number%>
+
+
+<%var firstTime = true%>
+
+<%if(numberPlaceholder >1 && numberPlaceholder != 2){%>
+<%if(zoomOG[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Zoom"%>
+    <%}else{%>
+      <%if(firstTime){%>
+        <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+        <%firstTime = false%>
+        <%}else{%>
+          <%stringOfPlatforms = stringOfPlatforms + ", Zoom"%>
+          <%}%>
+      
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+
+<%if(discordOG[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Discord"%>
+    <%}else{%> <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+      <%firstTime = false%>
+      <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + ", Discord"%>
+<%}%>
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+<%if(skypeOG[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + ", or Skype"%>
+  <%}else{%>
+    <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+      <%firstTime = false%>
+      <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + ", Skype"%>
+<%}%>
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(googleMeetOG[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + ", or Google Meet"%>
+  <%}else{%>
+    <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+      <%firstTime = false%>
+      <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + ", Google Meet"%>
+<%}%>
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(faceTimeOG[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + ", or Face Time"%>
+  <%}else{%>
+    <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+      <%firstTime = false%>
+      <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + ", Face Time"%>
+<%}%>
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<h3>Available platforms: <%=stringOfPlatforms%></h3>
+
+<%}else if(numberPlaceholder == 2){%>
+
+<%if(zoomOG[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Zoom"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+
+<%if(discordOG[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Discord"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+<%if(skypeOG[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + " or Skype"%>
+  <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(googleMeetOG[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + " or Google Meet"%>
+  <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(faceTimeOG[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + " or Face Time"%>
+  <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<h3>Available platforms: <%=stringOfPlatforms%></h3>
+<%}else{%>
+
+<%if(zoom[i]){%>
+  <%stringOfPlatforms = "Zoom"%>
+<%}%>
+
+<%if(discord[i]){%>
+  <%stringOfPlatforms = "Discord"%>
+
+<%}%>
+<%if(skype[i]){%> 
+  <%stringOfPlatforms = "Skype"%>
+
+<%}%>
+<%if(googleMeet[i]){%> 
+  <%stringOfPlatforms = "Google Meet"%>
+
+<%}%>
+<%if(faceTime[i]){%> 
+  <%stringOfPlatforms = "Face Time"%>
+
+<%}%>
+<h3>Available platform: <%=stringOfPlatforms%></h3>
+<%}%>
+
+
+<%if(judge[i]){%>
+<h3 id ="extraBottomMargin">Judge needed</h3>
+<%}else{%>
+<h3 id ="extraBottomMargin">No judge needed</h3>
+<%}%>
+<h2 id = 'thirtypx'>Your response:</h2>
+<h3>Availability: <%=availability2[i]%></h3>
+<%if(additional2[i]){%>
+<h3>Additional information: <%=additional2[i]%></h3>
+
+<%}%>
+
+
+<%var number = 0%>
+<%var stringOfPlatforms = ""%>
+<%if(zoom[i]){%>
+<%number++%>
+<%}%>
+<%if(discord[i]){%>
+<%number++%>
+<%}%>
+<%if(skype[i]){%>
+<%number++%>
+<%}%>
+<%if(googleMeet[i]){%>
+<%number++%>
+<%}%>
+<%if(faceTime[i]){%>
+<%number++%>
+<%}%>
+
+<%var numberPlaceholder = number%>
+
+
+<%var firstTime = true%>
+
+<%if(numberPlaceholder >1 && numberPlaceholder != 2){%>
+<%if(zoom[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Zoom"%>
+    <%}else{%>
+      <%if(firstTime){%>
+        <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+        <%firstTime = false%>
+        <%}else{%>
+          <%stringOfPlatforms = stringOfPlatforms + ", Zoom"%>
+          <%}%>
+      
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+
+<%if(discord[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + ", or Discord"%>
+    <%}else{%> <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+      <%firstTime = false%>
+      <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + ", Discord"%>
+<%}%>
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+<%if(skype[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + ", or Skype"%>
+  <%}else{%>
+    <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+      <%firstTime = false%>
+      <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + ", Skype"%>
+<%}%>
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(googleMeet[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + ", or Google Meet"%>
+  <%}else{%>
+    <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+      <%firstTime = false%>
+      <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + ", Google Meet"%>
+<%}%>
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(faceTime[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + ", or Face Time"%>
+  <%}else{%>
+    <%if(firstTime){%>
+      <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+      <%firstTime = false%>
+      <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + ", Face Time"%>
+<%}%>
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<h3>Available platforms: <%=stringOfPlatforms%></h3>
+
+<%}else if(numberPlaceholder == 2){%>
+
+<%if(zoom[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Zoom"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Zoom"%>
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+
+<%if(discord[i]){%>
+  <%if(number == 1){%>
+    <%stringOfPlatforms = stringOfPlatforms + " or Discord"%>
+    <%}else{%>
+      <%stringOfPlatforms = stringOfPlatforms + "Discord"%>
+
+      <%}%>
+  <%number = number - 1%>
+<%}%>
+<%if(skype[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + " or Skype"%>
+  <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + "Skype"%>
+
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(googleMeet[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + " or Google Meet"%>
+  <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + "Google Meet"%>
+
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<%if(faceTime[i]){%> <%if(number == 1){%>
+  <%stringOfPlatforms = stringOfPlatforms + " or Face Time"%>
+  <%}else{%>
+    <%stringOfPlatforms = stringOfPlatforms + "Face Time"%>
+
+    <%}%>
+<%number = number - 1%>
+<%}%>
+<h3>Available platforms: <%=stringOfPlatforms%></h3>
+<%}else{%>
+
+<%if(zoom[i]){%>
+  <%stringOfPlatforms = "Zoom"%>
+<%}%>
+
+<%if(discord[i]){%>
+  <%stringOfPlatforms = "Discord"%>
+
+<%}%>
+<%if(skype[i]){%> 
+  <%stringOfPlatforms = "Skype"%>
+
+<%}%>
+<%if(googleMeet[i]){%> 
+  <%stringOfPlatforms = "Google Meet"%>
+
+<%}%>
+<%if(faceTime[i]){%> 
+  <%stringOfPlatforms = "Face Time"%>
+
+<%}%>
+<h3>Available platform: <%=stringOfPlatforms%></h3>
+<%}%>
+
+<%}%>
+
+        </div>
+    
+
+  
+      </div>
+    </div>
+  </section>
+  <%- include('partials/footer.ejs') %>
+
+</body>
+</html>
+
+<script>
+
+    function replace(number){
+
+        if(number == 1){
+          window.location.href = "/briefDashboard?section=yourBriefs";
+        }
+        if(number == 2){
+          window.location.href = "/briefDashboard?section=outgoingRequests";
+        }
+             
+        if(number == 4){
+          window.location.href = "/briefDashboard?section=briefsYouveReceived";
+
+        }
+
+        if(number == 5){
+          window.location.href = "/practiceRoundDashboard?section=yourPracticeRounds";
+
+        }
+        if(number == 6){
+          window.location.href = "/practiceRoundDashboard?section=yourResponses";
+
+
+        }
+        if(number == 7){
+          window.location.href = "/briefDashboard?section=";
+
+        }
+    }
+    </script>
+                <style>i{color: rgba(0,0,0, 0.5)} #date{margin-bottom: 19px;}
+                  #replaceThisDiv button{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px;  font-weight: bold;
+                  }
+                  #cancel{padding:10px 19px; border: none; font-size: 16px; color: white;border-radius: 20px; margin: 0;     margin-left: 10px;
+                  }
+                  
+                  i{    transition: color, 0.3s;
+                  }
+                  #confirmDelete{
+                      background: #ed5e68;
+                      margin-left: 10px;
+                      transition: color, 0.3s;
+                  
+                  }
+                  #confirmDelete:hover{
+                      background:#e8727a; 
+                  
+                  }
+                  #cancel{
+                      background: #7f7f7f;
+                      transition: color, 0.3s;
+                  
+                  }
+                   #cancel:hover{
+                      background: #949292;
+                  }
+                  i:hover{
+                      color: #949292;
+                  }
+                  details {
+                                  user-select: none;
+                                  word-break:break-word;
+          
+                                }
+                                
+                                details>summary span.icon {
+                                  width: 24px;
+                                  height: 24px;
+                                  transition: all 0.3s;
+                                  margin-left: auto;
+                                }
+                                #body #dropdownContainer{
+                                  max-width: 700px;
+                                }
+                                details>summary span.otherIcon {
+                                  width: 24px;
+                                  height: 24px;
+                                  transition: all 0.3s;
+                                  margin-left: auto;
+                                }
+                                       
+                                
+                                details[open] summary span.icon {
+                                display: none }
+                                  
+                                details[open] summary span.otherIcon {
+                                 display:flex; 
+                                }
+                                span.otherIcon {
+                                display: none;}
+                                
+                                summary {
+                                  display: flex;
+                                  cursor: pointer;
+                                  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+                                  max-width: 700px;
+                                  margin-top: 18.72px;
+                                  background: #D8D8D8;	padding: 20px 20px 15px 20px;
+                                }
+                                #body #requestFrom{
+                                  color: #000000;
+                                  font-size: 20px;
+                                  padding: 0;
+                                  margin: 0;
+                                }
+                                #noBottomMargin{
+                                  margin-bottom: 0;
+                                }
+                  
+                                summary::-webkit-details-marker {
+                                  display: none;
+                                }
+                                summary{
+                                  border-radius: 15px;}
+                                details[open] summary{
+                                  border-radius: 15px 15px 0 0;
+                                border-bottom: 2px solid black;
+                                }
+                                
+                                  #dropdownContainer{background: #D8D8D8	;	padding: 20px 20px 10px; border-radius: 0 0 15px 15px; margin: 0;}
+                                  #dropdownContainer h4{color: black; margin: 0; padding: 0 0 10px; font-size: 17px;}
+                                  #dropdownContainer button{margin-top: 15px; margin-right: 8px; color: black; background: #EAEAEA;}
+                                  #dropdownContainer button:hover{background: #C0C0C0}
+                                  #inline-block{display: inline-block; margin-bottom: 10px;}
+                  </style>
+              <style>#buttonOne,#buttonThree{background-color: transparent;}#buttonTwo{background-color: #D3D3D3 !important;}</style>            
+
+    <style>#body a{
+        color: black}
+        .topButtons button{
+    background: transparent;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        border-bottom: none;
+    font-size: 15px;
+    border-radius:  5px 0px  0px 0px;
+  padding: 5px 10px;
+    
+  }
+  
+  #buttonTwo{
+   margin: 0;
+
+    border-radius:  0px;
+  }
+
+  #buttonThree{
+    margin: 0;
+    border-bottom: none;
+      
+   }
+  
+  .buttonContainer{
+    font-size:0;
+  }.largerContainer{padding-top: 0;}</style>
+

@@ -18,11 +18,11 @@
   <section id = "body">
     <div class="buttonContainer topButtons">
       <div class = "leftButtons">
-        <button onclick="replace(1)" id="buttonOne">Your practice round requests</button>
-    <button onclick="replace(4)" id="buttonTwo">Briefs you've received</button>
+        <button onclick="replace(5)" id="buttonOne">Your practice round requests</button>
+    <button onclick="replace(6)" id="buttonTwo">Your responses</button>
 
 
-    <button onclick="replace(2)" id="buttonThree">Outgoing Requests</button>
+    <button onclick="replace(7)" id="buttonThree">Outgoing Requests</button>
       </div>
     
 <div class = 'rightButtons'>
@@ -43,7 +43,7 @@
               <span class='briefSection'>
                  
                   <%if (numberOfRequests == 0){%>
-                      <h2 class = 'briefSectionheader'>Not requesting any practice rounds</h2>
+                      <h2 class = 'briefSectionheader'>You haven't responded to any practice round requests</h2>
                   <%}%>
 
               
@@ -420,7 +420,7 @@
             <h4 style = 'font-size: 20px; padding-top: 10px'><%=requesterNameRES[v]%></h3>
             </h4>
 
-<%}else if(statusRES[v] == 'agree'){%>                                        <h4 style = 'font-size: 20px; padding-top: 10px'></h4>
+<%}else if(statusRES[v] == 'agree'){%>                                        <h4 style = 'font-size: 17px; padding-top: 10px'>Your contact information has been sent to <%=responderNameRES[i]%>. They'll contact you soon!</h4>
   <%}else{%>
           <div id = 'buttonContentR<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='acceptR(<%=v%>, "<%=actualIdRES[v]%>")'>Accept</button><form id = 'inline-block' action='/api/rejectPracticeRoundRequest?id=<%=actualIdRES[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformationR(<%=v%>)">Get more information</button></div>
         </div>
@@ -430,6 +430,17 @@
 
   <script>
 
+                      function cancelR(i, id){
+                          const div = document.getElementById('buttonContentR' + i)
+                          div.innerHTML=`<div id = 'buttonContentR<%=v%>' style = 'white-space: nowrap;'><button id = 'inline-block' style = 'margin-top: 10px;'onclick='acceptR(<%=v%>, "<%=actualIdRES[v]%>")'>Accept</button><form id = 'inline-block' action='/api/rejectPracticeRoundRequest?id=<%=actualIdRES[v]%>' method = 'POST'><button style = 'margin-top: 10px;'>Reject</button></form><button id = 'inline-block'style = 'margin-top: 10px;' onclick = "getMoreInformationR(<%=v%>)">Get more information</button></div>
+        </div>`
+                  
+                      }
+function acceptR(i, id){
+                          const div = document.getElementById('buttonContentR' + i)
+                          div.innerHTML=`<form action = '/api/agreePracticeRound?id=`+id+`' method = 'POST'><input name = 'info' class = 'feedback-input' type = 'text' placeholder='Contact information (for the preferred platform)'><br><button type='button' style = 'margin-bottom: 10px;' onclick='cancelR(`+i+ `,"`+id+`")'>Cancel</button><button type = 'submit' style = 'margin-bottom: 10px;'>Send</button></form>`
+                          
+                      }
     function getMoreInformationR(i){
                   const div = document.getElementById('buttonContentR' +i)
                   div.innerHTML="<h4 style='padding-top: 8px;'><%=responderNameRES[i]%>'s email: <a target = '_blank' href = 'mailto:<%=responderEmailRES[i]%>'><%=responderEmailRES[i]%></a></h4>"
@@ -555,13 +566,22 @@
         if(number == 2){
           window.location.href = "/briefDashboard?section=outgoingRequests";
         }
-        if(number == 3){
-          window.location.href = "/briefDashboard?section=ratings";
 
-        }
        
         if(number == 4){
           window.location.href = "/briefDashboard?section=briefsYouveReceived";
+
+        }
+        if(number == 5){
+          window.location.href = "/practiceRoundDashboard?section=yourPracticeRounds";
+
+        }
+        if(number == 6){
+          window.location.href = "/practiceRoundDashboard?section=yourResponses";
+
+        }
+        if(number == 7){
+          window.location.href = "/briefDashboard?section=";
 
         }
     }

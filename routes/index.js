@@ -231,6 +231,105 @@ section = req.query.section
 
 
     }
+
+    if(section == "yourResponses"){
+        var results1 = await mongoContactPR.find({responderNameToLowerCase: userToLowerCase}).toArray()
+        var results = await mongoContactPR.count({responderNameToLowerCase: userToLowerCase})
+        var requesterName = []
+        var requesterEmail = []
+        var requesterNameToLowerCase = []
+        var responderName = []
+        var responderEmail = []
+        var responderNameToLowerCase = []
+        var debate = []
+        var date = []
+        var additional = []
+        var availability1 = []
+        var availability2 = []
+        var judge = []
+        var discord = []
+        var googleMeet = []
+        var zoom = []
+        var faceTime = []
+        var skype = []
+        var debate = []
+        var additional2 = []
+        var status = []
+        var firstInfo = []
+        var id = []
+        var discordOG = []
+        var googleMeetOG = []
+        var zoomOG = []
+        var faceTimeOG = []
+        var skypeOG = []
+
+     for(let i = 0; i<results; i++){
+        requesterName.push(results1[results-i-1].requesterName)
+        date.push(results1[results-i-1].date)
+        requesterNameToLowerCase.push(results1[results-i-1].requesterNameToLowerCase)
+        requesterEmail.push(results1[results-i-1].requesterEmail)
+        availability1.push(results1[results-i-1].availability1)
+        availability2.push(results1[results-i-1].availability2)
+        additional2.push(results1[results-i-1].additional2)
+        responderName.push(results1[results-i-1].responderName)
+        responderEmail.push(results1[results-i-1].responderEmail)
+        responderNameToLowerCase.push(results1[results-i-1].responderNameToLowerCase)
+        status.push(results1[results-i-1].availability2)
+        firstInfo.push(results1[results-i-1].firstInfo)
+        id.push(results1[results-i-1]._id)
+        additional.push(results1[results-i-1].additional)
+        judge.push(results1[results-i-1].judge)
+        zoom.push(results1[results-i-1].zoom)
+        skype.push(results1[results-i-1].skype)
+        googleMeet.push(results1[results-i-1].googleMeet)
+        faceTime.push(results1[results-i-1].faceTime)
+        discord.push(results1[results-i-1].discord)
+        if(results1[results-i-1].debate == "tp"){
+            debate.push("Team Policy Debate")
+
+        }else if (results1[results-i-1].debate == "ld"){
+            debate.push("Lincoln Douglas Debate")
+        }else{
+            debate.push("Parliamentary Debate")
+        }
+        zoomOG.push(results1[results-i-1].zoomOG)
+        skypeOG.push(results1[results-i-1].skypeOG)
+        googleMeetOG.push(results1[results-i-1].googleMeetOG)
+        faceTimeOG.push(results1[results-i-1].faceTimeOG)
+        discordOG.push(results1[results-i-1].discordOG)
+    }  
+    return res.render("dashboardOutgoingPracticeRoundRequests",{
+        zoomOG:zoomOG,
+        skypeOG:skypeOG,
+        googleMeetOG:googleMeetOG,
+        faceTimeOG:faceTimeOG,
+        discordOG:discordOG,
+        auth: req.session.email,        
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+        name:name,
+        date:date,
+        nameToLowerCase:nameToLowerCase,
+        id:id,
+        additional:additional,
+        additional2:additional2,
+
+        availability:availability,
+        judge:judge,
+        numberOfRequests: results,
+        discord: discord,
+        zoom: zoom,
+        faceTime: faceTime,
+        skype: skype,
+        googleMeet: googleMeet,
+        debate: debate,
+        requesterName: requesterName,
+availability1:availability1,
+availability2:availability2,
+    })
+
+}
 }catch(err){
 console.log(err)
 }
