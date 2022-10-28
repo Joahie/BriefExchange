@@ -570,6 +570,19 @@ if(!req.query.user){
     var results3 =  await mongoBrief.find({ type: "offering",nameToLowerCase: user}).toArray()
     var results4 =  await mongoBrief.find({ type: "request",nameToLowerCase: user}).toArray()
     var results5 =  await mongoBrief.count({ type: "request",nameToLowerCase: user})
+    var results6 = await mongoPracticeRoundRequests.find({nameToLowerCase: user}).toArray()
+    var results7 = await mongoPracticeRoundRequests.count({nameToLowerCase: user})
+    
+    var datePR = []
+    var debatePR = []
+    var availabilityPR = []
+    var additionalPR = []
+    var judgePR = []
+    var zoom = []
+    var discord = []
+    var googleMeet = []
+    var faceTime = []
+    var skype = []
 
     var date = []
     var dateR = []
@@ -586,6 +599,25 @@ if(!req.query.user){
     var debateR = []
     var numberOfRatings = []
 
+    for(let i = 0; i<results7; i++){
+        datePR.push(results6[results7-i-1].date)
+        availabilityPR.push(results6[results7-i-1].availability)
+        additionalPR.push(results6[results7-i-1].additional)
+        judgePR.push(results6[results7-i-1].judge)
+        zoom.push(results6[results7-i-1].zoom)
+        discord.push(results6[results7-i-1].discord)
+        googleMeet.push(results6[results7-i-1].googleMeet)
+        faceTime.push(results6[results7-i-1].faceTime)
+        skype.push(results6[results7-i-1].skype)
+
+        if(results6[results7-i-1].debate == "ld"){
+            debatePR.push("Lincoln Douglas Debate")
+        }else if(results6[results7-i-1].debate == "Team Policy Debate"){
+            debatePR.push("Team Policy Debate")
+        }else{
+            debatePR.push("Parliamentary Debate")
+        }
+    }
     for(let i = 0; i<results5; i++){
         briefNameR.push(results4[results5-i-1].briefName)
         argumentsR.push(results4[results5-i-1].arguments)
@@ -637,6 +669,18 @@ if(!req.query.user){
         idR: idR,
         numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
+
+        datePR: datePR,
+        availabilityPR:availabilityPR,
+        additionalPR: additionalPR,
+        judgePR: judgePR,
+        zoom: zoom,
+        discord: discord,
+        googleMeet: googleMeet,
+        faceTime: faceTime,
+        skype: skype,
+        numberOfPR: results7,
+        debatePR: debatePR,
      })
     }catch(err){
         console.log(err)
