@@ -17,12 +17,10 @@
 
   <section id = "body">
     <div class="buttonContainer topButtons">
-      <div class = "leftButtons">
-        <button onclick="replace(5)" id="buttonOne">Your practice round requests</button>
-    <button onclick="replace(6)" id="buttonTwo">Your responses</button>
+      <div class = "leftButtons"> 
+        <button onclick="replace(5)" id="buttonOne">Your Practice Round Requests</button>
+        <button onclick="replace(6)" style = "border-left: none;"id="buttonThree">Your Responses</button>
 
-
-    <button onclick="replace(7)" id="buttonThree">Outgoing Responses</button>
       </div>
     
 <div class = 'rightButtons'>
@@ -43,11 +41,13 @@
               <span class='briefSection'>
                  
                 <%if (numberOfRequests == 0){%>
-                  <h2 class = 'briefSectionheader'>You currently have no responses to any practice rounds</h2>
               <%}%>
 
-          
+<%var total = numberOfRequests%>
               <%for(let i = 0; i<numberOfRequests; i++){%>
+<%if(status[i] != "deleted"){%>
+<%total = total - 1%>
+
                   <h2 id = 'date'><%=date[i]%></h2><form action='/api/deletePracticeRoundResponse?id=<%=id[i]%>' method = 'POST' id = 'deleteForm<%=i%>'>
                       <div style = 'display: flex; flex-direction: row; justify-content: space-between;'> <h2 id = 'thirtypx'><a href="/profiles?user=<%=requesterName[i]%>"><%=requesterName[i]%></a> requested a practice round:</h2><div id ='trashCan<%=i%>' ><i onclick = 'trashClicked(<%=i%>)' class='fa fa-trash fa-2x'></i></div></div>  
                   </form>
@@ -393,9 +393,31 @@
 <%}%>
 <h3>Available platform: <%=stringOfPlatforms%></h3>
 <%}%>
+<%if(status[i] == "rejected"){%>
+<h2 id="thirtypx">Status: Rejected</h2>
+<h3>Unfortunately your response has been rejected by <%=requesterName[i]%>.</h3>
+
+
+<%} else if(status[i] == "OGdeleted"){%>
+  <h2 id="thirtypx">Status: Request Deleted</h2>
+  <h3>Unfortunately <%=requesterName[i]%> deleted the practice round request that you responded to.</h3>
+  <%} else if(status[i] == "agree"){%>
+
+  <h2 id="thirtypx">Status: Accepted</h2>
+  <h3><%=requesterName[i]%> has accepted your response and uploaded their contact information: <%=firstInfo[i]%></h3>
+  <%}else{%>
+
+    <h2 id="thirtypx">Status: Pending</h2>
+    <h3>We're still awaiting a response from <%=requesterName[i]%>.</h3>
+    <%}%>
+  <%}%>
 
 <%}%>
 
+<%if(total == 1 && numberOfRequests != 0){%>
+  <h2 class = 'briefSectionheader'>You currently have no responses to any practice rounds</h2>
+
+  <%}%>
         </div>
     
 
@@ -534,7 +556,7 @@
                                   #dropdownContainer button:hover{background: #C0C0C0}
                                   #inline-block{display: inline-block; margin-bottom: 10px;}
                   </style>
-              <style>#buttonOne,#buttonThree{background-color: transparent;}#buttonTwo{background-color: #D3D3D3 !important;}</style>            
+              <style>#buttonOne{background-color: transparent;}#buttonThree{background-color: #D3D3D3 !important;}</style>            
 
     <style>#body a{
         color: black}

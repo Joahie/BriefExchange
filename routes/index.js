@@ -274,7 +274,7 @@ section = req.query.section
         responderName.push(results1[results-i-1].responderName)
         responderEmail.push(results1[results-i-1].responderEmail)
         responderNameToLowerCase.push(results1[results-i-1].responderNameToLowerCase)
-        status.push(results1[results-i-1].availability2)
+        status.push(results1[results-i-1].status)
         firstInfo.push(results1[results-i-1].firstInfo)
         id.push(results1[results-i-1]._id)
         additional.push(results1[results-i-1].additional)
@@ -314,7 +314,7 @@ section = req.query.section
         id:id,
         additional:additional,
         additional2:additional2,
-
+        firstInfo:firstInfo,
         availability:availability,
         judge:judge,
         numberOfRequests: results,
@@ -327,6 +327,7 @@ section = req.query.section
         requesterName: requesterName,
 availability1:availability1,
 availability2:availability2,
+status: status,
     })
 
 }
