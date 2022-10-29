@@ -220,12 +220,6 @@
 <%}%>
 
 
-<%if(judge[i]){%>
-  <h3 id ="extraBottomMargin">Judge needed</h3>
-<%}else{%>
-  <h3 id ="extraBottomMargin">No judge needed</h3>
-  <%}%>
-
   <% var myVariable = false; %>
   <%for(let f = 0; f<requestAmount; f++){%>
       <%if(idRES[f]==id[i] && statusRES[f] != 'rejected'){%>

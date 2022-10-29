@@ -23,8 +23,7 @@
 
     <button onclick="replace(1)" id="buttonOne">TP practice rounds</button>
     <button onclick="replace(2)" id="buttonTwo">LD practice rounds</button>
-    <button onclick="replace(3)" id="buttonThree">Parliamentary practice rounds</button>
-    <button onclick="replace(4)" id="buttonFour">Judge a practice round</button>
+    <button style = "border-radius: 0 5px 0 0;"onclick="replace(3)" id="buttonThree">Parliamentary practice rounds</button>
    </div>
 
 <div class = 'rightButtons'>
@@ -135,7 +134,7 @@
       <%}%>
   <%number = number - 1%>
   <%}%>
-  <h3>Available platforms: <%=stringOfPlatforms%></h3>
+  <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
   
   <%}else if(numberPlaceholder == 2){%>
 
@@ -181,7 +180,7 @@
       <%}%>
   <%number = number - 1%>
   <%}%>
-  <h3>Available platforms: <%=stringOfPlatforms%></h3>
+  <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
 <%}else{%>
   
   <%if(zoomPRRTP[i]){%>
@@ -204,15 +203,9 @@
     <%stringOfPlatforms = "Face Time"%>
 
   <%}%>
-  <h3>Available platform: <%=stringOfPlatforms%></h3>
+  <h3 id="extraBottomMargin">Available platform: <%=stringOfPlatforms%></h3>
 <%}%>
 
-
-<%if(judgePRRTP[i]){%>
-  <h3 id ="extraBottomMargin">Judge needed</h3>
-<%}else{%>
-  <h3 id ="extraBottomMargin">No judge needed</h3>
-  <%}%>
        
         <%if(!auth){%>
      
@@ -343,7 +336,7 @@
       <%}%>
   <%number = number - 1%>
   <%}%>
-  <h3>Available platforms: <%=stringOfPlatforms%></h3>
+  <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
   
   <%}else if(numberPlaceholder == 2){%>
 
@@ -389,7 +382,7 @@
       <%}%>
   <%number = number - 1%>
   <%}%>
-  <h3>Available platforms: <%=stringOfPlatforms%></h3>
+  <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
 <%}else{%>
   
   <%if(zoomPRRTP[i]){%>
@@ -412,15 +405,10 @@
     <%stringOfPlatforms = "Face Time"%>
 
   <%}%>
-  <h3>Available platform: <%=stringOfPlatforms%></h3>
+  <h3 id="extraBottomMargin">Available platform: <%=stringOfPlatforms%></h3>
 <%}%>
 
 
-<%if(judgePRRTP[i]){%>
-  <h3 id ="extraBottomMargin">Judge needed</h3>
-<%}else{%>
-  <h3 id ="extraBottomMargin">No judge needed</h3>
-  <%}%>
        
         <%if(!auth){%>
      
@@ -540,7 +528,7 @@
               <%}%>
           <%number = number - 1%>
           <%}%>
-          <h3>Available platforms: <%=stringOfPlatforms%></h3>
+          <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
           
           <%}else if(numberPlaceholder == 2){%>
         
@@ -586,7 +574,7 @@
               <%}%>
           <%number = number - 1%>
           <%}%>
-          <h3>Available platforms: <%=stringOfPlatforms%></h3>
+          <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
         <%}else{%>
           
           <%if(zoomPRRLD[i]){%>
@@ -609,16 +597,10 @@
             <%stringOfPlatforms = "Face Time"%>
         
           <%}%>
-          <h3>Available platform: <%=stringOfPlatforms%></h3>
+          <h3 id="extraBottomMargin">Available platform: <%=stringOfPlatforms%></h3>
         <%}%>
         
         
-        <%if(judgePRRLD[i]){%>
-          <h3 id ="extraBottomMargin">Judge needed</h3>
-        <%}else{%>
-          <h3 id ="extraBottomMargin">No judge needed</h3>
-          <%}%>
-               
                 <%if(!auth){%>
              
                 <%}else{%>
@@ -736,7 +718,7 @@
               <%}%>
           <%number = number - 1%>
           <%}%>
-          <h3>Available platforms: <%=stringOfPlatforms%></h3>
+          <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
           
           <%}else if(numberPlaceholder == 2){%>
         
@@ -782,7 +764,7 @@
               <%}%>
           <%number = number - 1%>
           <%}%>
-          <h3>Available platforms: <%=stringOfPlatforms%></h3>
+          <h3 id="extraBottomMargin">Available platforms: <%=stringOfPlatforms%></h3>
         <%}else{%>
           
           <%if(zoomPRRP[i]){%>
@@ -805,16 +787,10 @@
             <%stringOfPlatforms = "Face Time"%>
         
           <%}%>
-          <h3>Available platform: <%=stringOfPlatforms%></h3>
+          <h3 id="extraBottomMargin">Available platform: <%=stringOfPlatforms%></h3>
         <%}%>
         
         
-        <%if(judgePRRP[i]){%>
-          <h3 id ="extraBottomMargin">Judge needed</h3>
-        <%}else{%>
-          <h3 id ="extraBottomMargin">No judge needed</h3>
-          <%}%>
-               
                 <%if(!auth){%>
              
                 <%}else{%>
@@ -831,11 +807,6 @@
             <%}%>
             <%}%>
          `;
-        }
-        if(number == 4){
-            var div = document.getElementById('replaceThisDiv');
-            div.innerHTML = `
-            `;
         }
     }
     </script>

@@ -1471,7 +1471,6 @@ answer = req.body
             additional: answer.additional,
             numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
-            judge: answer.judge,
             skype: answer.skype,
             discord: answer.discord,
             googleMeet: answer.googleMeet,
@@ -1485,11 +1484,6 @@ var month = d.getMonth()+1
 var year = d.getFullYear()
 var day = d.getDate()
 var date = month + "/" + day + "/" + year
-if(answer.judge)    {
-    var judgeTrueOrFalse = true;
-}else{
-    var judgeTrueOrFalse = false;
-}
 if(answer.zoom)    {
     var zoomTF = true;
 }else{
@@ -1527,7 +1521,6 @@ if(!faceTimeTF && !discordTF &&!zoomTF &&!googleMeetTF &&!skypeTF){
         debate: answer.debate,
         availability: answer.availability,
         additional: answer.additional,
-        judge: answer.judge,
         skype: answer.skype,
         discord: answer.discord,
         googleMeet: answer.googleMeet,
@@ -1535,7 +1528,7 @@ if(!faceTimeTF && !discordTF &&!zoomTF &&!googleMeetTF &&!skypeTF){
         zoom: answer.zoom,
     })    
 }
-await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, judge: judgeTrueOrFalse,faceTime: faceTimeTF, discord: discordTF, zoom: zoomTF, googleMeet: googleMeetTF, skype: skypeTF })
+await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.session.email, nameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: answer.debate, date: date, additional: answer.additional, availability: answer.availability, faceTime: faceTimeTF, discord: discordTF, zoom: zoomTF, googleMeet: googleMeetTF, skype: skypeTF })
     return res.render("requestAPracticeRound",{
         auth: req.session.email,
         authName: req.session.name,
@@ -1632,11 +1625,7 @@ var month = d.getMonth()+1
 var year = d.getFullYear()
 var day = d.getDate()
 var date = month + "/" + day + "/" + year
-if(answer.judge)    {
-    var judgeTrueOrFalse = true;
-}else{
-    var judgeTrueOrFalse = false;
-}
+
 if(answer.zoom){
     zoom = true;
 }
@@ -1664,7 +1653,6 @@ if((faceTime == "unchecked" || !faceTime)&&(discord == "unchecked" || !discord)&
         debate: answer.debate,
         availability: answer.availability,
         additional: answer.additional,
-        judge: answer.judge,
         skype: faceTime,
         discord: discord,
         googleMeet: googleMeet,
@@ -1681,7 +1669,7 @@ if(results2.debate == "parli"){
 }else{
     var debateFormat = "Team Policy Debate"
 }
-await mongoContactPR.insertOne({id: id, requesterName: results2.name,requesterEmail: results2.email,requesterNameToLowerCase: results2.nameToLowerCase,responderName: req.session.name, responderEmail: req.session.email, responderNameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: results2.debate, date: date, additional1: results2.additional, additional2: answer.additional, availability1: results2.availability, availability2: answer.availability, judge: results2.judge,faceTime: faceTime, discord: discord, zoom: zoom, googleMeet: googleMeet, skype: skype, status: "none" , faceTimeOG: faceTime, discordOG: discord, zoomOG: zoom, googleMeetOG: googleMeet, skypeOG: skype, })
+await mongoContactPR.insertOne({id: id, requesterName: results2.name,requesterEmail: results2.email,requesterNameToLowerCase: results2.nameToLowerCase,responderName: req.session.name, responderEmail: req.session.email, responderNameToLowerCase: req.session.name.toLowerCase().replace(" ", ""), debate: results2.debate, date: date, additional1: results2.additional, additional2: answer.additional, availability1: results2.availability, availability2: answer.availability,faceTime: faceTime, discord: discord, zoom: zoom, googleMeet: googleMeet, skype: skype, status: "none" , faceTimeOG: faceTime, discordOG: discord, zoomOG: zoom, googleMeetOG: googleMeet, skypeOG: skype, })
 await mongoAccounts.updateOne({email: results2.email}, {$push:{notifications: req.session.name + " responded to your post requesting a " +debateFormat + " practice round."}})
 
     return res.render("contactPracticeRound",{

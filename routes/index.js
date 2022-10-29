@@ -122,7 +122,6 @@ section = req.query.section
         var id = []
         var additional = []
         var availability = []
-        var judge = []
         var zoom = []
         var discord = []
         var googleMeet = []
@@ -174,7 +173,6 @@ section = req.query.section
             id.push(results1[results-i-1]._id)
             additional.push(results1[results-i-1].additional)
             availability.push(results1[results-i-1].availability)
-            judge.push(results1[results-i-1].judge)
             zoom.push(results1[results-i-1].zoom)
             skype.push(results1[results-i-1].skype)
             googleMeet.push(results1[results-i-1].googleMeet)
@@ -201,7 +199,6 @@ section = req.query.section
             id:id,
             additional:additional,
             availability:availability,
-            judge:judge,
             numberOfRequests: results,
             discord: discord,
             zoom: zoom,
@@ -246,7 +243,6 @@ section = req.query.section
         var additional = []
         var availability1 = []
         var availability2 = []
-        var judge = []
         var discord = []
         var googleMeet = []
         var zoom = []
@@ -278,7 +274,6 @@ section = req.query.section
         firstInfo.push(results1[results-i-1].firstInfo)
         id.push(results1[results-i-1]._id)
         additional.push(results1[results-i-1].additional)
-        judge.push(results1[results-i-1].judge)
         zoom.push(results1[results-i-1].zoom)
         skype.push(results1[results-i-1].skype)
         googleMeet.push(results1[results-i-1].googleMeet)
@@ -316,7 +311,6 @@ section = req.query.section
         additional2:additional2,
         firstInfo:firstInfo,
         availability:availability,
-        judge:judge,
         numberOfRequests: results,
         discord: discord,
         zoom: zoom,
@@ -359,7 +353,6 @@ var nameToLowerCasePRRTP = []
 var idPRRTP = []
 var additionalPRRTP = []
 var availabilityPRRTP = []
-var judgePRRTP = []
 var zoomPRRTP = []
 var discordPRRTP = []
 var googleMeetPRRTP = []
@@ -372,7 +365,6 @@ var nameToLowerCasePRRLD = []
 var idPRRLD = []
 var additionalPRRLD = []
 var availabilityPRRLD = []
-var judgePRRLD = []
 var zoomPRRLD = []
 var discordPRRLD = []
 var googleMeetPRRLD = []
@@ -384,7 +376,6 @@ var nameToLowerCasePRRP = []
 var idPRRP = []
 var additionalPRRP = []
 var availabilityPRRP = []
-var judgePRRP = []
 var zoomPRRP = []
 var discordPRRP = []
 var googleMeetPRRP = []
@@ -400,7 +391,6 @@ for(let i = 0; i<results; i++){
     idPRRTP.push(results1[results-i-1]._id)
     additionalPRRTP.push(results1[results-i-1].additional)
     availabilityPRRTP.push(results1[results-i-1].availability)
-    judgePRRTP.push(results1[results-i-1].judge)
     zoomPRRTP.push(results1[results-i-1].zoom)
     skypePRRTP.push(results1[results-i-1].skype)
     googleMeetPRRTP.push(results1[results-i-1].googleMeet)
@@ -415,7 +405,6 @@ for(let i = 0; i<results2; i++){
     idPRRLD.push(results3[results2-i-1]._id)
     additionalPRRLD.push(results3[results2-i-1].additional)
     availabilityPRRLD.push(results3[results2-i-1].availability)
-    judgePRRLD.push(results3[results2-i-1].judge)
     zoomPRRLD.push(results3[results2-i-1].zoom)
     skypePRRLD.push(results3[results2-i-1].skype)
     googleMeetPRRLD.push(results3[results2-i-1].googleMeet)
@@ -431,7 +420,6 @@ for(let i = 0; i<results4; i++){
     idPRRP.push(results5[results4-i-1]._id)
     additionalPRRP.push(results5[results4-i-1].additional)
     availabilityPRRP.push(results5[results4-i-1].availability)
-    judgePRRP.push(results5[results4-i-1].judge)
     zoomPRRP.push(results5[results4-i-1].zoom)
     skypePRRP.push(results5[results4-i-1].skype)
     googleMeetPRRP.push(results5[results4-i-1].googleMeet)
@@ -446,7 +434,6 @@ res.render("practiceRounds", {
     idPRRTP:idPRRTP,
     additionalPRRTP:additionalPRRTP,
     availabilityPRRTP:availabilityPRRTP,
-    judgePRRTP:judgePRRTP,
     numberOfRequestsPRRTP: results,
     discordPRRTP: discordPRRTP,
     zoomPRRTP: zoomPRRTP,
@@ -460,7 +447,6 @@ res.render("practiceRounds", {
     idPRRLD:idPRRLD,
     additionalPRRLD:additionalPRRLD,
     availabilityPRRLD:availabilityPRRLD,
-    judgePRRLD:judgePRRLD,
     numberOfRequestsPRRLD: results2,
     discordPRRLD: discordPRRLD,
     zoomPRRLD: zoomPRRLD,
@@ -474,7 +460,6 @@ res.render("practiceRounds", {
     idPRRP:idPRRP,
     additionalPRRP:additionalPRRP,
     availabilityPRRP:availabilityPRRP,
-    judgePRRP:judgePRRP,
     numberOfRequestsPRRP: results4,
     discordPRRP: discordPRRP,
     zoomPRRP: zoomPRRP,
@@ -577,7 +562,6 @@ if(!req.query.user){
     var debatePR = []
     var availabilityPR = []
     var additionalPR = []
-    var judgePR = []
     var zoom = []
     var discord = []
     var googleMeet = []
@@ -603,20 +587,13 @@ if(!req.query.user){
         datePR.push(results6[results7-i-1].date)
         availabilityPR.push(results6[results7-i-1].availability)
         additionalPR.push(results6[results7-i-1].additional)
-        judgePR.push(results6[results7-i-1].judge)
         zoom.push(results6[results7-i-1].zoom)
         discord.push(results6[results7-i-1].discord)
         googleMeet.push(results6[results7-i-1].googleMeet)
         faceTime.push(results6[results7-i-1].faceTime)
         skype.push(results6[results7-i-1].skype)
 
-        if(results6[results7-i-1].debate == "ld"){
-            debatePR.push("Lincoln Douglas Debate")
-        }else if(results6[results7-i-1].debate == "Team Policy Debate"){
-            debatePR.push("Team Policy Debate")
-        }else{
-            debatePR.push("Parliamentary Debate")
-        }
+        debatePR.push(results6[results7-i-1].debate.toUpperCase())
     }
     for(let i = 0; i<results5; i++){
         briefNameR.push(results4[results5-i-1].briefName)
@@ -673,7 +650,6 @@ if(!req.query.user){
         datePR: datePR,
         availabilityPR:availabilityPR,
         additionalPR: additionalPR,
-        judgePR: judgePR,
         zoom: zoom,
         discord: discord,
         googleMeet: googleMeet,
