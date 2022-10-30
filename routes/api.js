@@ -96,7 +96,8 @@ function sortingMongoDB(results){
     return ParsedResults
 }
 router.post("/register",markAsRead, async (req,res)=>{
-    
+    try{
+
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
         return res.render("register", {
@@ -337,11 +338,27 @@ var uuid = crypto.randomUUID()
     notificationsArray: null,
     })
 
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 
 })
 
 
 router.post("/login",markAsRead,  async (req, res)=>{
+    try{
     var answer = req.body
     
 
@@ -405,17 +422,51 @@ router.post("/login",markAsRead,  async (req, res)=>{
         notificationsArray: notificationsFromMongo.notifications,
         })
     }
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 
 
-router.post('/logout',markAsRead,  isAuth, (req,res)=>{
+router.post('/logout',markAsRead,  isAuth, async (req,res)=>{
+    try{
     req.session.destroy(e => {
         if (e) return res.send(e);
         else return res.redirect("/")
     })
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 router.post("/emailVerification", markAsRead, async (req,res)=>{
+    try{
     var results =  await mongoAccounts.findOne({email: req.session.email})
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
@@ -461,8 +512,25 @@ router.post("/emailVerification", markAsRead, async (req,res)=>{
         authName: req.session.name,    
         verificationNumber: "emailSent",
     })
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 router.post('/editAccountInformation', verifyEmail("Edit Account Information","edit your account information"), markAsRead,  isAuth, async (req, res)=>{
+    try{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -639,8 +707,24 @@ if (answer.password){
 }
     return res.redirect("/profiles?user=" + req.session.name)
 
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 router.post("/addABriefOffer",  verifyEmail("Add a Brief Offer","add a brief offer"),isAuth,  markAsRead,  async (req, res)=>{
+    try{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -680,11 +764,29 @@ var date = month + "/" + day + "/" + year
         verificationNumber: results.verificationNumber,numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
 
-    })})
+    })
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
+})
 
 
 router.post("/addABriefRequest",  verifyEmail("Add a Brief Request","add a brief request"),isAuth, markAsRead, async (req, res)=>{
-    if(req.session.email){
+    try{
+        if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
         var notificationsFromMongo = {
@@ -719,12 +821,30 @@ var date = month + "/" + day + "/" + year
         completed: true, numberOfNotifications: notificationsFromMongo.notifications.length,
         notificationsArray: notificationsFromMongo.notifications,
 
-    })})
+    })
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
+})
 
 
 
 
 router.post("/deleteAccount", isAuth, markAsRead, async (req,res)=>{
+    try{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -790,9 +910,25 @@ router.post("/deleteAccount", isAuth, markAsRead, async (req,res)=>{
             notificationsArray: notificationsFromMongo.notifications,
         })
     }
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 router.post("/contact", verifyEmail("Contact","contact other users"),markAsRead,  isAuth, async (req,res)=>{
-    if(req.session.email){
+   try{ if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
         var notificationsFromMongo = {
@@ -849,48 +985,128 @@ var date = month + "/" + day + "/" + year
         })
     }
     
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 router.post("/deleteBrief", verifyEmail("Delete Brief","delete your briefs"),markAsRead,   isAuth,async (req,res)=>{
-
+try{
         
         idQuery = req.query.id
     await mongoBrief.deleteOne({_id: ObjectId(idQuery)})
-    await mongoContact.updateMany({id: idQuery}, {status: "OGdeleted"})
+    await mongoContact.updateMany({id: idQuery}, {$set:{status: "OGdeleted"}})
     return res.redirect("/briefDashboard?section=yourBriefs")
+
+}catch(err){
+    console.log(err)
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 router.post("/deletePracticeRoundRequest", verifyEmail("Delete Practice Round Request","delete your practice round requests"),markAsRead,   isAuth,async (req,res)=>{
 
-        
+        try{
         idQuery = req.query.id
     await mongoPracticeRoundRequests.deleteOne({_id: ObjectId(idQuery)})
-    await mongoContactPR.updateMany({id: idQuery}, {status: "OGdeleted"})
+    await mongoContactPR.updateMany({id: idQuery}, {$set:{status: "OGdeleted"}})
 
     return res.redirect("/practiceRoundDashboard?section=yourPracticeRounds")
+
+}catch(err){
+    console.log(err)
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 router.post("/deletePracticeRoundResponse", verifyEmail("Delete Practice Round Response","delete your practice round responses"),markAsRead,   isAuth,async (req,res)=>{
-
+try{
         
     idQuery = req.query.id
-await mongoContactPR.updateOne({_id: ObjectId(idQuery)}, {status: "deleted"})
+await mongoContactPR.updateOne({_id: ObjectId(idQuery)}, {$set:{status: "deleted"}})
 
 return res.redirect("/practiceRoundDashboard?section=yourResponses")
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 router.post("/rejectPracticeRoundRequest",  verifyEmail("Reject Request","reject a practice round request"),markAsRead, isAuth, async (req,res)=>{
-    var id = req.query.id
+   try{ var id = req.query.id
     await mongoContactPR.updateOne({_id: ObjectId(id)}, {$set: {status:"rejected"}})
     var results = await mongoContactPR.findOne({_id: ObjectId(id)})
     await mongoAccounts.updateOne({email: results.responderEmail},{$push:{notifications: results.requesterName + " has rejected your practice round request."}})
     
     
     return res.redirect("/practiceRoundDashboard?section=yourPracticeRounds")
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
   
 
 router.post("/reject",  verifyEmail("Reject Request","reject a brief request"),markAsRead, isAuth, async (req,res)=>{
-    var id = req.query.id
+    try{var id = req.query.id
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"rejected"}})
     var results = await mongoContact.findOne({_id: ObjectId(id)})
     if (results.inReturn){
@@ -900,20 +1116,52 @@ router.post("/reject",  verifyEmail("Reject Request","reject a brief request"),m
     }
     
     return res.redirect("/briefDashboard?section=yourBriefs")
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
   
 router.post("/agreePracticeRound",  verifyEmail("Agree","agree to a practice round request"),markAsRead, isAuth, async (req,res)=>{
-    var id = req.query.id
+    try{var id = req.query.id
     var answer = req.body
     await mongoContactPR.updateOne({_id: ObjectId(id)}, {$set: {status:"agree", firstInfo: answer.info}})
     var results = await mongoContactPR.findOne({_id: ObjectId(id)})
 
     await mongoAccounts.updateOne({email: results.requesterEmail}, {$push:{notifications: req.session.name + " has agreed to debate you and has uploaded their contact information."}})
     return res.redirect("/practiceRoundDashboard?section=yourPracticeRounds")
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 router.post("/agree",  verifyEmail("Agree","agree to a brief request"),markAsRead, isAuth, async (req,res)=>{
-    var id = req.query.id
+    try{var id = req.query.id
     var answer = req.body
     await mongoContact.updateOne({_id: ObjectId(id)}, {$set: {status:"agree", firstLink: answer.link}})
     var results = await mongoContact.findOne({_id: ObjectId(id)})
@@ -924,9 +1172,25 @@ router.post("/agree",  verifyEmail("Agree","agree to a brief request"),markAsRea
         await mongoAccounts.updateOne({email: results.email}, {$push:{notifications: req.session.name + " has agreed to your request for a brief on "+results.offerBriefName}})
     }
     return res.redirect("/briefDashboard?section=yourBriefs")
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 router.post("/response",  verifyEmail("Respond","respond to a brief request"),isAuth, async (req,res)=>{
-    var id = req.query.id
+    try{var id = req.query.id
     var answer = req.body
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
@@ -1096,9 +1360,26 @@ router.post("/response",  verifyEmail("Respond","respond to a brief request"),is
              })
             
          }
+
+    }catch(err){
+        if(req.session.email){
+            var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        }else{
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+        }
+        res.status(500).render('500', {
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        });    
+    }
      })
 
 router.post("/deleteContact", verifyEmail("Delete a Request","delete a request"), isAuth, markAsRead, async (req,res)=>{
+    try{
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -1176,10 +1457,26 @@ router.post("/deleteContact", verifyEmail("Delete a Request","delete a request")
             auth: req.session.email, numberOfNotifications: notificationsFromMongo.notifications.length,
             notificationsArray: notificationsFromMongo.notifications,
             authName: req.session.name,})
-})
+
+        }catch(err){
+            if(req.session.email){
+                var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+            }else{
+                var notificationsFromMongo = {
+                    "notifications":[]
+                    }
+            }
+            res.status(500).render('500', {
+                auth: req.session.email,
+                authName: req.session.name,
+                numberOfNotifications: notificationsFromMongo.notifications.length,
+                notificationsArray: notificationsFromMongo.notifications,
+            });    
+        }
+        })
 
 router.post("/forgotPassword",verifyEmail("Reset Password", "reset your password"), markAsRead, async (req,res)=>{
-    if(req.session.email){
+    try{if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
         var notificationsFromMongo = {
@@ -1267,10 +1564,26 @@ await mongoAccounts.updateOne({email: email}, {$set: {uuid: uuid, lastRequest: d
         notificationsArray: notificationsFromMongo.notifications,
 
     })
+
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 router.post("/passwordReset",verifyEmail("Reset Password", "reset your password"), markAsRead, async (req,res)=>{
-    if(req.session.email){
+    try{if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
         var notificationsFromMongo = {
@@ -1357,10 +1670,25 @@ var recipient = answer.email
             notificationsArray: notificationsFromMongo.notifications,
     
         })
+    }catch(err){
+        if(req.session.email){
+            var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        }else{
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+        }
+        res.status(500).render('500', {
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        });    
+    }
 })
 
 router.post("/rateABrief",isAuth, markAsRead, async (req,res)=>{
-    id = req.query.id
+    try{id = req.query.id
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -1446,12 +1774,27 @@ var briefName = temp.briefName
             notificationsArray: notificationsFromMongo.notifications,
         })      
     
+    }catch(err){
+        if(req.session.email){
+            var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+        }else{
+            var notificationsFromMongo = {
+                "notifications":[]
+                }
+        }
+        res.status(500).render('500', {
+            auth: req.session.email,
+            authName: req.session.name,
+            numberOfNotifications: notificationsFromMongo.notifications.length,
+            notificationsArray: notificationsFromMongo.notifications,
+        });    
+    }
 })
 
 
 
 router.post("/requestAPracticeRound", isAuth, async(req,res)=>{
-    if(req.session.email){
+    try{if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
         var notificationsFromMongo = {
@@ -1538,12 +1881,27 @@ await mongoPracticeRoundRequests.insertOne({name: req.session.name, email: req.s
         notificationsArray: notificationsFromMongo.notifications,
         noAnswer: false,
     })    
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 
 })
 
 
 router.post("/contactPracticeRound", isAuth, async(req,res)=>{
-    if(req.session.email){
+    try{if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
         var notificationsFromMongo = {
@@ -1687,13 +2045,43 @@ await mongoAccounts.updateOne({email: results2.email}, {$push:{notifications: re
         faceTime: faceTime,
         zoom: zoom,
     })    
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 
 })
 router.post("/markAsRead", isAuth, async (req,res)=>{
-    var results = await mongoAccounts.findOne({email: req.session.email})
+    try{var results = await mongoAccounts.findOne({email: req.session.email})
     await mongoAccounts.updateOne({email: req.session.email},{ $pullAll: { notifications: results.notifications}})    
 
     return res.redirect(req.session.notificationRedirect || "/")
+}catch(err){
+    if(req.session.email){
+        var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
+    }else{
+        var notificationsFromMongo = {
+            "notifications":[]
+            }
+    }
+    res.status(500).render('500', {
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    });    
+}
 })
 
 
