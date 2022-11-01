@@ -558,7 +558,7 @@ user = req.query.user
     }
 
 
-    var existing =  await mongoAccounts.count({email: answer.email.toLowerCase()})
+    var existing =  await mongoAccounts.count({email: req.session.email})
     var results =  await mongoAccounts.findOne({email: req.session.email})
     
     if(answer.speechranks != "" && !answer.speechranks.includes("speechranks.com/")){
@@ -594,7 +594,7 @@ user = req.query.user
             oldPasswordExisting: null,
         })}
     }
-    if(await bcrypt.compare(answer.oldPassword, results.password) && answer.oldPassword){
+    if(!(await bcrypt.compare(answer.oldPassword, results.password)) && answer.oldPassword){
         if(!req.session.email){
             return res.render("noAccess",{
                 auth: req.session.email,
@@ -705,9 +705,15 @@ if (answer.password){
     await mongoAccounts.updateOne({email: req.session.email},{$set: {speechranks: answer.speechranks, ld: tempLD, tp: tempTP, parli: tempPARLI, rating: results.rating, name: results.name, nameToLowerCase: results.nameToLowerCase}})
 
 }
-    return res.redirect("/profiles?user=" + req.session.name)
+    return res.render("success",{
+        auth: req.session.email,
+        authName: req.session.name,
+        numberOfNotifications: notificationsFromMongo.notifications.length,
+        notificationsArray: notificationsFromMongo.notifications,
+    })
 
 }catch(err){
+    console.log(err)
     if(req.session.email){
         var notificationsFromMongo = await mongoAccounts.findOne({email: req.session.email})
     }else{
@@ -1629,7 +1635,7 @@ router.post("/passwordReset",verifyEmail("Reset Password", "reset your password"
 var recipient = answer.email
         const emailContents = `
         <h1 style = "color:black;">The password for your BriefExchange account was just changed.</h1>
-        <h2 style = "color:black;">If that wasn't you, please email us at <a href = "mailto:StoaExchange@gmail.com" target="_blank">StoaExchange@gmail.com</a>.</h2>
+        <h2 style = "color:black;">If that wasn't you, please email us at <a href = "mailto:ContactBriefExchange@gmail.com" target="_blank">ContactBriefExchange@gmail.com</a>.</h2>
         <style>*{  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; text-align: center;} h1{font-size: 50px;} </style>
         ` 
         let transporter = nodemailer.createTransport({

@@ -1061,6 +1061,12 @@ router.get("/verifyEmail", isAuth, markAsRead,async (req,res)=>{
     var results =  await mongoAccounts.findOne({email: req.session.email, verificationNumber: uuid})
     var number =  await mongoAccounts.count({email: req.session.email, verificationNumber: uuid})
 
+    if(req.session.email && req.session.email.toLowerCase() != results.email.toLowerCase()){
+        req.session.destroy(e => {
+            if (e) return res.send(e);
+            else return res.redirect("/")
+        })
+    }
     if (number == 0){
         return res.render("noAccess",{
             auth: req.session.email,
